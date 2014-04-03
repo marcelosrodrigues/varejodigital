@@ -6,32 +6,23 @@ import org.springframework.stereotype.Service;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.pagamentos.entity.Holder;
 import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
-import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
-
-
 
 @Service
-public class BoletoService extends AbstractPagamentoService {
+public class TEFService extends AbstractPagamentoService {
 
 	@Autowired
 	private EmailService email;
-	
+
 	@Override
 	public void pagar(final OrdemPagamento pagamento) {
-		
 		final Transaction trans = criarTransacao(pagamento);
-		trans.setPaymentMethod(PaymentMethod.BOLETO);
+		trans.setPaymentMethod(pagamento.getMeioPagamento().getTipo());
 		trans.setHolder(new Holder());
 		trans.getHolder().setDocument(
 				pagamento.getContrato().getFranqueado().getCPF());
 		trans.getHolder().setName(
 				pagamento.getContrato().getFranqueado().getNomeCompleto());
-		
+
 		super.execute(pagamento);
-
 	}
-
 }
-
-
-

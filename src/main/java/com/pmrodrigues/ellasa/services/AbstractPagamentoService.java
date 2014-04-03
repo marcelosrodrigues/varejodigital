@@ -13,7 +13,6 @@ import com.pmrodrigues.ellasa.pagamentos.Akatus.Environment;
 import com.pmrodrigues.ellasa.pagamentos.entity.Address;
 import com.pmrodrigues.ellasa.pagamentos.entity.Address.Country;
 import com.pmrodrigues.ellasa.pagamentos.entity.Address.State;
-import com.pmrodrigues.ellasa.pagamentos.entity.Holder;
 import com.pmrodrigues.ellasa.pagamentos.entity.Payer;
 import com.pmrodrigues.ellasa.pagamentos.entity.Phone;
 import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
@@ -59,8 +58,8 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 	protected Transaction criarTransacao(final OrdemPagamento pagamento) {
 		final Recebedor recebedor = this.getRecebedor();
 		this.carrinho = new Akatus(Environment.valueOf(bundle
-				.getString("AKATUR_URL")),
-				recebedor.getEMAIL(), recebedor.getAPI_KEY()).cart();
+				.getString("AKATUR_URL")), recebedor.getEMAIL(),
+				recebedor.getAPI_KEY()).cart();
 
 		final Payer pagador = criarPagador(pagamento.getContrato()
 				.getFranqueado());
@@ -80,26 +79,26 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 		carrinho.setPayer(pagador);
 		carrinho.addProduct(pagamento.getCarrinho(), pagamento.getDescricao(),
-				pagamento.getValor()
-				.doubleValue(), 1D, 1, 1D);
+				pagamento.getValor().doubleValue(), 0D, 1, 0D);
 
 		final Transaction trans = carrinho.getTransaction();
 		trans.setReference(pagamento.getCarrinho());
 		trans.setInstallments(1);
 
-		trans.setHolder(new Holder());
-		trans.getHolder().setDocument(
-				pagamento.getContrato().getFranqueado().getCPF());
-		trans.getHolder().setName(
-				pagamento.getContrato().getFranqueado().getNomeCompleto());
-
 		return trans;
 	}
 
-	protected CartResponse execute() {
+	protected void execute(final OrdemPagamento pagamento) {
 
 		logging.info("Mandando ordem de pagamento para a akatus");
-		return (CartResponse) this.carrinho.execute();
+
+		final CartResponse response = (CartResponse) this.carrinho.execute();
+		if (!"erro".equalsIgnoreCase(response.getStatus())) {
+
+			pagamento.setCodigo(response.getTransaction());
+			pagamento.setStatus(response.getStatus());
+
+		}
 
 	}
 

@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,6 +22,7 @@ import org.joda.time.DateTime;
 
 @Entity
 @Table
+@Inheritance(strategy = InheritanceType.JOINED)
 public class OrdemPagamento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,6 +34,10 @@ public class OrdemPagamento implements Serializable {
 	@Column(nullable = false)
 	private final String carrinho = RandomStringUtils.randomAlphanumeric(20)
 			.toUpperCase();
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "meiopagamento_id")
+	private MeioPagamento meioPagamento;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "contrato_id")
@@ -100,6 +107,14 @@ public class OrdemPagamento implements Serializable {
 
 	public String getStatus() {
 		return this.status;
+	}
+
+	public MeioPagamento getMeioPagamento() {
+		return meioPagamento;
+	}
+
+	public void setMeioPagamento(MeioPagamento meioPagamento) {
+		this.meioPagamento = meioPagamento;
 	}
 
 }
