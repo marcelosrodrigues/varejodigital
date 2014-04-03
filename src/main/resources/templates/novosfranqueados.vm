@@ -1,0 +1,10 @@
+<html>
+<body>
+<h3>Ola $franqueado.nomeCompleto, Bem vindo ao Ella S/A!</h3>
+
+<div>
+   Seu código de fraqueado é $franqueado.codigo e a sua senha é $franqueado.cleanPassword</a>.
+</div>
+</body>
+
+</html>
