@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.joda.time.DateTime;
+
 @Entity
 @Table
 public class Contrato implements Serializable {
@@ -27,7 +29,7 @@ public class Contrato implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	private Date inicio;
+	private final Date inicio = DateTime.now().toDate();
 
 	@Column(nullable = true)
 	@Temporal(TemporalType.DATE)
@@ -47,6 +49,11 @@ public class Contrato implements Serializable {
 
 	public Franqueado getFranqueado() {
 		return this.franqueado;
+	}
+
+	public void setTipoFranquia(final TipoFranquia tipo) {
+		this.tipoContrato = tipo;
+
 	}
 
 }

@@ -1,10 +1,12 @@
 package test.com.pmrodrigues.ellasa.controllers;
 
-import static com.pmrodrigues.ellasa.Constante.FRANQUEADO;
 import static com.pmrodrigues.ellasa.Constante.LISTA_ESTADOS;
 import static com.pmrodrigues.ellasa.Constante.LISTA_FRANQUIAS;
+import static com.pmrodrigues.ellasa.Constante.LISTA_MEIOS_PAGAMENTO;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.jmock.Expectations;
@@ -15,13 +17,17 @@ import org.junit.Test;
 
 import br.com.caelum.vraptor.util.test.MockResult;
 
+import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.FranqueadoController;
 import com.pmrodrigues.ellasa.exceptions.EstouroTamanhoDeRedeException;
 import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoException;
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.MeioPagamento;
+import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
+import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepostory;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
 import com.pmrodrigues.ellasa.services.FranqueadoService;
 
@@ -36,6 +42,7 @@ public class TestFranqueadoController {
 	private FranqueadoService service;
 	private TipoFranquiaRepository franquiaRepository;
 	private EstadoRepository estadoRepository;
+	private MeioPagamentoRepostory meioPagamentoRepostory;
 	private MockResult result;
 	private FranqueadoController controller;
 
@@ -46,9 +53,10 @@ public class TestFranqueadoController {
 		service = context.mock(FranqueadoService.class);
 		franquiaRepository = context.mock(TipoFranquiaRepository.class);
 		estadoRepository = context.mock(EstadoRepository.class);
+		meioPagamentoRepostory = context.mock(MeioPagamentoRepostory.class);
 
 		controller = new FranqueadoController(service, franquiaRepository,
-				estadoRepository, result);
+				estadoRepository, meioPagamentoRepostory, result);
 
 	}
 
@@ -59,6 +67,7 @@ public class TestFranqueadoController {
 		final List<Estado> estados = context.mock(List.class, LISTA_ESTADOS);
 		final List<TipoFranquia> franquia = context.mock(List.class,
 				LISTA_FRANQUIAS);
+		final List<MeioPagamento> meiodepagamento = context.mock(List.class,LISTA_MEIOS_PAGAMENTO);
 
 		context.checking(new Expectations() {
 			{
@@ -67,6 +76,9 @@ public class TestFranqueadoController {
 
 				oneOf(franquiaRepository).list();
 				will(returnValue(franquia));
+				
+				oneOf(meioPagamentoRepostory).list();
+				will(returnValue(meiodepagamento));
 			}
 		});
 
@@ -74,23 +86,42 @@ public class TestFranqueadoController {
 
 		assertNotNull(result.included(LISTA_ESTADOS));
 		assertNotNull(result.included(LISTA_FRANQUIAS));
+		assertNotNull(result.included(LISTA_MEIOS_PAGAMENTO));
 
 	}
 
 	@Test
-	public void testSalvar() throws IndicacaoFranqueadoNaoEncontradoException,
+	public void testAvancar() throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
+
+		final Franqueado indicadopor = context.mock(Franqueado.class);
+		final TipoFranquia tipo = context.mock(TipoFranquia.class);
+		final MeioPagamento meio = context.mock(MeioPagamento.class);
 
 		context.checking(new Expectations() {
 			{
-				oneOf(service).adicionar(with(aNonNull(Franqueado.class)),
-						with(aNonNull(String.class)));
+				oneOf(service).findByCodigo(with(aNonNull(String.class)));
+				will(returnValue(indicadopor));
+
+				oneOf(indicadopor).adicionar(with(aNonNull(Franqueado.class)));
+
+				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
+				will(returnValue(tipo));
+
+				oneOf(meioPagamentoRepostory).findById(
+						with(aNonNull(Long.class)));
+				will(returnValue(meio));
+
+				oneOf(meio).eCartao();
+				will(returnValue(Boolean.TRUE));
+
+				oneOf(tipo).getValor();
+				will(returnValue(new BigDecimal(1)));
 			}
 		});
 
-		controller.avancar(new Franqueado(), "", 1L);
-		assertNotNull(result.included(FRANQUEADO));
-
+		controller.avancar(new Franqueado(), "", 1L, 1L);
+		assertTrue(result.included(Constante.ORDEM_PAGAMENTO) instanceof OrdemPagamentoCartaoCredito);
 	}
 
 }

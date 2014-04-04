@@ -7,6 +7,10 @@ public interface Constante {
 
 	String LISTA_FRANQUIAS = "franquias";
 
+	String LISTA_MEIOS_PAGAMENTO = "meiosdepagamento";
+
 	String FRANQUEADO = "franquia";
+
+	String ORDEM_PAGAMENTO = "ordempagamento";
 
 }

@@ -1,10 +1,17 @@
 <html>
 <body>
-<h3>Ola $franqueado.nomeCompleto, Bem vindo ao Ella S/A!</h3>
+<h3>Parabéns $franqueado.nomeCompleto! Você é o mais novo membro da família Ella S/A!</h3>
 
 <div>
-   Seu código de fraqueado é $franqueado.codigo e a sua senha é $franqueado.cleanPassword</a>.
+
+   <p>Abaixo seguem as instruções para instalação do seu Catálogo Digital Ella S/A e o seu código de ativação de franqueado.</p>
+   <p>Obrigado por sua participação e Seja Bem-Vindo!</>
+   <p>Seu código de fraqueado é $franqueado.codigo e a sua senha é $franqueado.cleanPassword.</p>
 </div>
 </body>
 
 </html>
+
+
+
+

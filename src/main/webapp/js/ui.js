@@ -1,15 +1,17 @@
-$("input[id='franqueado.dataNascimento']").mask("99-99-9999");
-$("input[id='franqueado.cpf']").mask("999.999.999-99");
-$("input[id='franqueado.endereco.cep']").mask("99999-99");
+$('#dataNascimento').mask("99-99-9999");
+$('#cpf').mask("999.999.999-99");
+$('#cep').mask("99999-999");
 
-$( "input[id='franqueado.dataNascimento']" ).datepicker({    	
-	changeMonth: true,
-    changeYear: true,
-	dateFormat: "dd-mm-yy"
+$( "#dataNascimento" ).datepicker({   
+	dateFormat: "dd-mm-yyyy"
 	});
 
-$( "input[id='franquia']" ).each(function(key,data) {
-	$(data).tooltip({
+$( "#dataExpiracao" ).datepicker({   
+	dateFormat: "mm-yyyy"
+	});
+
+function tooltip(field) {
+	$(field).tooltip({
 	    track: true
 	});
-});
+}

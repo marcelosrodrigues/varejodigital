@@ -1,6 +1,6 @@
 package com.pmrodrigues.ellasa.exceptions;
 
-public class EstouroTamanhoDeRedeException extends Exception {
+public class EstouroTamanhoDeRedeException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

@@ -12,4 +12,8 @@
         <put-attribute name="conteudo" value="/WEB-INF/formulario/franqueado/novo.jsp" />
     </definition> 
     
-</tiles-definitions>     
+    <definition name="pagamento-cartao-credito-template" extends="base">
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/pagamento-cartao-credito.jsp" />
+    </definition> 
+    
+</tiles-definitions>

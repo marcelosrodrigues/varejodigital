@@ -66,8 +66,7 @@ public class Franqueado extends Usuario {
 	private final Set<Franqueado> rede = new HashSet<>();
 
 
-	public void adicionar(final Franqueado franqueado)
-			throws EstouroTamanhoDeRedeException {
+	public void adicionar(final Franqueado franqueado) {
 		if (rede.size() < QUANTIDADE_MAXIMA_DE_FRANQUEADOS) {
 			rede.add(franqueado);
 			franqueado.indicadoPor = this;

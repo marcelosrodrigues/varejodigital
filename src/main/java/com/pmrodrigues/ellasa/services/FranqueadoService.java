@@ -59,4 +59,23 @@ public class FranqueadoService {
 
 	}
 
+	public Franqueado findByCodigo(final String codigo) {
+		return repository.findByCodigo(codigo);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void adicionar(Franqueado franqueado) {
+		repository.add(franqueado);
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("franqueado", franqueado);
+
+		email.from("novosfranqueados@ellasa.com.br").to(franqueado.getEmail())
+				.subject("Seja bem-vindo a Ella S/A")
+				.template("/templates/novosfranqueados.vm", parameters).send();
+
+		logging.debug(format("Franquado %s adicionado com sucesso", franqueado));
+
+	}
+
 }

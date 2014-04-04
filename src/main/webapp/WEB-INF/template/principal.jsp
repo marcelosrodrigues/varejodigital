@@ -11,28 +11,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Portal ELLA S/A</title>
 <link rel="stylesheet" href='<c:url value="/css/bootstrap.min.css" />'>
-<link rel="stylesheet" href='<c:url value="/css/bootstrap-theme.min.css" />'>
 <link rel="stylesheet" href='<c:url value="/css/main.css" />'>
-
+<link rel="stylesheet" href='<c:url value="/css/jquery-ui-1.10.4.custom.min.css" />'>
+<script type="text/javascript" src="<c:url value='/js/jquery.min.js' />" ></script>
+<script type="text/javascript" src="<c:url value='/js/bootstrap.min.js' />" ></script>
 </head>
 <body>
-<div id="header"></div>
+<div id="header" class="navbar navbar-default navbar-fixed-top"></div>
 <div id="container" class="container">
 	<tiles:insertAttribute name="conteudo" />
 </div>
-<div class="footer">
-	<div class="container">
-		ELLA S/A
-	</div>
-</div>
+
+
+<script type="text/javascript" src="<c:url value='/js/jquery.color.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.maskMoney.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-maskinput.js' />" ></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui.js' />" ></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-datepicker-pt.js' />" ></script>
+
+<script type="text/javascript" src="<c:url value='/js/ui.js' />" ></script>
 </body>
 
-<script type="text/javascript" src="<c:url value='/js/bootstrap.min.js' />" />
-<script type="text/javascript" src="<c:url value='/js/jquery.min.js' />" />
-<script type="text/javascript" src="<c:url value='/js/jquery.color.js' />" />
-<script type="text/javascript" src="<c:url value='/js/jquery.maskMoney.js' />" />
-<script type="text/javascript" src="<c:url value='/js/jquery-maskinput.js' />" />
-<script type="text/javascript" src="<c:url value='/js/jquery-ui.js' />" />
-<script type="text/javascript" src="<c:url value='/js/jquery.ui-datepicker-pt.js' />" />
-<script type="text/javascript" src="<c:url value='/js/ui.js' />" />
 </html>

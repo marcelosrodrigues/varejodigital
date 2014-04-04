@@ -2,6 +2,8 @@ package com.pmrodrigues.ellasa.repositories;
 
 import static java.lang.String.format;
 
+import javax.persistence.NoResultException;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +19,17 @@ public class FranqueadoRepository extends AbstractRepository<Franqueado> {
 
 	public Franqueado findByCodigo(final String codigo) {
 
-		logging.debug(format("Procurando o franqueado pelo código %s", codigo));
-		final Franqueado franqueado = (Franqueado) super.getEntityManager()
-				.createNamedQuery("Franqueado.FindByCodigo")
-				.setParameter("codigo", codigo).getSingleResult();
+		try {
+			logging.debug(format("Procurando o franqueado pelo código %s", codigo));
+			final Franqueado franqueado = (Franqueado) super.getEntityManager()
+					.createNamedQuery("Franqueado.FindByCodigo")
+					.setParameter("codigo", codigo).getSingleResult();
 
-		logging.debug(format("Franqueado %s encontrado", franqueado));
-		return franqueado;
+			logging.debug(format("Franqueado %s encontrado", franqueado));
+			return franqueado;
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 }
