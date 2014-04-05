@@ -2,22 +2,18 @@ package com.pmrodrigues.ellasa.models;
 
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -60,17 +56,11 @@ public class Usuario implements Serializable {
 	@Column
 	private boolean bloqueado = true;
 
-	@OneToMany(orphanRemoval = false, cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-	@JoinColumn(name = "usuario_id")
-	private final List<Telefone> telefones = new ArrayList<>();
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	private Celular celular;
 
-	public List<Telefone> getTelefones() {
-		return this.telefones;
-	}
-
-	public void adicionar(final Telefone telefone) {
-		this.telefones.add(telefone);
-	}
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	private Residencial residencial;
 
 	public boolean isBloqueado() {
 		return bloqueado;
@@ -110,5 +100,21 @@ public class Usuario implements Serializable {
 					e);
 		}
 
+	}
+
+	public Celular getCelular() {
+		return celular;
+	}
+
+	public void setCelular(Celular celular) {
+		this.celular = celular;
+	}
+
+	public Residencial getResidencial() {
+		return residencial;
+	}
+
+	public void setResidencial(Residencial residencial) {
+		this.residencial = residencial;
 	}
 }

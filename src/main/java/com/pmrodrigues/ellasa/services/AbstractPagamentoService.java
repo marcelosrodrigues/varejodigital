@@ -69,13 +69,18 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 		pagador.addAddress(address);
 
-		for (final Telefone telefone : pagamento.getContrato().getFranqueado()
-				.getTelefones()) {
-			Phone phone = new Phone();
-			phone.setNumber(telefone.getDdd() + telefone.getTelefone());
-			phone.setType(Phone.Type.RESIDENTIAL);
+		if (pagamento.getContrato().getFranqueado().getCelular() != null) {
+			Phone phone = createTelefone(pagamento.getContrato()
+					.getFranqueado().getCelular());
 			pagador.addPhone(phone);
 		}
+
+		if (pagamento.getContrato().getFranqueado().getResidencial() != null) {
+			Phone phone = createTelefone(pagamento.getContrato()
+					.getFranqueado().getResidencial());
+			pagador.addPhone(phone);
+		}
+
 
 		carrinho.setPayer(pagador);
 		carrinho.addProduct(pagamento.getCarrinho(), pagamento.getDescricao(),
@@ -88,17 +93,21 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 		return trans;
 	}
 
+	private Phone createTelefone(final Telefone telefone) {
+		Phone phone = new Phone();
+		phone.setNumber(telefone.getDdd() + telefone.getNumero());
+		phone.setType(Phone.Type.RESIDENTIAL);
+		return phone;
+	}
+
 	protected void execute(final OrdemPagamento pagamento) {
 
 		logging.info("Mandando ordem de pagamento para a akatus");
 
 		final CartResponse response = (CartResponse) this.carrinho.execute();
-		if (!"erro".equalsIgnoreCase(response.getStatus())) {
-
-			pagamento.setCodigo(response.getTransaction());
-			pagamento.setStatus(response.getStatus());
-
-		}
+		pagamento.setCodigo(response.getTransaction());
+		pagamento.setStatus(response.getStatus());
+		pagamento.setMotivo(response.getDescription());
 
 	}
 

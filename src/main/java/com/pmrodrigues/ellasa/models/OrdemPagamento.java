@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.validator.GenericValidator;
 import org.joda.time.DateTime;
 
 @Entity
@@ -51,6 +52,9 @@ public class OrdemPagamento implements Serializable {
 
 	@Column(nullable = true)
 	private String status;
+
+	@Column(nullable = true)
+	private String motivo;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private final Date dataGeracao = DateTime.now().toDate();
@@ -115,6 +119,19 @@ public class OrdemPagamento implements Serializable {
 
 	public void setMeioPagamento(MeioPagamento meioPagamento) {
 		this.meioPagamento = meioPagamento;
+	}
+
+	public boolean isSucesso() {
+		return !GenericValidator.isBlankOrNull(status)
+				&& !"erro".equalsIgnoreCase(status);
+	}
+
+	public void setMotivo(final String motivo) {
+		this.motivo = motivo;
+	}
+
+	public String getMotivo() {
+		return this.motivo;
 	}
 
 }

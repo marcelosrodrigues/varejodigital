@@ -92,9 +92,6 @@ public class TestPagamentoService extends AbstractJUnit4SpringContextTests {
 		ordem.setDataExpiracao(dataexpiracao.toDate());
 
 		service.pagar(ordem);
-
-		assertEquals("Em Análise", ordem.getStatus());
-
 	}
 
 	@Test

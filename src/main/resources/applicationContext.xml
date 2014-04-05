@@ -6,5 +6,5 @@
 	<import resource="applicationContext-data.xml" />
 	<import resource="applicationContext-email.xml" />
 
-
+	
 </beans>

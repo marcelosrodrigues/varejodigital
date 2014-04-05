@@ -131,4 +131,16 @@ public class Franqueado extends Usuario {
 		return this.cpf;
 	}
 
+	public Franqueado getIndicadoPor() {
+		return indicadoPor;
+	}
+
+	public void setIndicadoPor(Franqueado indicadoPor) {
+		this.indicadoPor = indicadoPor;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
 }

@@ -57,8 +57,8 @@
 				<label for="franqueado.endereco.estado"
 					class="col-sm-3 control-label">Estado</label>
 				<div class="col-sm-4">
-					<select name="franqueado.endereco.estado"
-						id="franqueado.endereco.estado" class="form-control  input-sm">
+					<select name="franqueado.endereco.estado.uf"
+						id="franqueado.endereco.estado.uf" class="form-control  input-sm">
 						<option />
 						<c:forEach items="${estados}" var="estado">
 							<option value="${estado.uf}">${estado.nome}</option>
@@ -89,8 +89,8 @@
 				<label for="franqueado.endereco.logradouro"
 					class="col-sm-3 control-label">Logradouro</label>
 				<div class="col-sm-8">
-					<input type="text" name="franqueado.endereco.Logradouro"
-						id="franqueado.endereco.Logradouro" class="form-control  input-sm" />
+					<input type="text" name="franqueado.endereco.logradouro"
+						id="franqueado.endereco.logradouro" class="form-control  input-sm" />
 				</div>
 			</div>
 
@@ -110,6 +110,32 @@
 					<input type="text" name="franqueado.endereco.complemento"
 						id="franqueado.endereco.complemento"
 						class="form-control  input-sm" />
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="franqueado.residencial.ddd"
+					class="col-sm-3 control-label">Telefone</label>
+				<div class="col-sm-2">
+					<input type="text" name="franqueado.residencial.ddd"
+						class="form-control input-sm-2" />
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="franqueado.residencial.numero"
+						class="form-control input-sm-2" />	
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label for="franqueado.celular.ddd"
+					class="col-sm-3 control-label">Celular</label>
+				<div class="col-sm-2">
+					<input type="text" name="franqueado.celular.ddd"
+						class="form-control input-sm-2" />
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="franqueado.celular.numero"
+						class="form-control input-sm-2" />	
 				</div>
 			</div>
 

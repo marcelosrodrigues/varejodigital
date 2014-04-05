@@ -12,12 +12,14 @@ import com.pmrodrigues.ellasa.pagamentos.entity.Payer;
 import com.pmrodrigues.ellasa.pagamentos.entity.Phone;
 import com.pmrodrigues.ellasa.pagamentos.entity.Product;
 import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
+import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
 import com.pmrodrigues.ellasa.pagamentos.v1.AkatusXMLRequestBuilder;
 
 class CartXMLRequestBuilder extends AkatusXMLRequestBuilder {
 
-	private DecimalFormat decimalFormatter = new DecimalFormat("#.00");
-	
+	private final DecimalFormat decimalFormatter = new DecimalFormat("#.00");
+
+	@Override
 	public String build(AkatusOperation operation) {
 		createDocument();
 		createCarrinho((CartOperation) operation);
@@ -134,7 +136,7 @@ class CartXMLRequestBuilder extends AkatusXMLRequestBuilder {
 				product.getQuantity().toString()));
 		productElement.appendChild(createElementWithTextContent("preco",
 				decimalFormatter.format(product.getPrice())));
-		productElement.appendChild(createElementWithTextContent("peso", 
+		productElement.appendChild(createElementWithTextContent("peso",
 				decimalFormatter.format(product.getWeight())));
 		productElement.appendChild(createElementWithTextContent("frete",
 				decimalFormatter.format(product.getShipping())));
@@ -149,13 +151,13 @@ class CartXMLRequestBuilder extends AkatusXMLRequestBuilder {
 		final Transaction transaction = operation.getTransaction();
 		final Transaction.PaymentMethod paymentMethod = transaction
 				.getPaymentMethod();
-		
-		transactionElement.appendChild(createElementWithTextContent(
-				"desconto", decimalFormatter.format(transaction.getDiscountAmount())));
-		transactionElement.appendChild(createElementWithTextContent(
-				"peso", decimalFormatter.format(transaction.getWeight())));
-		transactionElement.appendChild(createElementWithTextContent(
-				"frete", decimalFormatter.format(transaction.getShippingAmount())));
+
+		transactionElement.appendChild(createElementWithTextContent("desconto",
+				decimalFormatter.format(transaction.getDiscountAmount())));
+		transactionElement.appendChild(createElementWithTextContent("peso",
+				decimalFormatter.format(transaction.getWeight())));
+		transactionElement.appendChild(createElementWithTextContent("frete",
+				decimalFormatter.format(transaction.getShippingAmount())));
 		transactionElement.appendChild(createElementWithTextContent("moeda",
 				transaction.getCurrency().toString()));
 		transactionElement.appendChild(createElementWithTextContent(
@@ -164,12 +166,11 @@ class CartXMLRequestBuilder extends AkatusXMLRequestBuilder {
 		transactionElement.appendChild(createElementWithTextContent(
 				"meio_de_pagamento", paymentMethod.toString()));
 
-		switch (paymentMethod) {
-		case CARTAO_AMEX:
-		case CARTAO_DINERS:
-		case CARTAO_ELO:
-		case CARTAO_MASTER:
-		case CARTAO_VISA:
+		if (paymentMethod == PaymentMethod.CARTAO_AMEX
+				|| paymentMethod == PaymentMethod.CARTAO_DINERS
+				|| paymentMethod == PaymentMethod.CARTAO_ELO
+				|| paymentMethod == PaymentMethod.CARTAO_MASTER
+				|| paymentMethod == PaymentMethod.CARTAO_VISA) {
 			transactionElement.appendChild(createElementWithTextContent(
 					"numero", transaction.getNumber()));
 			transactionElement.appendChild(createElementWithTextContent(
@@ -179,8 +180,7 @@ class CartXMLRequestBuilder extends AkatusXMLRequestBuilder {
 			transactionElement.appendChild(createElementWithTextContent(
 					"expiracao", transaction.getExpiration()));
 			transactionElement.appendChild(createCreditCardHolder(transaction));
-			break;
-		default:
+
 		}
 
 		return transactionElement;

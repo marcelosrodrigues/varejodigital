@@ -29,7 +29,7 @@ public class OrdemPagamentoCartaoCredito extends OrdemPagamento {
 	@Column(nullable = false)
 	private String portador;
 
-	@CPF
+	@CPF(formatted = true)
 	@Column(nullable = false)
 	private String cpf;
 

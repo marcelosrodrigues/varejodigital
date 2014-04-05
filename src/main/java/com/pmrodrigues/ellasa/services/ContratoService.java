@@ -1,5 +1,7 @@
 package com.pmrodrigues.ellasa.services;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,18 +15,17 @@ import com.pmrodrigues.ellasa.repositories.OrdemPagamentoRepository;
 @Service
 public class ContratoService {
 
-	@Autowired
+	@Resource(name = "FranqueadoService")
 	private FranqueadoService service;
 
 	@Autowired
 	private PagamentoFactory factory;
 
-	@Autowired
+	@Resource(name = "OrdemPagamentoRepository")
 	private OrdemPagamentoRepository ordempagamentoRepository;
 
-	@Autowired
+	@Resource(name = "ContratoRepository")
 	private ContratoRepository repository;
-
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void assinar(final OrdemPagamento ordempagamento) {
@@ -32,10 +33,15 @@ public class ContratoService {
 		final PagamentoService caixa = factory
 				.getPagamentoService(PaymentMethod.CARTAO_VISA);
 
-		service.adicionar(ordempagamento.getContrato().getFranqueado());
-		repository.add(ordempagamento.getContrato());
-		ordempagamentoRepository.add(ordempagamento);
 		caixa.pagar(ordempagamento);
+		if (ordempagamento.isSucesso()) {
+			service.adicionar(ordempagamento.getContrato().getFranqueado());
+			repository.add(ordempagamento.getContrato());
+			ordempagamentoRepository.add(ordempagamento);
+		} else {
+			throw new RuntimeException(ordempagamento.getMotivo());
+		}
+
 
 	}
 }

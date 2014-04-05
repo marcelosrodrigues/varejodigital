@@ -15,7 +15,7 @@ import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
-import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepostory;
+import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
 import com.pmrodrigues.ellasa.services.ContratoService;
 
@@ -34,7 +34,7 @@ public class TestContratoService
 	private EstadoRepository estadoRepository;
 
 	@Autowired
-	private MeioPagamentoRepostory meioPagamentoRepository;
+	private MeioPagamentoRepository meioPagamentoRepository;
 
 	@Test
 	public void assinar() {

@@ -5,6 +5,8 @@ import static java.lang.String.format;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +18,18 @@ import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoExcepti
 import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.repositories.FranqueadoRepository;
 
-@Service
+@Service("FranqueadoService")
 public class FranqueadoService {
 
 	private static final Logger logging = Logger
 			.getLogger(FranqueadoService.class);
 
-	@Autowired
+	@Resource(name = "FranqueadoRepository")
 	private FranqueadoRepository repository;
 
 	@Autowired
 	private EmailService email;
 
-	@Transactional(propagation = Propagation.REQUIRED)
 	public void adicionar(final Franqueado franqueado, final String indicacao)
 			throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {

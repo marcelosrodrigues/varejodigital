@@ -1,4 +1,4 @@
-package com.pmrodrigues.ellasa.repositories;
+package com.pmrodrigues.ellasa.repositories.impl;
 
 import static java.lang.String.format;
 
@@ -10,7 +10,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.pmrodrigues.ellasa.repositories.Repository;
+
+@Transactional(propagation = Propagation.REQUIRED)
 public abstract class AbstractRepository<E> implements Repository<E> {
 
 	private static final long serialVersionUID = 1L;
@@ -36,6 +41,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		logging.debug(format(
 				"Tentando inserir %s novo valor no banco de dados", e));
 		this.entityManager.persist(e);
+		this.entityManager.flush();
 		logging.debug(format(" %s salvo com sucesso", e));
 	}
 
@@ -43,6 +49,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	public void set(E e) {
 		logging.debug(format("Atualizando o valor %s no banco de dados", e));
 		this.entityManager.merge(e);
+		this.entityManager.flush();
 		logging.debug(format("%s salvo com sucesso", e));
 
 	}
@@ -51,10 +58,12 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	public void remove(E e) {
 		logging.debug(format("Removendo o valor %s do banco de dados", e));
 		this.entityManager.remove(e);
+		this.entityManager.flush();
 		logging.debug(format("%s removido do banco de dados", e));
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public E findById(final Serializable id) {
 		logging.debug(format(
 				"Recuperando o valor de %s do banco de dados pela chave %s",
@@ -64,8 +73,10 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		return e;
 	}
 
+
 	@SuppressWarnings("unchecked")
 	@Override
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<E> list() {
 		logging.debug(format(
 				"Listando todos os valores de %s do banco de dados",

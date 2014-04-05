@@ -53,7 +53,10 @@ public class Contrato implements Serializable {
 
 	public void setTipoFranquia(final TipoFranquia tipo) {
 		this.tipoContrato = tipo;
+	}
 
+	public TipoFranquia getTipoFranquia() {
+		return this.tipoContrato;
 	}
 
 }
