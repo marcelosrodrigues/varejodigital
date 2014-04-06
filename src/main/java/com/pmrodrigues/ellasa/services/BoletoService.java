@@ -28,8 +28,8 @@ public class BoletoService extends AbstractPagamentoService {
 				pagamento.getContrato().getFranqueado().getNomeCompleto());
 		
 		super.execute(pagamento);
-
 	}
+
 
 }
 

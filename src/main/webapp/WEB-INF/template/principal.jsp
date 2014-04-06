@@ -13,8 +13,10 @@
 <link rel="stylesheet" href='<c:url value="/css/bootstrap.min.css" />'>
 <link rel="stylesheet" href='<c:url value="/css/main.css" />'>
 <link rel="stylesheet" href='<c:url value="/css/jquery-ui-1.10.4.custom.min.css" />'>
+<link rel="stylesheet" href='<c:url value="/css/boleto.css" />'>
 <script type="text/javascript" src="<c:url value='/js/jquery.min.js' />" ></script>
 <script type="text/javascript" src="<c:url value='/js/bootstrap.min.js' />" ></script>
+
 </head>
 <body>
 <div id="header" class="navbar navbar-default navbar-fixed-top"></div>
@@ -30,6 +32,7 @@
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-datepicker-pt.js' />" ></script>
 
 <script type="text/javascript" src="<c:url value='/js/ui.js' />" ></script>
+
 </body>
 
 </html>

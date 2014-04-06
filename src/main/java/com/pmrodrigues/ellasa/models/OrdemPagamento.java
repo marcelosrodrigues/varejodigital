@@ -65,6 +65,9 @@ public class OrdemPagamento implements Serializable {
 	@Column(nullable = false)
 	private String descricao;
 
+	@Column(nullable = false)
+	private String documento;
+
 	public Contrato getContrato() {
 		return contrato;
 	}
@@ -132,6 +135,14 @@ public class OrdemPagamento implements Serializable {
 
 	public String getMotivo() {
 		return this.motivo;
+	}
+
+	public void setDocumento(final String documento) {
+		this.documento = documento;
+	}
+
+	public String getDocumento() {
+		return this.documento;
 	}
 
 }

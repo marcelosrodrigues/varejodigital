@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
-import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
 import com.pmrodrigues.ellasa.repositories.ContratoRepository;
 import com.pmrodrigues.ellasa.repositories.OrdemPagamentoRepository;
 
@@ -31,7 +30,8 @@ public class ContratoService {
 	public void assinar(final OrdemPagamento ordempagamento) {
 
 		final PagamentoService caixa = factory
-				.getPagamentoService(PaymentMethod.CARTAO_VISA);
+				.getPagamentoService(ordempagamento.getMeioPagamento()
+						.getTipo());
 
 		caixa.pagar(ordempagamento);
 		if (ordempagamento.isSucesso()) {

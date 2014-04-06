@@ -16,4 +16,12 @@
         <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/pagamento-cartao-credito.jsp" />
     </definition> 
     
+    <definition name="boas-vindas-template" extends="base">
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/boasvindas.jsp" />
+    </definition>
+    
+    <definition name="boas-vindas-boleto-template" extends="base">
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/boasvindas-boleto.jsp" />
+    </definition>
+    
 </tiles-definitions>

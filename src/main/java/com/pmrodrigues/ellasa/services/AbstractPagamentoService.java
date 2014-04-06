@@ -108,6 +108,7 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 		pagamento.setCodigo(response.getTransaction());
 		pagamento.setStatus(response.getStatus());
 		pagamento.setMotivo(response.getDescription());
+		pagamento.setDocumento(response.getReturnURL());
 
 	}
 
