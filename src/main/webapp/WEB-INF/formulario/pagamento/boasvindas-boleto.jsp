@@ -17,7 +17,16 @@
 					Seu código de fraqueado é ${franquia.codigo} e a sua senha é ${franquia.cleanPassword}.</p>
 				</div>
 		</div>		
+		<c:if test="${not empty tef}">
+			<div class="form-group">
+				<div class="col-sm-10">
+					<a href="${tef}" target="_blank">Clique aqui para pagar</a></p>
+				</div>
+		</div>
+		</c:if>		
 	</fieldset>
 </div>
 <br/>
+<c:if test="${not empty boleto }">
 <div id="boleto_container">${boleto}</div>
+</c:if>

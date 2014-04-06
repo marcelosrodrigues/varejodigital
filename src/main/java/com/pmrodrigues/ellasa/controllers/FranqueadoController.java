@@ -23,6 +23,7 @@ import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
+import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
@@ -123,10 +124,14 @@ public class FranqueadoController {
 				.getFranqueado());
 		HTMLReader reader = new HTMLReader();
 		try {
-			result.include(
-					"boleto",
-					reader.getElement("container",
-					new URL(ordempagamento.getDocumento())));
+			if (ordempagamento.getMeioPagamento().getTipo() == PaymentMethod.BOLETO) {
+				result.include(
+						"boleto",
+						reader.getElement("container",
+								new URL(ordempagamento.getDocumento())));
+			} else {
+				result.include("tef", ordempagamento.getDocumento());
+			}
 		} catch (IOException | ParserConfigurationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
