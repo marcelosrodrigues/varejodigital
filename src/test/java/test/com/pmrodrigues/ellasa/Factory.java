@@ -3,7 +3,7 @@ package test.com.pmrodrigues.ellasa;
 import org.joda.time.DateTime;
 
 import com.pmrodrigues.ellasa.models.Estado;
-import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.models.Residencial;
 
 public final class Factory {
@@ -11,9 +11,9 @@ public final class Factory {
 	private Factory() {
 	}
 
-	public static Franqueado getStubFranqueado(final Estado estado) {
+	public static FranqueadoPessoaFisica getStubFranqueado(final Estado estado) {
 
-		Franqueado franqueado = new Franqueado();
+		FranqueadoPessoaFisica franqueado = new FranqueadoPessoaFisica();
 		franqueado.setEmail("marcelosrodrigues@globo.com");
 		franqueado.setNomeCompleto("Marcelo da Silva Rodrigues");
 		franqueado.getEndereco().setEstado(estado);

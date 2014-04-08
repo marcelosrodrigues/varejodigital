@@ -59,4 +59,14 @@ public class Contrato implements Serializable {
 		return this.tipoContrato;
 	}
 
+	public Contrato(final Franqueado franqueado, final TipoFranquia tipo) {
+		this();
+		this.franqueado = franqueado;
+		this.tipoContrato = tipo;
+	}
+
+	public Contrato() {
+
+	}
+
 }

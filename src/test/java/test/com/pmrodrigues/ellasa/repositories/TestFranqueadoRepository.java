@@ -17,7 +17,7 @@ import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.FranqueadoRepository;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestFranqueadoRepository
 		extends
 			AbstractTransactionalJUnit4SpringContextTests {

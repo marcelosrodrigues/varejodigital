@@ -65,8 +65,20 @@ public class OrdemPagamento implements Serializable {
 	@Column(nullable = false)
 	private String descricao;
 
-	@Column(nullable = false)
+	@Column
 	private String documento;
+
+	public OrdemPagamento(final MeioPagamento meiopagamento,
+			final Contrato contrato, final BigDecimal valor) {
+		this();
+		this.meioPagamento = meiopagamento;
+		this.contrato = contrato;
+		this.valor = valor;
+	}
+
+	public OrdemPagamento() {
+		super();
+	}
 
 	public Contrato getContrato() {
 		return contrato;

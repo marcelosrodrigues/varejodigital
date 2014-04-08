@@ -13,7 +13,9 @@ import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.repositories.FranqueadoRepository;
 
 @Repository("FranqueadoRepository")
-public class FranqueadoRepositoryImpl extends AbstractRepository<Franqueado> implements FranqueadoRepository {
+public class FranqueadoRepositoryImpl extends AbstractRepository<Franqueado>
+		implements
+			FranqueadoRepository {
 
 	private static final long serialVersionUID = 1L;
 

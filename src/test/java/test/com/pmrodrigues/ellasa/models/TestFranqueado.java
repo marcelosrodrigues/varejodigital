@@ -1,5 +1,7 @@
 package test.com.pmrodrigues.ellasa.models;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collection;
 
 import javax.persistence.EntityManager;
@@ -17,8 +19,9 @@ import test.com.pmrodrigues.ellasa.Factory;
 import com.pmrodrigues.ellasa.exceptions.EstouroTamanhoDeRedeException;
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestFranqueado extends AbstractTransactionalJUnit4SpringContextTests {
 
 	@PersistenceContext
@@ -56,14 +59,24 @@ public class TestFranqueado extends AbstractTransactionalJUnit4SpringContextTest
 
 	}
 
-	@Test(expected = EstouroTamanhoDeRedeException.class)
-	public void naoPermitirEntrarMaisQueAQuantidadePermitida()
+	@Test
+	public void deveTransportarRede()
 			throws EstouroTamanhoDeRedeException {
 
-		Franqueado franqueado = new Franqueado();
+		Franqueado franqueado = new FranqueadoPessoaFisica();
 
-		for (int i = 0; i <= 6; i++) {
-			franqueado.adicionar(new Franqueado());
+		for (int i = 0; i < 625; i++) {
+			franqueado.adicionar(new FranqueadoPessoaFisica());
+		}
+
+		assertEquals(625, franqueado.getQuantidadeMembros());
+		assertEquals(5, franqueado.getRede().size());
+
+		for (final Franqueado membro : franqueado.getRede()) {
+			assertEquals(5, membro.getRede().size());
+			for (final Franqueado sub : membro.getRede()) {
+				assertEquals(5, sub.getRede().size());
+			}
 		}
 
 	}

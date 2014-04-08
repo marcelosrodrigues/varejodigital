@@ -1,5 +1,6 @@
 package com.pmrodrigues.ellasa.models;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -35,6 +36,15 @@ public class OrdemPagamentoCartaoCredito extends OrdemPagamento {
 
 	@Column(nullable = false)
 	private String telefone;
+
+	public OrdemPagamentoCartaoCredito(MeioPagamento meiopagamento,
+			Contrato contrato, BigDecimal valor) {
+		super(meiopagamento, contrato, valor);
+	}
+
+	public OrdemPagamentoCartaoCredito() {
+		super();
+	}
 
 	public void setNumero(final String numero) {
 		this.numero = numero;

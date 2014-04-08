@@ -51,7 +51,8 @@ public class FranqueadoService {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("franqueado", franqueado);
 		
-		email.from("novosfranqueados@ellasa.com.br").to(franqueado.getEmail())
+		email.from("sac@catalogodigitalellasa.com.br")
+				.to(franqueado.getEmail())
 			 .subject("Seja bem-vindo a Ella S/A")
 			 .cc(quemIndicou.getEmail())
 				.template("/templates/novosfranqueados.vm", parameters).send();
@@ -71,7 +72,8 @@ public class FranqueadoService {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("franqueado", franqueado);
 
-		email.from("novosfranqueados@ellasa.com.br").to(franqueado.getEmail())
+		email.from("sac@catalogodigitalellasa.com.br")
+				.to(franqueado.getEmail())
 				.subject("Seja bem-vindo a Ella S/A")
 				.template("/templates/novosfranqueados.vm", parameters).send();
 

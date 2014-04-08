@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoException;
 import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.repositories.FranqueadoRepository;
 import com.pmrodrigues.ellasa.services.EmailService;
 import com.pmrodrigues.ellasa.services.FranqueadoService;
@@ -46,7 +47,7 @@ public class TestFranqueadoService {
 	@Test
 	public void salvarFranqueado() throws Exception {
 
-		final Franqueado franqueado = new Franqueado();
+		final Franqueado franqueado = new FranqueadoPessoaFisica();
 		franqueado.setEmail("");
 		
 		context.checking(new Expectations() {
@@ -54,7 +55,7 @@ public class TestFranqueadoService {
 				oneOf(repository).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(franqueado));
 
-				oneOf(repository).add(with(aNonNull(Franqueado.class)));
+				oneOf(repository).add(with(aNonNull(FranqueadoPessoaFisica.class)));
 
 				oneOf(email).from(with(aNonNull(String.class)));
 				will(returnValue(email));
@@ -76,7 +77,7 @@ public class TestFranqueadoService {
 			}
 		});
 
-		Franqueado newbie = new Franqueado();
+		FranqueadoPessoaFisica newbie = new FranqueadoPessoaFisica();
 		newbie.setEmail("");
 		service.adicionar(newbie, "REFERENCIA");
 	}
@@ -92,7 +93,7 @@ public class TestFranqueadoService {
 			}
 		});
 
-		service.adicionar(new Franqueado(), "REFERENCIA");
+		service.adicionar(new FranqueadoPessoaFisica(), "REFERENCIA");
 
 		
 	}

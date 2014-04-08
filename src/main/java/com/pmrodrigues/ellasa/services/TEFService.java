@@ -19,9 +19,9 @@ public class TEFService extends AbstractPagamentoService {
 		trans.setPaymentMethod(pagamento.getMeioPagamento().getTipo());
 		trans.setHolder(new Holder());
 		trans.getHolder().setDocument(
-				pagamento.getContrato().getFranqueado().getCPF());
+				pagamento.getContrato().getFranqueado().getDocumento());
 		trans.getHolder().setName(
-				pagamento.getContrato().getFranqueado().getNomeCompleto());
+				pagamento.getContrato().getFranqueado().getNome());
 
 		super.execute(pagamento);
 	}

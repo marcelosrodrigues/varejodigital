@@ -13,4 +13,8 @@ public interface Constante {
 
 	String ORDEM_PAGAMENTO = "ordempagamento";
 
+	String BOLETO = "boleto";
+
+	String TEF = "tef";
+
 }

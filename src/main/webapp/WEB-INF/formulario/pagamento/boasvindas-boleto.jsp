@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<h3>Parabéns ${franquia.nomeCompleto}! Você é o mais novo membro da família Ella S/A!</h3>
+<h3>Parabéns ${franquia.nome}! Você é o mais novo membro da família Ella S/A!</h3>
 
 <div class="well bs-component col-lg-8">
 	<fieldset>

@@ -21,7 +21,7 @@ import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
 import com.pmrodrigues.ellasa.services.PagamentoFactory;
 import com.pmrodrigues.ellasa.services.PagamentoService;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestPagamentoService extends AbstractJUnit4SpringContextTests {
 
 	@Autowired

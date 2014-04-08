@@ -18,9 +18,10 @@ import test.com.pmrodrigues.ellasa.Factory;
 
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.repositories.FranqueadoRepository;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestRepository
 		extends
 			AbstractTransactionalJUnit4SpringContextTests {
@@ -66,7 +67,7 @@ public class TestRepository
 
 		repository.add(franqueado);
 
-		Franqueado toUpdate = entityManager.find(Franqueado.class,
+		FranqueadoPessoaFisica toUpdate = entityManager.find(FranqueadoPessoaFisica.class,
 				franqueado.getId());
 		entityManager.detach(toUpdate);
 

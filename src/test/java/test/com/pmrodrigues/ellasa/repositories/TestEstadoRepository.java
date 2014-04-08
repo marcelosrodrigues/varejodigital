@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestEstadoRepository
 		extends
 			AbstractTransactionalJUnit4SpringContextTests {

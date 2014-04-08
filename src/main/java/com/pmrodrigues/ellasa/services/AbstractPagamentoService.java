@@ -2,6 +2,7 @@ package com.pmrodrigues.ellasa.services;
 
 import java.util.ResourceBundle;
 
+import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 
 import com.pmrodrigues.ellasa.models.Endereco;
@@ -51,7 +52,7 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 	protected Payer criarPagador(final Franqueado franqueado) {
 		final Payer pagador = new Payer();
 		pagador.setEmail(franqueado.getEmail());
-		pagador.setName(franqueado.getNomeCompleto());
+		pagador.setName(franqueado.getNome());
 		return pagador;
 	}
 
@@ -69,13 +70,19 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 		pagador.addAddress(address);
 
-		if (pagamento.getContrato().getFranqueado().getCelular() != null) {
+		if (!GenericValidator.isBlankOrNull(pagamento.getContrato()
+				.getFranqueado().getCelular().getDdd())
+				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
+						.getFranqueado().getCelular().getNumero())) {
 			Phone phone = createTelefone(pagamento.getContrato()
 					.getFranqueado().getCelular());
 			pagador.addPhone(phone);
 		}
 
-		if (pagamento.getContrato().getFranqueado().getResidencial() != null) {
+		if (!GenericValidator.isBlankOrNull(pagamento.getContrato()
+				.getFranqueado().getResidencial().getDdd())
+				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
+						.getFranqueado().getResidencial().getNumero())) {
 			Phone phone = createTelefone(pagamento.getContrato()
 					.getFranqueado().getResidencial());
 			pagador.addPhone(phone);

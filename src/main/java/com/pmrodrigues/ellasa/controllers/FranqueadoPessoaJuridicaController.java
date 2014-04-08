@@ -19,7 +19,7 @@ import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.annotations.Tiles;
 import com.pmrodrigues.ellasa.models.Contrato;
 import com.pmrodrigues.ellasa.models.Franqueado;
-import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaJuridica;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
@@ -33,7 +33,7 @@ import com.pmrodrigues.ellasa.services.FranqueadoService;
 import com.pmrodrigues.ellasa.utilities.HTMLReader;
 
 @Resource
-public class FranqueadoController {
+public class FranqueadoPessoaJuridicaController {
 
 	private final FranqueadoService service;
 
@@ -47,12 +47,11 @@ public class FranqueadoController {
 
 	private final ContratoService contratoService;
 
-	public FranqueadoController(final FranqueadoService service,
+	public FranqueadoPessoaJuridicaController(final FranqueadoService service,
 			final TipoFranquiaRepository franquiaRepository,
 			final EstadoRepository estadoRepository,
 			final MeioPagamentoRepository meioPagamentoRepostory,
-			final ContratoService contratoService,
-			final Result result) {
+			final ContratoService contratoService, final Result result) {
 		this.service = service;
 		this.franquiaRepository = franquiaRepository;
 		this.estadoRepository = estadoRepository;
@@ -62,8 +61,8 @@ public class FranqueadoController {
 	}
 
 	@Get
-	@Path("/seja-um-franqueado.html")
-	@Tiles(definition = "seja-um-franqueado-template")
+	@Path("/seja-um-parceiro.html")
+	@Tiles(definition = "seja-um-parceiro-template")
 	public void iniciar() {
 
 		result.include(LISTA_ESTADOS, estadoRepository.list());
@@ -72,12 +71,11 @@ public class FranqueadoController {
 
 	}
 
-
 	@Post
-	@Path("/seja-um-franqueado.html")
-	public void avancar(final FranqueadoPessoaFisica franqueado,
-			final String indicacao,
-			final Long franquia, final Long meiodepagamento) {
+	@Path("/seja-um-parceiro.html")
+	public void avancar(final FranqueadoPessoaJuridica franqueado,
+			final String indicacao, final Long franquia,
+			final Long meiodepagamento) {
 
 		final Franqueado indicadoPor = service.findByCodigo(indicacao);
 		if (indicadoPor != null) {
@@ -132,7 +130,7 @@ public class FranqueadoController {
 
 	}
 
-	@Tiles(definition = "pagamento-cartao-credito-template")
+	@Tiles(definition = "pagamento-cartao-credito-parceiro-template")
 	public void avancar(final OrdemPagamentoCartaoCredito ordempagamento) {
 		result.include(Constante.ORDEM_PAGAMENTO, ordempagamento);
 	}
@@ -155,6 +153,5 @@ public class FranqueadoController {
 				.getFranqueado());
 
 	}
-
 
 }

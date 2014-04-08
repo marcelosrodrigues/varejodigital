@@ -10,7 +10,7 @@ import test.com.pmrodrigues.ellasa.Factory;
 
 import com.pmrodrigues.ellasa.models.Contrato;
 import com.pmrodrigues.ellasa.models.Estado;
-import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
@@ -19,7 +19,7 @@ import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
 import com.pmrodrigues.ellasa.services.ContratoService;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestContratoService
 		extends
 			AbstractTransactionalJUnit4SpringContextTests {
@@ -43,7 +43,7 @@ public class TestContratoService
 		final MeioPagamento meiopagamento = meioPagamentoRepository
 				.findById(2L);
 		final Estado estado = estadoRepository.findById("RJ");
-		final Franqueado franqueado = Factory.getStubFranqueado(estado);
+		final FranqueadoPessoaFisica franqueado = Factory.getStubFranqueado(estado);
 
 		final OrdemPagamentoCartaoCredito ordem = new OrdemPagamentoCartaoCredito();
 		final Contrato contrato = new Contrato();

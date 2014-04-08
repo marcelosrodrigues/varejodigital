@@ -11,24 +11,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
-import com.pmrodrigues.ellasa.models.Franqueado;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.services.EmailService;
 
-@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestEmailService extends AbstractJUnit4SpringContextTests {
 
 	@Autowired
 	private EmailService email;
-	private Franqueado franqueado;
+	private FranqueadoPessoaFisica franqueado;
 
 	@Before
 	public void setup() throws Exception {
-		this.franqueado = new Franqueado();
+		this.franqueado = new FranqueadoPessoaFisica();
 		Field nome = franqueado.getClass().getDeclaredField("nomeCompleto");
 		nome.setAccessible(true);
 		nome.set(franqueado, "Marcelo da Silva Rodrigues");
 
-		Field codigo = franqueado.getClass().getDeclaredField("codigo");
+		Field codigo = franqueado.getClass().getSuperclass()
+				.getDeclaredField("codigo");
 		codigo.setAccessible(true);
 		codigo.set(franqueado, RandomStringUtils.randomAlphanumeric(10)
 				.toUpperCase());
@@ -40,7 +41,7 @@ public class TestEmailService extends AbstractJUnit4SpringContextTests {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("franqueado", franqueado);
 
-		email.from("novosfranqueados@ellasa.com.br")
+		email.from("sac@catalogodigitalellasa.com.br")
 				.to("marcelosrodrigues@globo.com")
 				.subject("Seja bem-vindo a Ella S/A")
 				.cc("marcelosrodrigues@globo.com")

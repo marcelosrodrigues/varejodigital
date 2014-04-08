@@ -9,11 +9,19 @@
     </definition>
     
     <definition name="seja-um-franqueado-template" extends="base">
-        <put-attribute name="conteudo" value="/WEB-INF/formulario/franqueado/novo.jsp" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/franqueado/novo-franqueado.jsp" />
+    </definition>
+    
+    <definition name="seja-um-parceiro-template" extends="base">
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/franqueado/novo-parceiro.jsp" />
     </definition> 
     
     <definition name="pagamento-cartao-credito-template" extends="base">
         <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/pagamento-cartao-credito.jsp" />
+    </definition>
+    
+    <definition name="pagamento-cartao-credito-parceiro-template" extends="base">
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/pagamento-cartao-credito-parceiro.jsp" />
     </definition> 
     
     <definition name="boas-vindas-template" extends="base">
