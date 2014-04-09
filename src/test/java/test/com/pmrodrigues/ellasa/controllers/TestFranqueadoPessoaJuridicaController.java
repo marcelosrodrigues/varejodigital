@@ -18,12 +18,14 @@ import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
 
-import com.pmrodrigues.ellasa.controllers.FranqueadoController;
+import com.pmrodrigues.ellasa.controllers.FranqueadoPessoaJuridicaController;
 import com.pmrodrigues.ellasa.exceptions.EstouroTamanhoDeRedeException;
 import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoException;
 import com.pmrodrigues.ellasa.models.Endereco;
 import com.pmrodrigues.ellasa.models.Estado;
+import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
+import com.pmrodrigues.ellasa.models.FranqueadoPessoaJuridica;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
@@ -31,7 +33,7 @@ import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
 import com.pmrodrigues.ellasa.services.FranqueadoService;
 
-public class TestFranqueadoController {
+public class TestFranqueadoPessoaJuridicaController {
 
 	private final Mockery context = new Mockery() {
 		{
@@ -44,7 +46,7 @@ public class TestFranqueadoController {
 	private EstadoRepository estadoRepository;
 	private MeioPagamentoRepository meioPagamentoRepostory;
 	private MockResult result;
-	private FranqueadoController controller;
+	private FranqueadoPessoaJuridicaController controller;
 	private Validator validator;
 
 	@Before
@@ -55,10 +57,9 @@ public class TestFranqueadoController {
 		franquiaRepository = context.mock(TipoFranquiaRepository.class);
 		estadoRepository = context.mock(EstadoRepository.class);
 		meioPagamentoRepostory = context.mock(MeioPagamentoRepository.class);
-
 		validator = new MockValidator();
-		controller = new FranqueadoController(service, franquiaRepository,
-				estadoRepository, meioPagamentoRepostory,
+		controller = new FranqueadoPessoaJuridicaController(service,
+				franquiaRepository, estadoRepository, meioPagamentoRepostory,
 				result, validator);
 
 	}
@@ -98,24 +99,26 @@ public class TestFranqueadoController {
 	public void testAvancar() throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final FranqueadoPessoaFisica indicadopor = context.mock(FranqueadoPessoaFisica.class);
-		final FranqueadoPessoaFisica franqueado = context.mock(
-				FranqueadoPessoaFisica.class, "franqueado");
+		final FranqueadoPessoaFisica indicadopor = context
+				.mock(FranqueadoPessoaFisica.class);
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
+		final FranqueadoPessoaJuridica franqueado = context.mock(
+				FranqueadoPessoaJuridica.class, "juridica");
 
 		context.checking(new Expectations() {
 			{
 				oneOf(franqueado).getEndereco();
 				will(returnValue(new Endereco()));
-				
+
 				oneOf(franqueado).getEmail();
 				will(returnValue("marcelosrodrigues@globo.com"));
 
 				oneOf(service).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(indicadopor));
 
-				oneOf(indicadopor).adicionar(with(aNonNull(FranqueadoPessoaFisica.class)));
+				oneOf(indicadopor).adicionar(
+						with(aNonNull(FranqueadoPessoaFisica.class)));
 
 				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
 				will(returnValue(tipo));
@@ -140,15 +143,14 @@ public class TestFranqueadoController {
 			throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final FranqueadoPessoaFisica indicadopor = context.mock(FranqueadoPessoaFisica.class);
-		final FranqueadoPessoaFisica franqueado = context.mock(
-				FranqueadoPessoaFisica.class, "franqueado");
+		final Franqueado indicadopor = context.mock(Franqueado.class);
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
+		final FranqueadoPessoaJuridica franqueado = context.mock(
+				FranqueadoPessoaJuridica.class, "juridica");
 
 		context.checking(new Expectations() {
 			{
-
 				oneOf(franqueado).getEndereco();
 				will(returnValue(new Endereco()));
 
@@ -158,7 +160,8 @@ public class TestFranqueadoController {
 				oneOf(service).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(indicadopor));
 
-				oneOf(indicadopor).adicionar(with(aNonNull(FranqueadoPessoaFisica.class)));
+				oneOf(indicadopor).adicionar(
+						with(aNonNull(FranqueadoPessoaFisica.class)));
 
 				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
 				will(returnValue(tipo));

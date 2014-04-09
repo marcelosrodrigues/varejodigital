@@ -5,14 +5,38 @@
 
 
 <div class="well bs-component col-lg-8">
+
+	<c:if test="${not empty errors}">
+		<div class="alert alert-dismissable alert-danger">
+			<buttOn type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Ocorreu um erro na validação dos seus dados</strong><br/>
+			<c:forEach items="${errors}" var="error">
+				<p>${error.message}</p>
+			</c:forEach>
+		</div>
+	</c:if>
+
 	<form method="post" class="form-horizontal" action="pagar-assinatura.html">
 		<fieldset>
 		
 		
 			<input type="hidden" name="meioPagamento" value="${ordempagamento.meioPagamento.id}" />
-			<input type="hidden" name="tipoFranquia" value="${ordempagamento.contrato.tipoFranquia.id}" />			
-			<input type="hidden" name="ordempagamento.contrato.franqueado.nomeCompleto"  value="${ordempagamento.contrato.franqueado.nomeCompleto}" />
-			<input type="hidden" name="ordempagamento.contrato.franqueado.CPF"  value="${ordempagamento.contrato.franqueado.CPF}" />
+			<input type="hidden" name="tipoFranquia" value="${ordempagamento.contrato.tipoFranquia.id}" />
+			
+			<c:choose>
+				<c:when test="${ordempagamento.contrato.franqueado['class'].simpleName == 'FranqueadoPessoaFisica' }">
+					<input type="hidden" name="ordempagamento.contrato.franqueado.nomeCompleto"  value="${ordempagamento.contrato.franqueado.nome}" />
+					<input type="hidden" name="ordempagamento.contrato.franqueado.CPF"  value="${ordempagamento.contrato.franqueado.CPF}" />
+					<fmt:formatDate value="${ordempagamento.contrato.franqueado.dataNascimento}" pattern="dd-MM-yyyy" var="dataNascimento" type="date"  timeZone="pt-BR"/>
+					<input type="hidden" name="ordempagamento.contrato.franqueado.dataNascimento"  value="${dataNascimento}" />
+				</c:when>
+				<c:when test="${ordempagamento.contrato.franqueado['class'].simpleName == 'FranqueadoPessoaJuridica' }">
+					<input type="hidden" name="ordempagamento.contrato.franqueado.razaoSocial"  value="${ordempagamento.contrato.franqueado.razaoSocial}" />
+					<input type="hidden" name="ordempagamento.contrato.franqueado.nomeFantasia"  value="${ordempagamento.contrato.franqueado.nomeFantasia}" />
+					<input type="hidden" name="ordempagamento.contrato.franqueado.CNPJ"  value="${ordempagamento.contrato.franqueado.CNPJ}" />
+				</c:when>
+			</c:choose>
+			
 			<input type="hidden" name="ordempagamento.contrato.franqueado.email"  value="${ordempagamento.contrato.franqueado.email}" />
 			<input type="hidden" name="ordempagamento.contrato.franqueado.residencial.ddd" value="${ordempagamento.contrato.franqueado.residencial.ddd}" />
 			<input type="hidden" name="ordempagamento.contrato.franqueado.residencial.numero" value="${ordempagamento.contrato.franqueado.residencial.numero}" />
@@ -22,9 +46,6 @@
 				<input type="hidden" name="ordempagamento.contrato.franqueado.celular.numero" value="${ordempagamento.contrato.franqueado.celular.numero}" />
 			</c:if>
 			
-			<fmt:formatDate value="${ordempagamento.contrato.franqueado.dataNascimento}" pattern="dd-MM-yyyy" var="dataNascimento" type="date"  timeZone="pt-BR"/>
-			
-			<input type="hidden" name="ordempagamento.contrato.franqueado.dataNascimento"  value="${dataNascimento}" />
 			<input type="hidden" name="ordempagamento.contrato.franqueado.endereco.cep"  value="${ordempagamento.contrato.franqueado.endereco.cep}" />
 			<input type="hidden" name="ordempagamento.contrato.franqueado.endereco.estado.uf"  value="${ordempagamento.contrato.franqueado.endereco.estado.uf}" />
 			<input type="hidden" name="ordempagamento.contrato.franqueado.endereco.cidade"  value="${ordempagamento.contrato.franqueado.endereco.cidade}" />
@@ -36,14 +57,14 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">Nome</label>
 				<div class="col-sm-8">
-					<label class="control-label">${ordempagamento.contrato.franqueado.nomeCompleto}</label>
+					<label class="control-label">${ordempagamento.contrato.franqueado.nome}</label>
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label class="col-sm-3 control-label">CPF</label>
 				<div class="col-sm-8">
-					<label class="control-label">${ordempagamento.contrato.franqueado.CPF}</label>
+					<label class="control-label">${ordempagamento.contrato.franqueado.documento}</label>
 				</div>
 			</div>
 			

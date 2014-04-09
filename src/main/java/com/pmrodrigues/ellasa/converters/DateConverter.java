@@ -16,26 +16,26 @@ import br.com.caelum.vraptor.ioc.RequestScoped;
 @RequestScoped
 public class DateConverter implements Converter<Date> {
 
-	private static final Logger logging = Logger.getLogger(DateConverter.class);
+	private static final Logger LOGGER = Logger.getLogger(DateConverter.class);
 
 	@Override
-	public Date convert(String value, Class<? extends Date> type,
-			ResourceBundle bundle) {
+	public Date convert(final String value, final Class<? extends Date> type,
+			final ResourceBundle bundle) {
 
+		Date dataNascimento = null;
 		try {
 
 			if (GenericValidator.isDate(value, "dd-MM-yyyy", true)
 					|| GenericValidator.isDate(value, "MM-yyyy", true)) {
 
-				return DateUtils.parseDate(value, new String[]{"dd-MM-yyyy",
+				dataNascimento = DateUtils.parseDate(value, new String[]{
+						"dd-MM-yyyy",
 						"MM-yyyy"});
-			} else {
-				return null;
 			}
 		} catch (ParseException e) {
-			logging.warn("erro de conversão de data", e);
-			return null;
+			LOGGER.warn("erro de conversão de data", e);
 		}
+		return dataNascimento;
 	}
 
 }

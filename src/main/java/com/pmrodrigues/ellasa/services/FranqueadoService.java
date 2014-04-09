@@ -21,7 +21,7 @@ import com.pmrodrigues.ellasa.repositories.FranqueadoRepository;
 @Service("FranqueadoService")
 public class FranqueadoService {
 
-	private static final Logger logging = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(FranqueadoService.class);
 
 	@Resource(name = "FranqueadoRepository")
@@ -34,7 +34,7 @@ public class FranqueadoService {
 			throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		logging.debug(format(
+		LOGGER.debug(format(
 				"Adicionando um novo franqueado %s indicado por %s indicacao",
 				franqueado, indicacao));
 
@@ -57,7 +57,7 @@ public class FranqueadoService {
 			 .cc(quemIndicou.getEmail())
 				.template("/templates/novosfranqueados.vm", parameters).send();
 
-		logging.debug(format("Franquado %s adicionado com sucesso", franqueado));
+		LOGGER.debug(format("Franquado %s adicionado com sucesso", franqueado));
 
 	}
 
@@ -77,7 +77,7 @@ public class FranqueadoService {
 				.subject("Seja bem-vindo a Ella S/A")
 				.template("/templates/novosfranqueados.vm", parameters).send();
 
-		logging.debug(format("Franquado %s adicionado com sucesso", franqueado));
+		LOGGER.debug(format("Franquado %s adicionado com sucesso", franqueado));
 
 	}
 

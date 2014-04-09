@@ -15,7 +15,7 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logging = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(UsuarioRepositoryImpl.class);
 
 	/* (non-Javadoc)
@@ -25,13 +25,13 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public Usuario findByEmail(final String email) {
 
-		logging.debug(format("Pesquisando usuário pelo email %s", email));
+		LOGGER.debug(format("Pesquisando usuário pelo email %s", email));
 
 		final Usuario usuario = (Usuario) super.getEntityManager()
 				.createNamedQuery("Usuario.FindByEmail")
 				.setParameter("email", email).getSingleResult();
 
-		logging.debug(format("Usuario %s encontrado", usuario));
+		LOGGER.debug(format("Usuario %s encontrado", usuario));
 
 		return usuario;
 	}

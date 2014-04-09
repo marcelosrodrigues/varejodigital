@@ -9,6 +9,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import br.com.caelum.stella.bean.validation.CPF;
 
 @Entity
@@ -17,14 +19,16 @@ public class FranqueadoPessoaFisica extends Franqueado {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
+	@NotBlank(message = "Nome é obrigatório")
 	@Column(nullable = false)
 	private String nomeCompleto;
 
+	@NotBlank(message = "CPF é obrigatório")
 	@Column(unique = true, nullable = false)
-	@CPF(formatted = true)
+	@CPF(formatted = true, message = "CPF inválido")
 	private String cpf;
 
+	@NotNull(message = "Data de nascimento é obrigatória")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataNascimento;

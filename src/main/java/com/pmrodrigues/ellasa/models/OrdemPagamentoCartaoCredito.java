@@ -8,6 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import br.com.caelum.stella.bean.validation.CPF;
 
@@ -17,28 +22,36 @@ public class OrdemPagamentoCartaoCredito extends OrdemPagamento {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotBlank(message = "Número do cartão de crédito obrigatório")
+	@CreditCardNumber(message = "Número do cartão de crédito inválido")
 	@Column(nullable = false)
 	private String numero;
 
+	@NotBlank(message = "Codigo de segurança inválido")
+	@Length(max = 3, min = 3, message = "Código de segurança inválido")
 	@Column(nullable = false)
 	private String codigosegura;
 
+	@NotNull(message = "Data de expiração do cartão de crédito é obrigatório")
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
 	private Date dataExpiracao;
 
+	@NotBlank(message = "Nome do portador do cartão de crédito é invalido")
 	@Column(nullable = false)
 	private String portador;
 
-	@CPF(formatted = true)
+	@NotBlank(message = "CPF é obrigatório")
+	@CPF(formatted = true, message = "CPF inválido")
 	@Column(nullable = false)
 	private String cpf;
 
+	@NotBlank(message = "Telefone é obrigatório")
 	@Column(nullable = false)
 	private String telefone;
 
-	public OrdemPagamentoCartaoCredito(MeioPagamento meiopagamento,
-			Contrato contrato, BigDecimal valor) {
+	public OrdemPagamentoCartaoCredito(final MeioPagamento meiopagamento,
+			final Contrato contrato, final BigDecimal valor) {
 		super(meiopagamento, contrato, valor);
 	}
 

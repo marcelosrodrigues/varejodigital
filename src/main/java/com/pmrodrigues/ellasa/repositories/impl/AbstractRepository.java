@@ -25,7 +25,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 
 	private final Class<E> persistentClass;
 
-	private static final Logger logging = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(AbstractRepository.class);
 	
 	@SuppressWarnings("unchecked")
@@ -38,38 +38,38 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	@Override
 	public void add(E e) {
 
-		logging.debug(format(
+		LOGGER.debug(format(
 				"Tentando inserir %s novo valor no banco de dados", e));
 		this.entityManager.persist(e);
 		this.entityManager.flush();
-		logging.debug(format(" %s salvo com sucesso", e));
+		LOGGER.debug(format(" %s salvo com sucesso", e));
 	}
 
 	@Override
 	public void set(E e) {
-		logging.debug(format("Atualizando o valor %s no banco de dados", e));
+		LOGGER.debug(format("Atualizando o valor %s no banco de dados", e));
 		this.entityManager.merge(e);
 		this.entityManager.flush();
-		logging.debug(format("%s salvo com sucesso", e));
+		LOGGER.debug(format("%s salvo com sucesso", e));
 
 	}
 
 	@Override
 	public void remove(E e) {
-		logging.debug(format("Removendo o valor %s do banco de dados", e));
+		LOGGER.debug(format("Removendo o valor %s do banco de dados", e));
 		this.entityManager.remove(e);
 		this.entityManager.flush();
-		logging.debug(format("%s removido do banco de dados", e));
+		LOGGER.debug(format("%s removido do banco de dados", e));
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public E findById(final Serializable id) {
-		logging.debug(format(
+		LOGGER.debug(format(
 				"Recuperando o valor de %s do banco de dados pela chave %s",
 				persistentClass.getName(), id));
 		E e = this.entityManager.find(persistentClass, id);
-		logging.debug(format("Valor encontrado %s", e));
+		LOGGER.debug(format("Valor encontrado %s", e));
 		return e;
 	}
 
@@ -78,7 +78,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public List<E> list() {
-		logging.debug(format(
+		LOGGER.debug(format(
 				"Listando todos os valores de %s do banco de dados",
 				persistentClass.getCanonicalName()));
 		

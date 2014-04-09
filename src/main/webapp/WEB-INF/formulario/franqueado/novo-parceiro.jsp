@@ -5,6 +5,17 @@
 
 
 <div class="well bs-component col-lg-8">
+
+	<c:if test="${not empty errors}">
+		<div class="alert alert-dismissable alert-danger">
+			<buttOn type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Ocorreu um erro na validação dos seus dados</strong><br/>
+			<c:forEach items="${errors}" var="error">
+				<p>${error.message}</p>
+			</c:forEach>
+		</div>
+	</c:if>
+
 	<form method="post" class="form-horizontal"
 		action="seja-um-parceiro.html">
 

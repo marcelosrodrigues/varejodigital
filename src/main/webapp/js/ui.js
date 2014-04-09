@@ -12,8 +12,4 @@ $( "#dataExpiracao" ).datepicker({
 	dateFormat: "mm-yyyy"
 	});
 
-function tooltip(field) {
-	$(field).tooltip({
-	    track: true
-	});
-}
+$( document ).tooltip();

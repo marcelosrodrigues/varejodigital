@@ -20,10 +20,6 @@
         <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/pagamento-cartao-credito.jsp" />
     </definition>
     
-    <definition name="pagamento-cartao-credito-parceiro-template" extends="base">
-        <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/pagamento-cartao-credito-parceiro.jsp" />
-    </definition> 
-    
     <definition name="boas-vindas-template" extends="base">
         <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/boasvindas.jsp" />
     </definition>

@@ -1,6 +1,5 @@
 package test.com.pmrodrigues.ellasa.repositories;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -36,17 +35,41 @@ public class TestRepository
 
 	@Before
 	public void before() {
+
+		deleteDadosDeTeste();
 		estado = entityManager.find(Estado.class, "RJ");
+	}
+
+	@SuppressWarnings("deprecation")
+	private void deleteDadosDeTeste() {
+
+		if (this.jdbcTemplate.queryForInt(
+				"select count(1) from usuario where email = ?",
+				"marcelosrodrigues@globo.com") > 0) {
+			Long id = this.jdbcTemplate.queryForLong(
+					"select id from usuario where email = ?",
+					"marcelosrodrigues@globo.com");
+
+			Long celular_id = this.jdbcTemplate.queryForLong(
+					"select celular_id from usuario where id = ?", id);
+			Long residencial_id = this.jdbcTemplate.queryForLong(
+					"select residencial_id from usuario where id = ?", id);
+
+			this.jdbcTemplate.update(
+					"delete from franqueadopessoafisica where id = ?", id);
+			this.jdbcTemplate.update(
+					"delete from franqueadopessoajuridica where id = ?", id);
+			this.jdbcTemplate.update("delete from franqueado where id = ?", id);
+			this.jdbcTemplate.update("delete from usuario where id = ?", id);
+			this.jdbcTemplate.update("delete from telefone where id in (?,?)",
+					celular_id, residencial_id);
+
+		}
 	}
 
 	@After
 	public void after() {
-
-		Collection<Franqueado> franqueados = entityManager.createQuery(
-				"from Franqueado", Franqueado.class).getResultList();
-		for (Franqueado franqueado : franqueados) {
-			entityManager.remove(franqueado);
-		}
+		deleteDadosDeTeste();
 
 	}
 

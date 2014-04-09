@@ -22,17 +22,17 @@ import com.pmrodrigues.ellasa.pagamentos.v1.cart.CartResponse;
 
 public abstract class AbstractPagamentoService implements PagamentoService {
 
-	private final ResourceBundle bundle = ResourceBundle
+	private final static ResourceBundle BUNDLE = ResourceBundle
 			.getBundle("com.pmrodrigues.ellasa.services.akatus");
 
-	private final Logger logging = Logger
+	private final static Logger LOGGER = Logger
 			.getLogger(AbstractPagamentoService.class);
 
 	private CartOperation carrinho;
 
 	protected Recebedor getRecebedor() {
-		return new Recebedor(bundle.getString("AUTH_USER"),
-				bundle.getString("AUTH_PASSWORD"));
+		return new Recebedor(BUNDLE.getString("AUTH_USER"),
+				BUNDLE.getString("AUTH_PASSWORD"));
 	}
 
 	protected Address criarEndereco(final Endereco endereco) {
@@ -58,9 +58,9 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 	protected Transaction criarTransacao(final OrdemPagamento pagamento) {
 		final Recebedor recebedor = this.getRecebedor();
-		this.carrinho = new Akatus(Environment.valueOf(bundle
-				.getString("AKATUR_URL")), recebedor.getEMAIL(),
-				recebedor.getAPI_KEY()).cart();
+		this.carrinho = new Akatus(Environment.valueOf(BUNDLE
+				.getString("AKATUR_URL")), recebedor.getEmail(),
+				recebedor.getApiKey()).cart();
 
 		final Payer pagador = criarPagador(pagamento.getContrato()
 				.getFranqueado());
@@ -70,8 +70,9 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 		pagador.addAddress(address);
 
-		if (!GenericValidator.isBlankOrNull(pagamento.getContrato()
-				.getFranqueado().getCelular().getDdd())
+		if (pagamento.getContrato().getFranqueado().getCelular() != null
+				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
+						.getFranqueado().getCelular().getDdd())
 				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
 						.getFranqueado().getCelular().getNumero())) {
 			Phone phone = createTelefone(pagamento.getContrato()
@@ -79,15 +80,15 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 			pagador.addPhone(phone);
 		}
 
-		if (!GenericValidator.isBlankOrNull(pagamento.getContrato()
-				.getFranqueado().getResidencial().getDdd())
+		if (pagamento.getContrato().getFranqueado().getResidencial().getDdd() != null
+				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
+						.getFranqueado().getResidencial().getDdd())
 				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
 						.getFranqueado().getResidencial().getNumero())) {
 			Phone phone = createTelefone(pagamento.getContrato()
 					.getFranqueado().getResidencial());
 			pagador.addPhone(phone);
 		}
-
 
 		carrinho.setPayer(pagador);
 		carrinho.addProduct(pagamento.getCarrinho(), pagamento.getDescricao(),
@@ -109,7 +110,7 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 	protected void execute(final OrdemPagamento pagamento) {
 
-		logging.info("Mandando ordem de pagamento para a akatus");
+		LOGGER.info("Mandando ordem de pagamento para a akatus");
 
 		final CartResponse response = (CartResponse) this.carrinho.execute();
 		pagamento.setCodigo(response.getTransaction());

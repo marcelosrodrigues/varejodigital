@@ -18,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -33,14 +32,16 @@ public abstract class Franqueado extends Usuario {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
 	@Column(insertable = true, updatable = false, nullable = false, unique = true, columnDefinition = "CHAR(10)")
 	private String codigo;
+
 	@Embedded
 	private final Endereco endereco = new Endereco();
+
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "franqueado_id")
 	private Franqueado indicadoPor;
+
 	@OneToMany
 	@JoinColumn(name = "franqueado_id", referencedColumnName = "id")
 	private final Set<Franqueado> rede = new HashSet<>();

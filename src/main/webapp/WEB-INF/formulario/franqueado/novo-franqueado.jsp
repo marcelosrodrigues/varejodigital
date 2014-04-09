@@ -3,18 +3,29 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-
 <div class="well bs-component col-lg-8">
+
+	<c:if test="${not empty errors}">
+		<div class="alert alert-dismissable alert-danger">
+			<buttOn type="button" class="close" data-dismiss="alert">×</button>
+			<strong>Ocorreu um erro na validação dos seus dados</strong><br/>
+			<c:forEach items="${errors}" var="error">
+				<p>${error.message}</p>
+			</c:forEach>
+		</div>
+	</c:if>
+
 	<form method="post" class="form-horizontal"
 		action="seja-um-franqueado.html">
 
 		<fieldset>
-
-			<div class="form-group">
+	
+		    <div class="form-group">
 				<label for="franqueado.nomeCompleto" class="col-sm-3 control-label">Nome</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.nomeCompleto"
-						id="franqueado.nomeCompleto" class="form-control  input-sm" />
+						id="franqueado.nomeCompleto" class="form-control  input-sm"
+						maxlength="250" />
 				</div>
 			</div>
 
@@ -23,7 +34,7 @@
 				<label for="franqueado.cpf" class="col-sm-3 control-label">CPF</label>
 				<div class="col-sm-3">
 					<input type="text" name="franqueado.CPF" id="cpf"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" maxlength="14" />
 				</div>
 			</div>
 
@@ -32,7 +43,7 @@
 				<label for="franqueado.email" class="col-sm-3 control-label">E-mail</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.email" id="franqueado.email"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" maxlength="250" />
 				</div>
 			</div>
 
@@ -41,7 +52,7 @@
 					class="col-sm-3 control-label">Data de Nascimento</label>
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.dataNascimento"
-						id="dataNascimento" class="form-control  input-sm" />
+						id="dataNascimento" class="form-control  input-sm" maxlength="10" />
 				</div>
 			</div>
 
@@ -49,7 +60,7 @@
 				<label for="franqueado.endereco.cep" class="col-sm-3 control-label">CEP</label>
 				<div class="col-sm-3 ">
 					<input type="text" name="franqueado.endereco.cep" id="cep"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" maxlength="9" />
 				</div>
 			</div>
 
@@ -72,7 +83,8 @@
 					class="col-sm-3 control-label">Cidade</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.endereco.cidade"
-						id="franqueado.endereco.cidade" class="form-control  input-sm" />
+						id="franqueado.endereco.cidade" class="form-control  input-sm"
+						maxlength="200" />
 				</div>
 			</div>
 
@@ -81,7 +93,8 @@
 					class="col-sm-3 control-label">Bairro</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.endereco.bairro"
-						id="franqueado.endereco.bairro" class="form-control  input-sm" />
+						id="franqueado.endereco.bairro" class="form-control  input-sm"
+						maxlength="200" />
 				</div>
 			</div>
 
@@ -90,7 +103,8 @@
 					class="col-sm-3 control-label">Logradouro</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.endereco.logradouro"
-						id="franqueado.endereco.logradouro" class="form-control  input-sm" />
+						id="franqueado.endereco.logradouro" class="form-control  input-sm"
+						maxlength="200" />
 				</div>
 			</div>
 
@@ -99,7 +113,8 @@
 					class="col-sm-3 control-label">Numero</label>
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.endereco.numero"
-						id="franqueado.endereco.numero" class="form-control  input-sm" />
+						id="franqueado.endereco.numero" class="form-control  input-sm"
+						maxlength="10" />
 				</div>
 			</div>
 
@@ -109,45 +124,43 @@
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.endereco.complemento"
 						id="franqueado.endereco.complemento"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" maxlength="10" />
 				</div>
 			</div>
-			
+
 			<div class="form-group">
 				<label for="franqueado.residencial.ddd"
 					class="col-sm-3 control-label">Telefone</label>
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.residencial.ddd"
-						class="form-control input-sm-2" />
+						class="form-control input-sm-2" maxlength="2" />
 				</div>
 				<div class="col-sm-4">
 					<input type="text" name="franqueado.residencial.numero"
-						class="form-control input-sm-2" />	
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label for="franqueado.celular.ddd"
-					class="col-sm-3 control-label">Celular</label>
-				<div class="col-sm-2">
-					<input type="text" name="franqueado.celular.ddd"
-						class="form-control input-sm-2" />
-				</div>
-				<div class="col-sm-4">
-					<input type="text" name="franqueado.celular.numero"
-						class="form-control input-sm-2" />	
+						class="form-control input-sm-2" maxlength="8" />
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label for="indicacao" class="col-sm-3 control-label">Qual
+				<label for="franqueado.celular.ddd" class="col-sm-3 control-label">Celular</label>
+				<div class="col-sm-2">
+					<input type="text" name="franqueado.celular.ddd"
+						class="form-control input-sm-2" maxlength="2" />
+				</div>
+				<div class="col-sm-4">
+					<input type="text" name="franqueado.celular.numero"
+						class="form-control input-sm-2" maxlength="8" />
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="franquia" class="col-sm-3 control-label">Qual
 					programa?</label>
 				<c:forEach items="${franquias}" var="franquia">
 					<label class="checkbox-inline"> <input type="radio"
 						id="franquia" name="franquia" value="${franquia.id}"
-						title="${franquia.descricao}" onfocus="javascript:tooltip(this);">
-						<label title="${franquia.descricao}"
-						onfocus="javascript:tooltip(this);">${franquia.nome}</label>
+						title="${franquia.descricao}"> <label
+						title="${franquia.descricao}">${franquia.nome}</label>
 					</label>
 				</c:forEach>
 			</div>

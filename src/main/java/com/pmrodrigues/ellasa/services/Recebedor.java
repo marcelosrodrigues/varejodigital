@@ -12,11 +12,11 @@ public class Recebedor {
 
 	private final String EMAIL;
 
-	public String getAPI_KEY() {
+	public String getApiKey() {
 		return API_KEY;
 	}
 
-	public String getEMAIL() {
+	public String getEmail() {
 		return EMAIL;
 	}
 

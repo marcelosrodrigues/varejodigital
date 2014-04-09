@@ -9,35 +9,37 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Embeddable
 public class Endereco implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
+	@NotBlank(message = "Logradouro é obrigatório")
 	@Column(nullable = false)
 	private String logradouro;
 
-	@NotNull
+	@NotBlank(message = "Bairro é obrigatório")
 	@Column(nullable = false)
 	private String bairro;
 
-	@NotNull
+	@NotBlank(message = "CEP é obrigatório")
 	@Column(nullable = false)
 	private String cep;
 
-	@NotNull
+	@NotBlank(message = "Número é obrigatório")
 	@Column(nullable = false)
 	private String numero;
 
-	@NotNull
+	@NotBlank(message = "Cidade é obrigatório")
 	@Column(nullable = false)
 	private String cidade;
 
 	@Column(nullable = true)
 	private String complemento;
 
-	@NotNull
+	@NotNull(message = "Estado é obrigatório")
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "uf")
 	private Estado estado;

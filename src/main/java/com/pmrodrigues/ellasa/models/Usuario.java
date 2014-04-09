@@ -17,9 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.pmrodrigues.ellasa.utilities.MD5;
 
@@ -37,19 +37,14 @@ public class Usuario implements Serializable {
 	private final String cleanPassword = RandomStringUtils
 			.randomAlphanumeric(16);
 
-	public String getCleanPassword() {
-		return cleanPassword;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
+	@NotBlank(message = "E-mail é obrigatório")
 	@Column(unique = true, nullable = false)
 	private String email;
 
-	@NotNull
 	@Column
 	private String password;
 
@@ -90,16 +85,8 @@ public class Usuario implements Serializable {
 		return id;
 	}
 
-	@PrePersist
-	public void preInsert() {
-		try {
-			this.password = MD5.encrypt(this.cleanPassword);
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(
-					"Erro para encriptar a senha do usuario, não permitindo assim o salvamento",
-					e);
-		}
-
+	public String getCleanPassword() {
+		return cleanPassword;
 	}
 
 	public Celular getCelular() {
@@ -116,5 +103,17 @@ public class Usuario implements Serializable {
 
 	public void setResidencial(Residencial residencial) {
 		this.residencial = residencial;
+	}
+
+	@PrePersist
+	public void preInsert() {
+		try {
+			this.password = MD5.encrypt(this.cleanPassword);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(
+					"Erro para encriptar a senha do usuario, não permitindo assim o salvamento",
+					e);
+		}
+
 	}
 }

@@ -2,8 +2,6 @@ package test.com.pmrodrigues.ellasa.models;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Collection;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -22,7 +20,9 @@ import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
-public class TestFranqueado extends AbstractTransactionalJUnit4SpringContextTests {
+public class TestFranqueado
+		extends
+			AbstractTransactionalJUnit4SpringContextTests {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -31,19 +31,41 @@ public class TestFranqueado extends AbstractTransactionalJUnit4SpringContextTest
 
 	@Before
 	public void before() {
+
+		deleteDadosDeTeste();
 		estado = entityManager.find(Estado.class, "RJ");
+	}
+
+	@SuppressWarnings("deprecation")
+	private void deleteDadosDeTeste() {
+
+		if (this.jdbcTemplate.queryForInt(
+				"select count(1) from usuario where email = ?",
+				"marcelosrodrigues@globo.com") > 0) {
+			Long id = this.jdbcTemplate.queryForLong(
+					"select id from usuario where email = ?",
+					"marcelosrodrigues@globo.com");
+
+			Long celular_id = this.jdbcTemplate.queryForLong(
+					"select celular_id from usuario where id = ?", id);
+			Long residencial_id = this.jdbcTemplate.queryForLong(
+					"select residencial_id from usuario where id = ?", id);
+
+			this.jdbcTemplate.update(
+					"delete from franqueadopessoafisica where id = ?", id);
+			this.jdbcTemplate.update(
+					"delete from franqueadopessoajuridica where id = ?", id);
+			this.jdbcTemplate.update("delete from franqueado where id = ?", id);
+			this.jdbcTemplate.update("delete from usuario where id = ?", id);
+			this.jdbcTemplate.update("delete from telefone where id in (?,?)",
+					celular_id, residencial_id);
+
+		}
 	}
 
 	@After
 	public void after() {
-
-		Collection<Franqueado> franqueados = entityManager.createQuery(
-				"from Franqueado", Franqueado.class).getResultList();
-		for (Franqueado franqueado : franqueados) {
-			entityManager.remove(franqueado);
-		}
-
-		entityManager.remove(estado);
+		deleteDadosDeTeste();
 
 	}
 
@@ -60,8 +82,7 @@ public class TestFranqueado extends AbstractTransactionalJUnit4SpringContextTest
 	}
 
 	@Test
-	public void deveTransportarRede()
-			throws EstouroTamanhoDeRedeException {
+	public void deveTransportarRede() throws EstouroTamanhoDeRedeException {
 
 		Franqueado franqueado = new FranqueadoPessoaFisica();
 

@@ -19,7 +19,7 @@ public class FranqueadoRepositoryImpl extends AbstractRepository<Franqueado>
 
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger logging = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger(FranqueadoRepositoryImpl.class);
 
 	/* (non-Javadoc)
@@ -30,12 +30,12 @@ public class FranqueadoRepositoryImpl extends AbstractRepository<Franqueado>
 	public Franqueado findByCodigo(final String codigo) {
 
 		try {
-			logging.debug(format("Procurando o franqueado pelo código %s", codigo));
+			LOGGER.debug(format("Procurando o franqueado pelo código %s", codigo));
 			final Franqueado franqueado = (Franqueado) super.getEntityManager()
 					.createNamedQuery("Franqueado.FindByCodigo")
 					.setParameter("codigo", codigo).getSingleResult();
 
-			logging.debug(format("Franqueado %s encontrado", franqueado));
+			LOGGER.debug(format("Franqueado %s encontrado", franqueado));
 			return franqueado;
 		} catch (NoResultException e) {
 			return null;
