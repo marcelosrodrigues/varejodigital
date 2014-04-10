@@ -27,9 +27,9 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
 
 		LOGGER.debug(format("Pesquisando usuário pelo email %s", email));
 
-		final Usuario usuario = (Usuario) super.getEntityManager()
-				.createNamedQuery("Usuario.FindByEmail")
-				.setParameter("email", email).getSingleResult();
+		final Usuario usuario = (Usuario) super.getSession()
+				.getNamedQuery("Usuario.FindByEmail")
+				.setParameter("email", email).uniqueResult();
 
 		LOGGER.debug(format("Usuario %s encontrado", usuario));
 

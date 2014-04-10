@@ -24,9 +24,8 @@ public class PagamentoController {
 	private final Result result;
 
 	private final ContratoService service;
-
-	public PagamentoController(
-final ContratoService service,
+	
+	public PagamentoController(final ContratoService service,
 			final Result result) {
 		this.service = service;
 		this.result = result;

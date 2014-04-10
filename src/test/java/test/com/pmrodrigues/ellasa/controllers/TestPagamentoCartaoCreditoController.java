@@ -1,7 +1,5 @@
 package test.com.pmrodrigues.ellasa.controllers;
 
-import java.math.BigDecimal;
-
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -12,15 +10,12 @@ import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
 
+import com.pmrodrigues.ellasa.controller.sessionscope.OrdemPagamentoSession;
 import com.pmrodrigues.ellasa.controllers.PagamentoCartaoCreditoController;
 import com.pmrodrigues.ellasa.models.Contrato;
-import com.pmrodrigues.ellasa.models.MeioPagamento;
+import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
-import com.pmrodrigues.ellasa.models.TipoFranquia;
-import com.pmrodrigues.ellasa.repositories.EstadoRepository;
-import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
-import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
 import com.pmrodrigues.ellasa.services.ContratoService;
 
 public class TestPagamentoCartaoCreditoController {
@@ -31,26 +26,21 @@ public class TestPagamentoCartaoCreditoController {
 		}
 	};
 
-	private TipoFranquiaRepository franquiaRepository;
-	private EstadoRepository estadoRepository;
-	private MeioPagamentoRepository meioPagamentoRepostory;
 	private ContratoService contratoService;
 	private MockResult result;
 	private PagamentoCartaoCreditoController controller;
+	private OrdemPagamentoSession session;
 	private Validator validator;
 
 	@Before
 	public void setup() {
 
 		result = new MockResult();
-		franquiaRepository = context.mock(TipoFranquiaRepository.class);
-		estadoRepository = context.mock(EstadoRepository.class);
-		meioPagamentoRepostory = context.mock(MeioPagamentoRepository.class);
 		contratoService = context.mock(ContratoService.class);
 		validator = new MockValidator();
-		controller = new PagamentoCartaoCreditoController(franquiaRepository,
-				estadoRepository, meioPagamentoRepostory, contratoService,
-				result, validator);
+		session = context.mock(OrdemPagamentoSession.class);
+		controller = new PagamentoCartaoCreditoController(contratoService,
+				result, validator, session);
 
 	}
 
@@ -58,30 +48,28 @@ public class TestPagamentoCartaoCreditoController {
 	@Test
 	public void testPagar() {
 
-		final TipoFranquia franquia = context.mock(TipoFranquia.class);
-		final MeioPagamento pagamento = context.mock(MeioPagamento.class);
+		final OrdemPagamento ordem = context.mock(OrdemPagamento.class);
+		final Contrato contrato = context.mock(Contrato.class);
+		final Franqueado franqueado = context.mock(Franqueado.class);
 
 		context.checking(new Expectations() {
 			{
 
-				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
-				will(returnValue(franquia));
-
-				oneOf(meioPagamentoRepostory).findById(
-						with(aNonNull(Long.class)));
-				will(returnValue(pagamento));
-
-				oneOf(franquia).getValor();
-				will(returnValue(BigDecimal.ZERO));
+				oneOf(session).fromSession();
+				will(returnValue(ordem));
 
 				oneOf(contratoService).assinar(
 						with(aNonNull(OrdemPagamento.class)));
+
+				oneOf(ordem).getContrato();
+				will(returnValue(contrato));
+
+				oneOf(contrato).getFranqueado();
+				will(returnValue(franqueado));
 			}
 		});
 
-		OrdemPagamentoCartaoCredito ordem = new OrdemPagamentoCartaoCredito();
-		ordem.setContrato(new Contrato());
-		controller.pagar(ordem, 1L, 1L);
+		controller.pagar(new OrdemPagamentoCartaoCredito());
 	}
 
 }

@@ -18,13 +18,14 @@ import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
 
-import com.pmrodrigues.ellasa.controllers.FranqueadoController;
+import com.pmrodrigues.ellasa.controllers.FranqueadoPessoaFisicaController;
 import com.pmrodrigues.ellasa.exceptions.EstouroTamanhoDeRedeException;
 import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoException;
 import com.pmrodrigues.ellasa.models.Endereco;
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
+import com.pmrodrigues.ellasa.models.Residencial;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
@@ -44,7 +45,7 @@ public class TestFranqueadoController {
 	private EstadoRepository estadoRepository;
 	private MeioPagamentoRepository meioPagamentoRepostory;
 	private MockResult result;
-	private FranqueadoController controller;
+	private FranqueadoPessoaFisicaController controller;
 	private Validator validator;
 
 	@Before
@@ -57,7 +58,7 @@ public class TestFranqueadoController {
 		meioPagamentoRepostory = context.mock(MeioPagamentoRepository.class);
 
 		validator = new MockValidator();
-		controller = new FranqueadoController(service, franquiaRepository,
+		controller = new FranqueadoPessoaFisicaController(service, franquiaRepository,
 				estadoRepository, meioPagamentoRepostory,
 				result, validator);
 
@@ -103,6 +104,7 @@ public class TestFranqueadoController {
 				FranqueadoPessoaFisica.class, "franqueado");
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
+		final Residencial residencial = context.mock(Residencial.class);
 
 		context.checking(new Expectations() {
 			{
@@ -112,18 +114,20 @@ public class TestFranqueadoController {
 				oneOf(franqueado).getEmail();
 				will(returnValue("marcelosrodrigues@globo.com"));
 
+				allowing(franqueado).getResidencial();
+				will(returnValue(residencial));
+
+				oneOf(residencial).getDdd();
+				will(returnValue("021"));
+
+				oneOf(residencial).getNumero();
+				will(returnValue("33926222"));
+
 				oneOf(service).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(indicadopor));
 
 				oneOf(indicadopor).adicionar(with(aNonNull(FranqueadoPessoaFisica.class)));
-
-				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
-				will(returnValue(tipo));
-
-				oneOf(meioPagamentoRepostory).findById(
-						with(aNonNull(Long.class)));
-				will(returnValue(meio));
-
+				
 				oneOf(meio).eCartao();
 				will(returnValue(Boolean.TRUE));
 
@@ -132,7 +136,7 @@ public class TestFranqueadoController {
 			}
 		});
 
-		controller.avancar(franqueado, "", 1L, 1L);
+		controller.avancar(franqueado, "123", tipo, meio);
 	}
 
 	@Test
@@ -145,6 +149,7 @@ public class TestFranqueadoController {
 				FranqueadoPessoaFisica.class, "franqueado");
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
+		final Residencial residencial = context.mock(Residencial.class);
 
 		context.checking(new Expectations() {
 			{
@@ -155,17 +160,19 @@ public class TestFranqueadoController {
 				oneOf(franqueado).getEmail();
 				will(returnValue("marcelosrodrigues@globo.com"));
 
+				allowing(franqueado).getResidencial();
+				will(returnValue(residencial));
+				
+				oneOf(residencial).getDdd();
+				will(returnValue("021"));
+				
+				oneOf(residencial).getNumero();
+				will(returnValue("33926222"));
+
 				oneOf(service).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(indicadopor));
 
 				oneOf(indicadopor).adicionar(with(aNonNull(FranqueadoPessoaFisica.class)));
-
-				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
-				will(returnValue(tipo));
-
-				oneOf(meioPagamentoRepostory).findById(
-						with(aNonNull(Long.class)));
-				will(returnValue(meio));
 
 				oneOf(meio).eCartao();
 				will(returnValue(Boolean.FALSE));
@@ -176,7 +183,7 @@ public class TestFranqueadoController {
 			}
 		});
 
-		controller.avancar(franqueado, "", 1L, 1L);
+		controller.avancar(franqueado, "123", tipo, meio);
 
 	}
 

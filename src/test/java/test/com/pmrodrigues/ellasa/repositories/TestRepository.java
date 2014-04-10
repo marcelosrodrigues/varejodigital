@@ -2,9 +2,8 @@ package test.com.pmrodrigues.ellasa.repositories;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,16 +27,19 @@ public class TestRepository
 	@Autowired
 	private FranqueadoRepository repository;
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	@Autowired
+	private SessionFactory sessionFactory;
+
+	private Session session;
 
 	private Estado estado;
 
 	@Before
 	public void before() {
 
+		session = sessionFactory.openSession();
 		deleteDadosDeTeste();
-		estado = entityManager.find(Estado.class, "RJ");
+		estado = (Estado) session.get(Estado.class, "RJ");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -45,10 +47,10 @@ public class TestRepository
 
 		if (this.jdbcTemplate.queryForInt(
 				"select count(1) from usuario where email = ?",
-				"marcelosrodrigues@globo.com") > 0) {
+				"marsilvarodrigues@gmail.com") > 0) {
 			Long id = this.jdbcTemplate.queryForLong(
 					"select id from usuario where email = ?",
-					"marcelosrodrigues@globo.com");
+					"marsilvarodrigues@gmail.com");
 
 			Long celular_id = this.jdbcTemplate.queryForLong(
 					"select celular_id from usuario where id = ?", id);
@@ -86,15 +88,11 @@ public class TestRepository
 	@Test
 	public void deveAlterar() {
 
-		Franqueado franqueado = Factory.getStubFranqueado(estado);
+		FranqueadoPessoaFisica franqueado = Factory.getStubFranqueado(estado);
 
 		repository.add(franqueado);
 
-		FranqueadoPessoaFisica toUpdate = entityManager.find(FranqueadoPessoaFisica.class,
-				franqueado.getId());
-		entityManager.detach(toUpdate);
-
-		toUpdate.setNomeCompleto("Marcelo");
+		franqueado.setNomeCompleto("Marcelo");
 		repository.set(franqueado);
 
 	}
@@ -107,7 +105,7 @@ public class TestRepository
 
 		repository.remove(franqueado);
 
-		Franqueado isDeleted = entityManager.find(Franqueado.class,
+		Franqueado isDeleted = (Franqueado) session.get(Franqueado.class,
 				franqueado.getId());
 		Assert.assertNull(isDeleted);
 	}

@@ -20,7 +20,7 @@
 		<c:if test="${not empty tef}">
 			<div class="form-group">
 				<div class="col-sm-10">
-					<a href="${tef}" target="_blank">Clique aqui para pagar</a></p>
+					<a id="tef" href="${tef}" target="_blank">Clique aqui para pagar</a></p>
 				</div>
 		</div>
 		</c:if>		

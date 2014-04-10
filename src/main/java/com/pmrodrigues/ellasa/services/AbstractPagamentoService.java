@@ -111,8 +111,8 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 	protected void execute(final OrdemPagamento pagamento) {
 
 		LOGGER.info("Mandando ordem de pagamento para a akatus");
-
 		final CartResponse response = (CartResponse) this.carrinho.execute();
+		LOGGER.info("Ordem enviada com sucesso");
 		pagamento.setCodigo(response.getTransaction());
 		pagamento.setStatus(response.getStatus());
 		pagamento.setMotivo(response.getDescription());

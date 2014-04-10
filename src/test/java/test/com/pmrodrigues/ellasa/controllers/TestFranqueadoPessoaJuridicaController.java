@@ -27,6 +27,7 @@ import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaJuridica;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
+import com.pmrodrigues.ellasa.models.Residencial;
 import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
@@ -99,12 +100,13 @@ public class TestFranqueadoPessoaJuridicaController {
 	public void testAvancar() throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final FranqueadoPessoaFisica indicadopor = context
-				.mock(FranqueadoPessoaFisica.class);
+		final FranqueadoPessoaJuridica indicadopor = context
+				.mock(FranqueadoPessoaJuridica.class);
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
 		final FranqueadoPessoaJuridica franqueado = context.mock(
 				FranqueadoPessoaJuridica.class, "juridica");
+		final Residencial residencial = context.mock(Residencial.class);
 
 		context.checking(new Expectations() {
 			{
@@ -114,18 +116,20 @@ public class TestFranqueadoPessoaJuridicaController {
 				oneOf(franqueado).getEmail();
 				will(returnValue("marcelosrodrigues@globo.com"));
 
+				allowing(franqueado).getResidencial();
+				will(returnValue(residencial));
+
+				oneOf(residencial).getDdd();
+				will(returnValue("021"));
+
+				oneOf(residencial).getNumero();
+				will(returnValue("33926222"));
+
 				oneOf(service).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(indicadopor));
 
 				oneOf(indicadopor).adicionar(
-						with(aNonNull(FranqueadoPessoaFisica.class)));
-
-				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
-				will(returnValue(tipo));
-
-				oneOf(meioPagamentoRepostory).findById(
-						with(aNonNull(Long.class)));
-				will(returnValue(meio));
+						with(aNonNull(FranqueadoPessoaJuridica.class)));
 
 				oneOf(meio).eCartao();
 				will(returnValue(Boolean.TRUE));
@@ -135,7 +139,7 @@ public class TestFranqueadoPessoaJuridicaController {
 			}
 		});
 
-		controller.avancar(franqueado, "", 1L, 1L);
+		controller.avancar(franqueado, "123", tipo, meio);
 	}
 
 	@Test
@@ -149,6 +153,8 @@ public class TestFranqueadoPessoaJuridicaController {
 		final FranqueadoPessoaJuridica franqueado = context.mock(
 				FranqueadoPessoaJuridica.class, "juridica");
 
+		final Residencial residencial = context.mock(Residencial.class);
+
 		context.checking(new Expectations() {
 			{
 				oneOf(franqueado).getEndereco();
@@ -157,18 +163,20 @@ public class TestFranqueadoPessoaJuridicaController {
 				oneOf(franqueado).getEmail();
 				will(returnValue("marcelosrodrigues@globo.com"));
 
+				allowing(franqueado).getResidencial();
+				will(returnValue(residencial));
+
+				oneOf(residencial).getDdd();
+				will(returnValue("021"));
+
+				oneOf(residencial).getNumero();
+				will(returnValue("33926222"));
+
 				oneOf(service).findByCodigo(with(aNonNull(String.class)));
 				will(returnValue(indicadopor));
 
 				oneOf(indicadopor).adicionar(
 						with(aNonNull(FranqueadoPessoaFisica.class)));
-
-				oneOf(franquiaRepository).findById(with(aNonNull(Long.class)));
-				will(returnValue(tipo));
-
-				oneOf(meioPagamentoRepostory).findById(
-						with(aNonNull(Long.class)));
-				will(returnValue(meio));
 
 				oneOf(meio).eCartao();
 				will(returnValue(Boolean.FALSE));
@@ -179,7 +187,7 @@ public class TestFranqueadoPessoaJuridicaController {
 			}
 		});
 
-		controller.avancar(franqueado, "", 1L, 1L);
+		controller.avancar(franqueado, "123", tipo, meio);
 
 	}
 

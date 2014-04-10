@@ -22,20 +22,20 @@ public class DateConverter implements Converter<Date> {
 	public Date convert(final String value, final Class<? extends Date> type,
 			final ResourceBundle bundle) {
 
-		Date dataNascimento = null;
+		Date date = null;
 		try {
 
 			if (GenericValidator.isDate(value, "dd-MM-yyyy", true)
 					|| GenericValidator.isDate(value, "MM-yyyy", true)) {
 
-				dataNascimento = DateUtils.parseDate(value, new String[]{
+				date = DateUtils.parseDate(value, new String[]{
 						"dd-MM-yyyy",
 						"MM-yyyy"});
 			}
 		} catch (ParseException e) {
 			LOGGER.warn("erro de conversão de data", e);
 		}
-		return dataNascimento;
+		return date;
 	}
 
 }

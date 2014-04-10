@@ -14,7 +14,7 @@ public final class Factory {
 	public static FranqueadoPessoaFisica getStubFranqueado(final Estado estado) {
 
 		FranqueadoPessoaFisica franqueado = new FranqueadoPessoaFisica();
-		franqueado.setEmail("marcelosrodrigues@globo.com");
+		franqueado.setEmail("marsilvarodrigues@gmail.com");
 		franqueado.setNomeCompleto("Marcelo da Silva Rodrigues");
 		franqueado.getEndereco().setEstado(estado);
 		franqueado.getEndereco().setLogradouro("teste");

@@ -66,7 +66,8 @@ public class FranqueadoService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void adicionar(Franqueado franqueado) {
+	public void adicionar(final Franqueado franqueado) {
+
 		repository.add(franqueado);
 
 		Map<String, Object> parameters = new HashMap<>();

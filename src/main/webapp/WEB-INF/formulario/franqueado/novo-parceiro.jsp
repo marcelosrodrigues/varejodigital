@@ -25,7 +25,7 @@
 				<label for="franqueado.razaoSocial" class="col-sm-3 control-label">Razão Social</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.razaoSocial"
-						id="franqueado.nomeCompleto" class="form-control  input-sm" />
+						id="franqueado.nomeCompleto" class="form-control  input-sm" placeholder="Razão Social" />
 				</div>
 			</div>
 			
@@ -33,7 +33,7 @@
 				<label for="franqueado.nomeFantasia" class="col-sm-3 control-label">Nome fantasia</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.nomeFantasia"
-						id="franqueado.nomeFantasia" class="form-control  input-sm" />
+						id="franqueado.nomeFantasia" class="form-control  input-sm" placeholder=""/>
 				</div>
 			</div>
 
@@ -42,7 +42,7 @@
 				<label for="franqueado.CNPJ" class="col-sm-3 control-label">CNPJ</label>
 				<div class="col-sm-5">
 					<input type="text" name="franqueado.CNPJ" id="cnpj"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" placeholder="CNPJ" />
 				</div>
 			</div>
 
@@ -51,7 +51,7 @@
 				<label for="franqueado.email" class="col-sm-3 control-label">E-mail</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.email" id="franqueado.email"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" placeholder=""/>
 				</div>
 			</div>
 
@@ -59,7 +59,7 @@
 				<label for="franqueado.endereco.cep" class="col-sm-3 control-label">CEP</label>
 				<div class="col-sm-3 ">
 					<input type="text" name="franqueado.endereco.cep" id="cep"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" placeholder="CEP"/>
 				</div>
 			</div>
 
@@ -82,7 +82,7 @@
 					class="col-sm-3 control-label">Cidade</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.endereco.cidade"
-						id="franqueado.endereco.cidade" class="form-control  input-sm" />
+						id="franqueado.endereco.cidade" class="form-control  input-sm" placeholder="Cidade"/>
 				</div>
 			</div>
 
@@ -91,7 +91,7 @@
 					class="col-sm-3 control-label">Bairro</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.endereco.bairro"
-						id="franqueado.endereco.bairro" class="form-control  input-sm" />
+						id="franqueado.endereco.bairro" class="form-control  input-sm" placeholder="Bairro"/>
 				</div>
 			</div>
 
@@ -100,16 +100,16 @@
 					class="col-sm-3 control-label">Logradouro</label>
 				<div class="col-sm-8">
 					<input type="text" name="franqueado.endereco.logradouro"
-						id="franqueado.endereco.logradouro" class="form-control  input-sm" />
+						id="franqueado.endereco.logradouro" class="form-control  input-sm" placeholder="Logradouro"/>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="franqueado.endereco.numero"
-					class="col-sm-3 control-label">Numero</label>
+					class="col-sm-3 control-label">Número</label>
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.endereco.numero"
-						id="franqueado.endereco.numero" class="form-control  input-sm" />
+						id="franqueado.endereco.numero" class="form-control  input-sm" placeholder="Número"/>
 				</div>
 			</div>
 
@@ -119,33 +119,33 @@
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.endereco.complemento"
 						id="franqueado.endereco.complemento"
-						class="form-control  input-sm" />
+						class="form-control  input-sm" placeholder="Complemento"/>
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label for="franqueado.residencial.ddd"
-					class="col-sm-3 control-label">Telefone</label>
+					class="col-sm-3 control-label">Telefone 1</label>
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.residencial.ddd"
-						class="form-control input-sm-2" />
+						class="form-control input-sm-2" placeholder="DDD"/>
 				</div>
 				<div class="col-sm-4">
 					<input type="text" name="franqueado.residencial.numero"
-						class="form-control input-sm-2" />	
+						class="form-control input-sm-2" placeholder="Telefone"/>	
 				</div>
 			</div>
 			
 			<div class="form-group">
 				<label for="franqueado.celular.ddd"
-					class="col-sm-3 control-label">Celular</label>
+					class="col-sm-3 control-label">Telefone 2</label>
 				<div class="col-sm-2">
 					<input type="text" name="franqueado.celular.ddd"
-						class="form-control input-sm-2" />
+						class="form-control input-sm-2" placeholder="DDD"/>
 				</div>
 				<div class="col-sm-4">
 					<input type="text" name="franqueado.celular.numero"
-						class="form-control input-sm-2" />	
+						class="form-control input-sm-2" placeholder="Telefone"/>	
 				</div>
 			</div>
 
@@ -183,12 +183,12 @@
 					por</label>
 				<div class="col-sm-2">
 					<input type="text" name="indicacao" id="indicacao"
-						class="form-control  input-sm" />
+						class="form-control  input-sm"  placeholder="Código do franqueado"/>
 				</div>
 			</div>
 
 
-			<input type="submit" value="Avançar" class="btn btn-primary" />
+			<input id="avancar" type="submit" value="Avançar" class="btn btn-primary" />
 		</fieldset>
 	</form>
 </div>

@@ -5,6 +5,7 @@ import static com.pmrodrigues.ellasa.Constante.QUANTIDADE_MAXIMA_DE_FRANQUEADOS;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -32,18 +33,22 @@ public abstract class Franqueado extends Usuario {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(insertable = true, updatable = false, nullable = false, unique = true, columnDefinition = "CHAR(10)")
+	@Column(insertable = true, updatable = false, nullable = false, unique = true, columnDefinition = "CHAR(5)")
 	private String codigo;
 
 	@Embedded
 	private final Endereco endereco = new Endereco();
 
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "franqueado_id")
 	private Franqueado indicadoPor;
 
-	@OneToMany
-	@JoinColumn(name = "franqueado_id", referencedColumnName = "id")
+	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
+	@JoinColumn(name = "pai_id")
+	private Franqueado abaixoDe;
+
+	@OneToMany()
+	@JoinColumn(name = "pai_id", referencedColumnName = "id")
 	private final Set<Franqueado> rede = new HashSet<>();
 
 	public Franqueado() {
@@ -53,13 +58,12 @@ public abstract class Franqueado extends Usuario {
 	public void adicionar(final Franqueado franqueado) {
 		if (rede.size() < QUANTIDADE_MAXIMA_DE_FRANQUEADOS) {
 			rede.add(franqueado);
-			franqueado.indicadoPor = this;
+			franqueado.abaixoDe = this;
 		} else {
-	
 			Franqueado membro = this.getRedeComMenosMembro();
 			membro.adicionar(franqueado);
-	
 		}
+		franqueado.indicadoPor = this;
 	}
 
 	private Franqueado getRedeComMenosMembro() {
@@ -92,7 +96,7 @@ public abstract class Franqueado extends Usuario {
 	@PrePersist
 	public void preInsert() {
 		super.preInsert();
-		this.codigo = RandomStringUtils.randomAlphanumeric(10).toUpperCase();
+		this.codigo = RandomStringUtils.randomAlphanumeric(5).toLowerCase();
 	}
 
 	public Endereco getEndereco() {

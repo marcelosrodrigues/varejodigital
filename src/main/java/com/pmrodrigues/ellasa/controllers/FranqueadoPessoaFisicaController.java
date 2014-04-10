@@ -28,7 +28,7 @@ import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
 import com.pmrodrigues.ellasa.services.FranqueadoService;
 
 @Resource
-public class FranqueadoController {
+public class FranqueadoPessoaFisicaController {
 
 	private final FranqueadoService service;
 
@@ -42,7 +42,7 @@ public class FranqueadoController {
 
 	private final Validator validator;
 
-	public FranqueadoController(final FranqueadoService service,
+	public FranqueadoPessoaFisicaController(final FranqueadoService service,
 			final TipoFranquiaRepository franquiaRepository,
 			final EstadoRepository estadoRepository,
 			final MeioPagamentoRepository meioPagamentoRepostory,
@@ -53,6 +53,7 @@ public class FranqueadoController {
 		this.meioPagamentoRepository = meioPagamentoRepostory;
 		this.result = result;
 		this.validator = validator;
+
 	}
 
 	@Get
@@ -69,21 +70,29 @@ public class FranqueadoController {
 	@Post
 	@Path("/seja-um-franqueado.html")
 	public void avancar(final FranqueadoPessoaFisica franqueado,
-			final String indicacao, final Long franquia,
-			final Long meiodepagamento) {
+			final String indicacao, final TipoFranquia franquia,
+			final MeioPagamento meiodepagamento) {
 
 		validator.validate(franqueado);
 		validator.validate(franqueado.getEndereco());
 
 		validator.checking(new Validations() {
 			{
-				that(franquia != null && franquia > 0, "franquia",
+				that(franquia != null, "franquia",
 						"error.required", i18n("franquia.field"));
-				that(meiodepagamento != null && meiodepagamento > 0,
+				that(meiodepagamento != null,
 						"meiodepagamento", "error.required",
 						i18n("meiodepagamento.field"));
 				that(GenericValidator.isEmail(franqueado.getEmail()), "email",
 						"error.email.invalid", i18n("email.field"));
+				that(!GenericValidator.isBlankOrNull(indicacao),
+						"indicacao.field", "error.required");
+				that(!GenericValidator.isBlankOrNull(franqueado
+						.getResidencial()
+						.getDdd())
+						&& !GenericValidator.isBlankOrNull(franqueado
+								.getResidencial().getNumero()),
+						"telefone.field", "error.required");
 			}
 		});
 
@@ -94,21 +103,17 @@ public class FranqueadoController {
 			indicadoPor.adicionar(franqueado);
 		}
 
-		final TipoFranquia tipo = franquiaRepository.findById(franquia);
-		final MeioPagamento meiopagamento = meioPagamentoRepository
-				.findById(meiodepagamento);
+		final Contrato contrato = new Contrato(franqueado, franquia);
 
-		final Contrato contrato = new Contrato(franqueado, tipo);
-
-		if (meiopagamento.eCartao()) {
+		if (meiodepagamento.eCartao()) {
 			final OrdemPagamentoCartaoCredito ordempagamento = new OrdemPagamentoCartaoCredito(
-					meiopagamento, contrato, tipo.getValor());
+					meiodepagamento, contrato, franquia.getValor());
 
 			result.forwardTo(PagamentoCartaoCreditoController.class).avancar(
 					ordempagamento);
 		} else {
 			final OrdemPagamento ordempagamento = new OrdemPagamento(
-					meiopagamento, contrato, tipo.getValor());
+					meiodepagamento, contrato, franquia.getValor());
 
 			result.forwardTo(PagamentoController.class)
 					.concluir(ordempagamento);

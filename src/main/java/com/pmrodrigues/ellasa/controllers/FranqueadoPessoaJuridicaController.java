@@ -46,8 +46,7 @@ public class FranqueadoPessoaJuridicaController {
 			final TipoFranquiaRepository franquiaRepository,
 			final EstadoRepository estadoRepository,
 			final MeioPagamentoRepository meioPagamentoRepostory,
-			final Result result,
-			final Validator validator) {
+			final Result result, final Validator validator) {
 		this.service = service;
 		this.franquiaRepository = franquiaRepository;
 		this.estadoRepository = estadoRepository;
@@ -70,21 +69,29 @@ public class FranqueadoPessoaJuridicaController {
 	@Post
 	@Path("/seja-um-parceiro.html")
 	public void avancar(final FranqueadoPessoaJuridica franqueado,
-			final String indicacao, final Long franquia,
-			final Long meiodepagamento) {
+			final String indicacao, final TipoFranquia franquia,
+			final MeioPagamento meiodepagamento) {
 
 		validator.validate(franqueado);
 		validator.validate(franqueado.getEndereco());
 
 		validator.checking(new Validations() {
 			{
-				that(franquia != null && franquia > 0, "franquia",
+				that(franquia != null, "franquia",
 						"error.required", i18n("franquia.field"));
-				that(meiodepagamento != null && meiodepagamento > 0,
+				that(meiodepagamento != null,
 						"meiodepagamento", "error.required",
 						i18n("meiodepagamento.field"));
 				that(GenericValidator.isEmail(franqueado.getEmail()), "email",
 						"error.email.invalid", i18n("email.field"));
+				that(!GenericValidator.isBlankOrNull(indicacao),
+						"indicacao.field", "error.required");
+				that(!GenericValidator.isBlankOrNull(franqueado
+						.getResidencial()
+						.getDdd())
+						&& !GenericValidator.isBlankOrNull(franqueado
+								.getResidencial().getNumero()),
+						"telefone.field", "error.required");
 			}
 		});
 
@@ -95,21 +102,17 @@ public class FranqueadoPessoaJuridicaController {
 			indicadoPor.adicionar(franqueado);
 		}
 
-		final TipoFranquia tipo = franquiaRepository.findById(franquia);
-		final MeioPagamento meiopagamento = meioPagamentoRepository
-				.findById(meiodepagamento);
+		final Contrato contrato = new Contrato(franqueado, franquia);
 
-		final Contrato contrato = new Contrato(franqueado, tipo);
-
-		if (meiopagamento.eCartao()) {
+		if (meiodepagamento.eCartao()) {
 			final OrdemPagamentoCartaoCredito ordempagamento = new OrdemPagamentoCartaoCredito(
-					meiopagamento, contrato, tipo.getValor());
+					meiodepagamento, contrato, franquia.getValor());
 
 			result.forwardTo(PagamentoCartaoCreditoController.class).avancar(
 					ordempagamento);
 		} else {
 			final OrdemPagamento ordempagamento = new OrdemPagamento(
-					meiopagamento, contrato, tipo.getValor());
+					meiodepagamento, contrato, franquia.getValor());
 
 			result.forwardTo(PagamentoController.class)
 					.concluir(ordempagamento);
