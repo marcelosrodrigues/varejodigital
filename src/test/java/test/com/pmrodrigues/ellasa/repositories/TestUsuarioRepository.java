@@ -24,7 +24,7 @@ public class TestUsuarioRepository
 	@Before
 	public void before() {
 		Usuario usuario = new Usuario();
-		usuario.setEmail("marcelosrodrigues@globo.com");
+		usuario.setEmail("marsilvarodrigues@gmail.com");
 		repository.add(usuario);
 	}
 
@@ -38,7 +38,7 @@ public class TestUsuarioRepository
 
 	@Test
 	public void buscarUsuarioPorEmail() {
-		Usuario usuario = repository.findByEmail("marcelosrodrigues@globo.com");
+		Usuario usuario = repository.findByEmail("marsilvarodrigues@gmail.com");
 		Assert.assertNotNull(usuario);
 	}
 }

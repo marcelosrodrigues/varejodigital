@@ -39,7 +39,7 @@ public class TestContratoService
 	@Test
 	public void assinar() {
 
-		final TipoFranquia franquia = franquiaRepository.findById(1L);
+		final TipoFranquia franquia = franquiaRepository.findById(4L);
 		final MeioPagamento meiopagamento = meioPagamentoRepository
 				.findById(2L);
 		final Estado estado = estadoRepository.findById("RJ");

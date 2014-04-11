@@ -84,14 +84,14 @@ public class FranqueadoPessoaJuridicaController {
 						i18n("meiodepagamento.field"));
 				that(GenericValidator.isEmail(franqueado.getEmail()), "email",
 						"error.email.invalid", i18n("email.field"));
-				that(!GenericValidator.isBlankOrNull(indicacao),
-						"indicacao.field", "error.required");
+				that(!GenericValidator.isBlankOrNull(indicacao), "indicacao",
+						"error.required", i18n("indicacao.field"));
 				that(!GenericValidator.isBlankOrNull(franqueado
 						.getResidencial()
 						.getDdd())
 						&& !GenericValidator.isBlankOrNull(franqueado
-								.getResidencial().getNumero()),
-						"telefone.field", "error.required");
+								.getResidencial().getNumero()), "telefone",
+						"error.required", i18n("telefone.field"));
 			}
 		});
 
