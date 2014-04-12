@@ -1,9 +1,9 @@
 package com.pmrodrigues.ellasa.services;
 
-import java.util.ResourceBundle;
-
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 
 import com.pmrodrigues.ellasa.models.Endereco;
 import com.pmrodrigues.ellasa.models.Franqueado;
@@ -20,19 +20,26 @@ import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
 import com.pmrodrigues.ellasa.pagamentos.v1.cart.CartOperation;
 import com.pmrodrigues.ellasa.pagamentos.v1.cart.CartResponse;
 
-public abstract class AbstractPagamentoService implements PagamentoService {
 
-	private final static ResourceBundle BUNDLE = ResourceBundle
-			.getBundle("com.pmrodrigues.ellasa.services.akatus");
+@PropertySource("classpath:akatus.properties")
+public abstract class AbstractPagamentoService implements PagamentoService {
 
 	private final static Logger LOGGER = Logger
 			.getLogger(AbstractPagamentoService.class);
 
 	private CartOperation carrinho;
 
+	@Value("${AUTH_USER}")
+	private String user;
+
+	@Value("${AUTH_PASSWORD}")
+	private String key;
+
+	@Value("${AKATUR_URL}")
+	private String enviroment;
+
 	protected Recebedor getRecebedor() {
-		return new Recebedor(BUNDLE.getString("AUTH_USER"),
-				BUNDLE.getString("AUTH_PASSWORD"));
+		return new Recebedor(user, key);
 	}
 
 	protected Address criarEndereco(final Endereco endereco) {
@@ -58,8 +65,8 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 
 	protected Transaction criarTransacao(final OrdemPagamento pagamento) {
 		final Recebedor recebedor = this.getRecebedor();
-		this.carrinho = new Akatus(Environment.valueOf(BUNDLE
-				.getString("AKATUR_URL")), recebedor.getEmail(),
+		this.carrinho = new Akatus(Environment.valueOf(enviroment),
+				recebedor.getEmail(),
 				recebedor.getApiKey()).cart();
 
 		final Payer pagador = criarPagador(pagamento.getContrato()
