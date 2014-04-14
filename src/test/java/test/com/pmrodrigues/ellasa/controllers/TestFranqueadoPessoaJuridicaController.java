@@ -125,12 +125,6 @@ public class TestFranqueadoPessoaJuridicaController {
 				oneOf(residencial).getNumero();
 				will(returnValue("33926222"));
 
-				oneOf(service).findByCodigo(with(aNonNull(String.class)));
-				will(returnValue(indicadopor));
-
-				oneOf(indicadopor).adicionar(
-						with(aNonNull(FranqueadoPessoaJuridica.class)));
-
 				oneOf(meio).eCartao();
 				will(returnValue(Boolean.TRUE));
 
@@ -139,7 +133,8 @@ public class TestFranqueadoPessoaJuridicaController {
 			}
 		});
 
-		controller.avancar(franqueado, "123", tipo, meio);
+		controller
+				.avancar(franqueado, new FranqueadoPessoaFisica(), tipo, meio);
 	}
 
 	@Test
@@ -172,12 +167,6 @@ public class TestFranqueadoPessoaJuridicaController {
 				oneOf(residencial).getNumero();
 				will(returnValue("33926222"));
 
-				oneOf(service).findByCodigo(with(aNonNull(String.class)));
-				will(returnValue(indicadopor));
-
-				oneOf(indicadopor).adicionar(
-						with(aNonNull(FranqueadoPessoaFisica.class)));
-
 				oneOf(meio).eCartao();
 				will(returnValue(Boolean.FALSE));
 
@@ -187,7 +176,8 @@ public class TestFranqueadoPessoaJuridicaController {
 			}
 		});
 
-		controller.avancar(franqueado, "123", tipo, meio);
+		controller
+				.avancar(franqueado, new FranqueadoPessoaFisica(), tipo, meio);
 
 	}
 

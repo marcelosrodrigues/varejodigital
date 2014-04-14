@@ -70,7 +70,7 @@ public class FranqueadoPessoaFisicaController {
 	@Post
 	@Path("/seja-um-franqueado.html")
 	public void avancar(final FranqueadoPessoaFisica franqueado,
-			final String indicacao, final TipoFranquia franquia,
+			final Franqueado indicacao, final TipoFranquia franquia,
 			final MeioPagamento meiodepagamento) {
 
 		validator.validate(franqueado);
@@ -78,18 +78,16 @@ public class FranqueadoPessoaFisicaController {
 
 		validator.checking(new Validations() {
 			{
-				that(franquia != null, "franquia",
-						"error.required", i18n("franquia.field"));
-				that(meiodepagamento != null,
-						"meiodepagamento", "error.required",
-						i18n("meiodepagamento.field"));
+				that(franquia != null, "franquia", "error.required",
+						i18n("franquia.field"));
+				that(meiodepagamento != null, "meiodepagamento",
+						"error.required", i18n("meiodepagamento.field"));
 				that(GenericValidator.isEmail(franqueado.getEmail()), "email",
 						"error.email.invalid", i18n("email.field"));
-				that(!GenericValidator.isBlankOrNull(indicacao), "indicacao",
-						"error.required", i18n("indicacao.field"));
+				that(indicacao != null, "indicacao", "error.notfound",
+						i18n("indicacao.field"));
 				that(!GenericValidator.isBlankOrNull(franqueado
-						.getResidencial()
-						.getDdd())
+						.getResidencial().getDdd())
 						&& !GenericValidator.isBlankOrNull(franqueado
 								.getResidencial().getNumero()), "telefone",
 						"error.required", i18n("telefone.field"));
@@ -98,10 +96,7 @@ public class FranqueadoPessoaFisicaController {
 
 		validator.onErrorForwardTo(this).iniciar();
 
-		final Franqueado indicadoPor = service.findByCodigo(indicacao);
-		if (indicadoPor != null) {
-			indicadoPor.adicionar(franqueado);
-		}
+		indicacao.adicionar(franqueado);
 
 		final Contrato contrato = new Contrato(franqueado, franquia);
 
@@ -120,6 +115,5 @@ public class FranqueadoPessoaFisicaController {
 		}
 
 	}
-
 
 }

@@ -38,4 +38,8 @@ public class AbstractTypeConverter<E> implements Converter<E> {
 		return entity;
 	}
 
+	protected Repository<E> getRepository() {
+		return this.repository;
+	}
+
 }
