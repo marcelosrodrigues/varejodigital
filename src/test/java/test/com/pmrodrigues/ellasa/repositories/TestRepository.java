@@ -57,15 +57,18 @@ public class TestRepository
 			Long residencial_id = this.jdbcTemplate.queryForLong(
 					"select residencial_id from usuario where id = ?", id);
 
-			Long contrato_id = this.jdbcTemplate.queryForLong(
-					"select id from contrato where franqueado_id = ?", id);
+			if (this.jdbcTemplate.queryForInt(
+					"select count(id) from contrato where franqueado_id = ?",
+					id) > 0) {
+				Long contrato_id = this.jdbcTemplate.queryForLong(
+						"select id from contrato where franqueado_id = ?", id);
 
-			this.jdbcTemplate.update(
-					"delete from ordempagamento where contrato_id = ?",
-					contrato_id);
-			this.jdbcTemplate
-					.update("delete from contrato where franqueado_id = ?",
- id);
+				this.jdbcTemplate.update(
+						"delete from ordempagamento where contrato_id = ?",
+						contrato_id);
+				this.jdbcTemplate.update(
+						"delete from contrato where franqueado_id = ?", id);
+			}
 			this.jdbcTemplate.update(
 					"delete from franqueadopessoafisica where id = ?", id);
 			this.jdbcTemplate.update(

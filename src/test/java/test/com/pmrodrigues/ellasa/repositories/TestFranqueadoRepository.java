@@ -1,7 +1,5 @@
 package test.com.pmrodrigues.ellasa.repositories;
 
-import java.util.Collection;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,15 +32,52 @@ public class TestFranqueadoRepository
 	public void before() {
 
 		estado = estadoRepository.findById("RJ");
+		deleteDadosDeTeste();
+	}
+
+	@SuppressWarnings("deprecation")
+	private void deleteDadosDeTeste() {
+
+		if (this.jdbcTemplate.queryForInt(
+				"select count(1) from usuario where email = ?",
+				"marsilvarodrigues@gmail.com") > 0) {
+			Long id = this.jdbcTemplate.queryForLong(
+					"select id from usuario where email = ?",
+					"marsilvarodrigues@gmail.com");
+
+			Long celular_id = this.jdbcTemplate.queryForLong(
+					"select celular_id from usuario where id = ?", id);
+			Long residencial_id = this.jdbcTemplate.queryForLong(
+					"select residencial_id from usuario where id = ?", id);
+
+			if (this.jdbcTemplate.queryForInt(
+					"select count(id) from contrato where franqueado_id = ?",
+					id) > 0) {
+				Long contrato_id = this.jdbcTemplate.queryForLong(
+						"select id from contrato where franqueado_id = ?", id);
+
+				this.jdbcTemplate.update(
+						"delete from ordempagamento where contrato_id = ?",
+						contrato_id);
+				this.jdbcTemplate.update(
+						"delete from contrato where franqueado_id = ?", id);
+			}
+			this.jdbcTemplate.update(
+					"delete from franqueadopessoafisica where id = ?", id);
+			this.jdbcTemplate.update(
+					"delete from franqueadopessoajuridica where id = ?", id);
+			this.jdbcTemplate.update("delete from franqueado where id = ?", id);
+			this.jdbcTemplate.update("delete from usuario where id = ?", id);
+			this.jdbcTemplate.update("delete from telefone where id in (?,?)",
+					celular_id, residencial_id);
+
+		}
 	}
 
 	@After
 	public void after() {
 
-		Collection<Franqueado> franqueados = repository.list();
-		for (Franqueado franqueado : franqueados) {
-			repository.remove(franqueado);
-		}
+		deleteDadosDeTeste();
 
 	}
 
