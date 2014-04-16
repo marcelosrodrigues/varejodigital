@@ -25,12 +25,9 @@ import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
-import com.pmrodrigues.ellasa.services.FranqueadoService;
 
 @Resource
 public class FranqueadoPessoaFisicaController {
-
-	private final FranqueadoService service;
 
 	private final TipoFranquiaRepository franquiaRepository;
 
@@ -42,12 +39,12 @@ public class FranqueadoPessoaFisicaController {
 
 	private final Validator validator;
 
-	public FranqueadoPessoaFisicaController(final FranqueadoService service,
+	public FranqueadoPessoaFisicaController(
 			final TipoFranquiaRepository franquiaRepository,
 			final EstadoRepository estadoRepository,
 			final MeioPagamentoRepository meioPagamentoRepostory,
 			final Result result, final Validator validator) {
-		this.service = service;
+
 		this.franquiaRepository = franquiaRepository;
 		this.estadoRepository = estadoRepository;
 		this.meioPagamentoRepository = meioPagamentoRepostory;

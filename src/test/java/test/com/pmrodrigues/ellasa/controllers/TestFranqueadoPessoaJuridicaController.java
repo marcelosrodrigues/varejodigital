@@ -23,7 +23,6 @@ import com.pmrodrigues.ellasa.exceptions.EstouroTamanhoDeRedeException;
 import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoException;
 import com.pmrodrigues.ellasa.models.Endereco;
 import com.pmrodrigues.ellasa.models.Estado;
-import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaJuridica;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
@@ -32,7 +31,6 @@ import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
-import com.pmrodrigues.ellasa.services.FranqueadoService;
 
 public class TestFranqueadoPessoaJuridicaController {
 
@@ -42,7 +40,7 @@ public class TestFranqueadoPessoaJuridicaController {
 		}
 	};
 
-	private FranqueadoService service;
+
 	private TipoFranquiaRepository franquiaRepository;
 	private EstadoRepository estadoRepository;
 	private MeioPagamentoRepository meioPagamentoRepostory;
@@ -54,12 +52,12 @@ public class TestFranqueadoPessoaJuridicaController {
 	public void setup() {
 
 		result = new MockResult();
-		service = context.mock(FranqueadoService.class);
+
 		franquiaRepository = context.mock(TipoFranquiaRepository.class);
 		estadoRepository = context.mock(EstadoRepository.class);
 		meioPagamentoRepostory = context.mock(MeioPagamentoRepository.class);
 		validator = new MockValidator();
-		controller = new FranqueadoPessoaJuridicaController(service,
+		controller = new FranqueadoPessoaJuridicaController(
 				franquiaRepository, estadoRepository, meioPagamentoRepostory,
 				result, validator);
 
@@ -100,8 +98,7 @@ public class TestFranqueadoPessoaJuridicaController {
 	public void testAvancar() throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final FranqueadoPessoaJuridica indicadopor = context
-				.mock(FranqueadoPessoaJuridica.class);
+
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
 		final FranqueadoPessoaJuridica franqueado = context.mock(
@@ -142,7 +139,7 @@ public class TestFranqueadoPessoaJuridicaController {
 			throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final Franqueado indicadopor = context.mock(Franqueado.class);
+
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
 		final FranqueadoPessoaJuridica franqueado = context.mock(

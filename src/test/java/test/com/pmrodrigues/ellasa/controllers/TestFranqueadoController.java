@@ -30,7 +30,6 @@ import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
-import com.pmrodrigues.ellasa.services.FranqueadoService;
 
 public class TestFranqueadoController {
 
@@ -40,7 +39,7 @@ public class TestFranqueadoController {
 		}
 	};
 
-	private FranqueadoService service;
+
 	private TipoFranquiaRepository franquiaRepository;
 	private EstadoRepository estadoRepository;
 	private MeioPagamentoRepository meioPagamentoRepostory;
@@ -52,13 +51,13 @@ public class TestFranqueadoController {
 	public void setup() {
 
 		result = new MockResult();
-		service = context.mock(FranqueadoService.class);
+
 		franquiaRepository = context.mock(TipoFranquiaRepository.class);
 		estadoRepository = context.mock(EstadoRepository.class);
 		meioPagamentoRepostory = context.mock(MeioPagamentoRepository.class);
 
 		validator = new MockValidator();
-		controller = new FranqueadoPessoaFisicaController(service, franquiaRepository,
+		controller = new FranqueadoPessoaFisicaController(franquiaRepository,
 				estadoRepository, meioPagamentoRepostory,
 				result, validator);
 
@@ -99,7 +98,7 @@ public class TestFranqueadoController {
 	public void testAvancar() throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final FranqueadoPessoaFisica indicadopor = context.mock(FranqueadoPessoaFisica.class);
+
 		final FranqueadoPessoaFisica franqueado = context.mock(
 				FranqueadoPessoaFisica.class, "franqueado");
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);
@@ -140,7 +139,7 @@ public class TestFranqueadoController {
 			throws IndicacaoFranqueadoNaoEncontradoException,
 			EstouroTamanhoDeRedeException {
 
-		final FranqueadoPessoaFisica indicadopor = context.mock(FranqueadoPessoaFisica.class);
+
 		final FranqueadoPessoaFisica franqueado = context.mock(
 				FranqueadoPessoaFisica.class, "franqueado");
 		final TipoFranquia tipo = context.mock(TipoFranquia.class);

@@ -13,6 +13,7 @@ import javax.persistence.PrePersist;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +107,9 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		
 		
 		final List<E> all = this.getSession()
-				.getNamedQuery(format("%s.All", className)).list();
+				.getNamedQuery(format("%s.All", className))
+				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+				.list();
 		return all;
 	}
 
