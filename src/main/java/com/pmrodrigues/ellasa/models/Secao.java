@@ -36,20 +36,4 @@ public class Secao implements Serializable {
 	@JoinColumn(name = "pai_id")
 	private final Set<Secao> subsecoes = new HashSet<>();
 
-	public Long getId() {
-		return id;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public Secao getPai() {
-		return pai;
-	}
-
-	public Set<Secao> getSubsecoes() {
-		return subsecoes;
-	}
-
 }

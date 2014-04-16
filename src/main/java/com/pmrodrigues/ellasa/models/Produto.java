@@ -51,5 +51,9 @@ public class Produto implements Serializable {
 	@OneToMany
 	@JoinColumn(name = "produto_id")
 	private final Set<Imagem> imagens = new HashSet<>();
+	
+	@OneToMany
+	@JoinColumn(name = "produto_id")
+	private final Set<Atributo> atributos = new HashSet<>();
 
 }

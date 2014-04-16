@@ -35,7 +35,10 @@ public class ProdutoController {
 		List<Produto> produtos = repository.list();
 		logging.debug("lista encontrada");
 		
-		result.use(Results.json()).from(produtos).include("imagens","secao").serialize();
+		result.use(Results.json())
+			  .from(produtos)
+			  .include("imagens","atributos","secao")
+			  .serialize();
 		
 		return produtos;
 	}

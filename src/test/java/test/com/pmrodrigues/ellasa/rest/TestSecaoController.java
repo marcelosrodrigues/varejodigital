@@ -1,6 +1,6 @@
 package test.com.pmrodrigues.ellasa.rest;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
@@ -31,14 +31,11 @@ public class TestSecaoController
 		service = new SecaoController(repository, new MockResult());
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void deveListarTodasAsSecoes() {
-		final Long count = this.jdbcTemplate
-				.queryForLong("select count(1) from secao");
-
+		
 		final List<Secao> secoes = service.secoes();
-		assertEquals( count , new Long(secoes.size()));
+		assertFalse( secoes.isEmpty());
 		
 		
 	}

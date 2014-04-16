@@ -11,7 +11,7 @@
 
 	<!-- DESENVOLVIMENTO -->
 
-	<context:component-scan base-package="com.pmrodrigues.ellasa" />
+		<context:component-scan base-package="com.pmrodrigues.ellasa" />
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
@@ -47,5 +47,5 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-
+	
 </beans>
