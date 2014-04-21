@@ -8,7 +8,7 @@ import br.com.caelum.vraptor.Validator;
 
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.annotations.Tiles;
-import com.pmrodrigues.ellasa.controller.sessionscope.OrdemPagamentoSession;
+import com.pmrodrigues.ellasa.controllers.sessionscope.OrdemPagamentoSession;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
 import com.pmrodrigues.ellasa.services.ContratoService;

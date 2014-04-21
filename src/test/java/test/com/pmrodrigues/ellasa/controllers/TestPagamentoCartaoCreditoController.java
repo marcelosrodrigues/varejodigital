@@ -10,8 +10,8 @@ import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
 
-import com.pmrodrigues.ellasa.controller.sessionscope.OrdemPagamentoSession;
 import com.pmrodrigues.ellasa.controllers.PagamentoCartaoCreditoController;
+import com.pmrodrigues.ellasa.controllers.sessionscope.OrdemPagamentoSession;
 import com.pmrodrigues.ellasa.models.Contrato;
 import com.pmrodrigues.ellasa.models.Franqueado;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;

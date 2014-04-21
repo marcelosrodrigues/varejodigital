@@ -1,4 +1,4 @@
-package com.pmrodrigues.ellasa.controller.sessionscope;
+package com.pmrodrigues.ellasa.controllers.sessionscope;
 
 import java.io.Serializable;
 
