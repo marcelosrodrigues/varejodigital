@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "produto")
-@NamedQueries({@NamedQuery(name = "Produto.All", query = "SELECT p FROM Produto p inner join fetch p.secao s left join fetch p.imagens ORDER BY s.id")})
+@NamedQueries({@NamedQuery(name = "Produto.All", query = "SELECT p FROM Produto p inner join fetch p.secao s left join fetch p.imagens left join fetch p.atributos ORDER BY s.id")})
 public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;

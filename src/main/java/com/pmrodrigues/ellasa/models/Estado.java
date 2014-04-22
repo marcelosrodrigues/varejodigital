@@ -18,7 +18,11 @@ public class Estado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(columnDefinition = "char(2)", nullable = false)
+	@Column(name = "id")
+	private Long id;
+	
+	@NotNull
+	@Column(columnDefinition = "char(2)", nullable = false , unique = true)
 	private String uf;
 
 	@NotNull
