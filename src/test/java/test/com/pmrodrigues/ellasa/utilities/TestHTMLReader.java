@@ -19,8 +19,8 @@ public class TestHTMLReader {
 	public void readBoleto() throws MalformedURLException, IOException,
 			SAXException, ParserConfigurationException {
 
-		HTMLReader reader = new HTMLReader();
-		String html = reader
+		final HTMLReader reader = new HTMLReader();
+		final String html = reader
 				.getElement(
 						"recibo",
 						new URL(

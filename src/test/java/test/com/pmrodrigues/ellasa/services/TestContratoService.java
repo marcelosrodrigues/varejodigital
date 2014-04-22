@@ -42,7 +42,7 @@ public class TestContratoService
 		final TipoFranquia franquia = franquiaRepository.findById(4L);
 		final MeioPagamento meiopagamento = meioPagamentoRepository
 				.findById(2L);
-		final Estado estado = estadoRepository.findById("RJ");
+		final Estado estado = estadoRepository.findById(313L);
 		final FranqueadoPessoaFisica franqueado = Factory.getStubFranqueado(estado);
 
 		final OrdemPagamentoCartaoCredito ordem = new OrdemPagamentoCartaoCredito();

@@ -73,7 +73,7 @@ public class Usuario implements Serializable {
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		this.email = email;
 	}
 
@@ -93,7 +93,7 @@ public class Usuario implements Serializable {
 		return celular;
 	}
 
-	public void setCelular(Celular celular) {
+	public void setCelular(final Celular celular) {
 		this.celular = celular;
 	}
 
@@ -101,7 +101,7 @@ public class Usuario implements Serializable {
 		return residencial;
 	}
 
-	public void setResidencial(Residencial residencial) {
+	public void setResidencial(final Residencial residencial) {
 		this.residencial = residencial;
 	}
 

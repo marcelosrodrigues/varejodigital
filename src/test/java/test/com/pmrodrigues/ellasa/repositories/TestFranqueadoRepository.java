@@ -31,7 +31,7 @@ public class TestFranqueadoRepository
 	@Before
 	public void before() {
 
-		estado = estadoRepository.findById("RJ");
+		estado = estadoRepository.findById(313L);
 		deleteDadosDeTeste();
 	}
 
@@ -84,11 +84,11 @@ public class TestFranqueadoRepository
 	@Test
 	public void deveEcontrarFranqueadoPeloCodigo() {
 
-		Franqueado franqueado = Factory.getStubFranqueado(estado);
+		final Franqueado franqueado = Factory.getStubFranqueado(estado);
 
 		repository.add(franqueado);
 
-		Franqueado founded = repository.findByCodigo(franqueado.getCodigo());
+		final Franqueado founded = repository.findByCodigo(franqueado.getCodigo());
 
 		Assert.assertNotNull(founded);
 	}

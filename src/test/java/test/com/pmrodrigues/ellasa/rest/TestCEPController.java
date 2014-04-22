@@ -38,7 +38,7 @@ public class TestCEPController
 				.queryForLong("select count(1) from cep");
 
 		final List<CEP> ceps = service.ceps();
-		assertEquals( count , new Long(ceps.size()));
+		assertEquals( count , Long.valueOf(ceps.size()));
 		
 		
 	}

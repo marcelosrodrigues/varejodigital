@@ -32,7 +32,7 @@ public class CEPController {
 	public List<CEP> ceps() {
 		
 		logging.debug("listando os ceps cadastrados no prestashop");
-		List<CEP> ceps = repository.list();
+		final List<CEP> ceps = repository.list();
 		logging.debug("lista encontrada");
 		result.use(Results.json())
 		  .from(ceps)

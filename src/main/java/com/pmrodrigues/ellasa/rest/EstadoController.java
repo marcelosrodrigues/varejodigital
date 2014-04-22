@@ -32,7 +32,7 @@ public class EstadoController {
 	public List<Estado> estados() {
 		
 		logging.debug("listando os estados cadastrados no prestashop");
-		List<Estado> estados = repository.list();
+		final List<Estado> estados = repository.list();
 		logging.debug("lista encontrada");
 		result.use(Results.json())
 		  .from(estados).serialize();

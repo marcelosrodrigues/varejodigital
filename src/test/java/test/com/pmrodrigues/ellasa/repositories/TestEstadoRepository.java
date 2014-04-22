@@ -21,13 +21,13 @@ public class TestEstadoRepository
 
 	@Test
 	public void testFindById() {
-		Estado estado = repository.findById("RJ");
+		final Estado estado = repository.findById(313L);
 		Assert.assertNotNull(estado);
 	}
 
 	@Test
 	public void testList() {
-		List<Estado> estados = repository.list();
+		final List<Estado> estados = repository.list();
 		Assert.assertFalse(estados.isEmpty());
 	}
 

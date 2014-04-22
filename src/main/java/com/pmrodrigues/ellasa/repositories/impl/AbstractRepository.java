@@ -41,7 +41,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
 	@Override
-	public void add(E e) {
+	public void add(final E e) {
 
 		LOGGER.debug(format("Tentando inserir %s novo valor no banco de dados",
 				e));
@@ -53,7 +53,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
 	// TODO isto deve sair daqui e virar um EventListener.
-	private void preInsert(E e) {
+	private void preInsert(final E e) {
 		for (Method method : e.getClass().getMethods()) {
 			if (method.isAnnotationPresent(PrePersist.class)) {
 				try {
@@ -67,7 +67,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
 	@Override
-	public void set(E e) {
+	public void set(final E e) {
 		LOGGER.debug(format("Atualizando o valor %s no banco de dados", e));
 		this.getSession().update(e);
 		LOGGER.debug(format("%s salvo com sucesso", e));
@@ -75,7 +75,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
 	@Override
-	public void remove(E e) {
+	public void remove(final E e) {
 		LOGGER.debug(format("Removendo o valor %s do banco de dados", e));
 		this.getSession().delete(e);
 		LOGGER.debug(format("%s removido do banco de dados", e));
@@ -101,9 +101,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 				"Listando todos os valores de %s do banco de dados",
 				persistentClass.getCanonicalName()));
 
-		final String className = persistentClass.getCanonicalName().substring(
-				(persistentClass.getPackage().getName() + ".").length());
-
+		final String className = persistentClass.getSimpleName();
 		
 		
 		final List<E> all = this.getSession()

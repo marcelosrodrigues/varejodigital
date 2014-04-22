@@ -39,7 +39,7 @@ public class TestRepository
 
 		session = sessionFactory.openSession();
 		deleteDadosDeTeste();
-		estado = (Estado) session.get(Estado.class, "RJ");
+		estado = (Estado) session.get(Estado.class, 313L);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -90,7 +90,7 @@ public class TestRepository
 	@Test
 	public void deveInserir() {
 
-		Franqueado franqueado = Factory.getStubFranqueado(estado);
+		final Franqueado franqueado = Factory.getStubFranqueado(estado);
 
 		repository.add(franqueado);
 
@@ -100,7 +100,7 @@ public class TestRepository
 	@Test
 	public void deveAlterar() {
 
-		FranqueadoPessoaFisica franqueado = Factory.getStubFranqueado(estado);
+		final FranqueadoPessoaFisica franqueado = Factory.getStubFranqueado(estado);
 
 		repository.add(franqueado);
 
@@ -112,12 +112,12 @@ public class TestRepository
 	@Test
 	public void deveRemover() {
 
-		Franqueado franqueado = Factory.getStubFranqueado(estado);
+		final Franqueado franqueado = Factory.getStubFranqueado(estado);
 		repository.add(franqueado);
 
 		repository.remove(franqueado);
 
-		Franqueado isDeleted = (Franqueado) session.get(Franqueado.class,
+		final Franqueado isDeleted = (Franqueado) session.get(Franqueado.class,
 				franqueado.getId());
 		Assert.assertNull(isDeleted);
 	}
@@ -125,17 +125,17 @@ public class TestRepository
 	@Test
 	public void deveEncontrarPelaChave() {
 
-		Franqueado franqueado = Factory.getStubFranqueado(estado);
+		final Franqueado franqueado = Factory.getStubFranqueado(estado);
 		repository.add(franqueado);
 
-		Franqueado toFound = repository.findById(franqueado.getId());
+		final Franqueado toFound = repository.findById(franqueado.getId());
 
 		Assert.assertNotNull(toFound);
 	}
 
 	@Test
 	public void deveListarTodosOsValores() {
-		Franqueado franqueado = Factory.getStubFranqueado(estado);
+		final Franqueado franqueado = Factory.getStubFranqueado(estado);
 
 		repository.add(franqueado);
 

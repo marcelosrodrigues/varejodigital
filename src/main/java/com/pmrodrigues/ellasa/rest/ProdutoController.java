@@ -32,7 +32,7 @@ public class ProdutoController {
 	@Get
 	public List<Produto> produtos() {
 		logging.debug("iniciando a leitura dos produtos cadastrados no prestashop");
-		List<Produto> produtos = repository.list();
+		final List<Produto> produtos = repository.list();
 		logging.debug("lista encontrada");
 		
 		result.use(Results.json())

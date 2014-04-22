@@ -25,13 +25,13 @@ public class TestUsuarioRepository
 		if (this.jdbcTemplate.queryForInt(
 				"select count(1) from usuario where email = ?",
 				"marsilvarodrigues@gmail.com") > 0) {
-			Long id = this.jdbcTemplate.queryForLong(
+			final Long id = this.jdbcTemplate.queryForLong(
 					"select id from usuario where email = ?",
 					"marsilvarodrigues@gmail.com");
 
-			Long celular_id = this.jdbcTemplate.queryForLong(
+			final Long celular_id = this.jdbcTemplate.queryForLong(
 					"select celular_id from usuario where id = ?", id);
-			Long residencial_id = this.jdbcTemplate.queryForLong(
+			final Long residencial_id = this.jdbcTemplate.queryForLong(
 					"select residencial_id from usuario where id = ?", id);
 
 			if (this.jdbcTemplate.queryForInt(
@@ -63,7 +63,7 @@ public class TestUsuarioRepository
 
 		deleteDadosDeTeste();
 
-		Usuario usuario = new Usuario();
+		final Usuario usuario = new Usuario();
 		usuario.setEmail("marsilvarodrigues@gmail.com");
 		repository.add(usuario);
 	}
@@ -75,7 +75,7 @@ public class TestUsuarioRepository
 
 	@Test
 	public void buscarUsuarioPorEmail() {
-		Usuario usuario = repository.findByEmail("marsilvarodrigues@gmail.com");
+		final Usuario usuario = repository.findByEmail("marsilvarodrigues@gmail.com");
 		Assert.assertNotNull(usuario);
 	}
 }
