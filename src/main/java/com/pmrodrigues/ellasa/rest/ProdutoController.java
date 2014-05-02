@@ -37,10 +37,14 @@ public class ProdutoController {
 		
 		result.use(Results.json())
 			  .from(produtos)
-			  .include("imagens","atributos","secao")
+			  .include("imagens","atributos","secao")			  
+			  .exclude("secao.nome","secao.pai","secao.subsecoes")
 			  .serialize();
 		
 		return produtos;
 	}
 
+	
+	
+	
 }

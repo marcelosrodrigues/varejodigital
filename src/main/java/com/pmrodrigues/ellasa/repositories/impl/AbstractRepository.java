@@ -106,7 +106,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		
 		final List<E> all = this.getSession()
 				.getNamedQuery(format("%s.All", className))
-				.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY)
+				.setResultTransformer(CriteriaSpecification.ROOT_ENTITY)
 				.list();
 		return all;
 	}

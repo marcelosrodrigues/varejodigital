@@ -19,5 +19,4 @@ public class Atributo implements Serializable {
 	@Column
 	private String descricao;
 	
-
 }

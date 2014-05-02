@@ -18,4 +18,5 @@ public class Imagem implements Serializable {
 
 	@Column(name="image")
 	private String url;
+	
 }

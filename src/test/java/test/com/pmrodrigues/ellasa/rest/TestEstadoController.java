@@ -38,7 +38,7 @@ public class TestEstadoController
 				.queryForLong("select count(1) from estado");
 
 		final List<Estado> estados = service.estados();
-		assertEquals( count , new Long(estados.size()));
+		assertEquals( count , Long.valueOf(estados.size()));
 		
 		
 	}

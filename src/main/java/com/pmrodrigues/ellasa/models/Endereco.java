@@ -41,7 +41,7 @@ public class Endereco implements Serializable {
 
 	@NotNull(message = "Estado é obrigatório")
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
-	@JoinColumn(name = "uf")
+	@JoinColumn(name = "estado_id")
 	private Estado estado;
 
 	public void setEstado(final Estado estado) {

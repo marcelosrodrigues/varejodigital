@@ -12,33 +12,33 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 
 import br.com.caelum.vraptor.util.test.MockResult;
 
-import com.pmrodrigues.ellasa.models.Produto;
-import com.pmrodrigues.ellasa.repositories.ProdutoRepository;
-import com.pmrodrigues.ellasa.rest.ProdutoController;
+import com.pmrodrigues.ellasa.models.FaixaPreco;
+import com.pmrodrigues.ellasa.repositories.FaixaRepository;
+import com.pmrodrigues.ellasa.rest.FaixaPrecoController;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
-public class TestProdutoController
+public class TestFaixaPrecoController
 		extends
 			AbstractTransactionalJUnit4SpringContextTests {
 	
-	private ProdutoController service;
+	private FaixaPrecoController service;
 
 	@Autowired
-	private ProdutoRepository repository;
+	private FaixaRepository repository;
 	
 	@Before
 	public void  setup() {
-		service = new ProdutoController(repository, new MockResult());
+		service = new FaixaPrecoController(repository, new MockResult());
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void deveListarTodasAsSecoes() {
 		final Long count = this.jdbcTemplate
-				.queryForLong("select count(1) from produto");
+				.queryForLong("select count(1) from faixa_preco");
 
-		final List<Produto> produtos = service.produtos();
-		assertEquals( count , Long.valueOf(produtos.size()));
+		final List<FaixaPreco> faixas = service.faixas();
+		assertEquals( count , Long.valueOf(faixas.size()));
 		
 		
 	}
