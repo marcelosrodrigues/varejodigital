@@ -50,7 +50,7 @@ public class EnderecoCliente {
 	private String celular;
 	
 	@Column(name="active")
-	private final boolean active = true;
+	private boolean active;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name="id_state")

@@ -26,8 +26,8 @@ public class CustomJSONSerialization extends XStreamJSONSerialization {
 	@Override
 	protected XStream getXStream() {
 
-		final XStream stream = super.getXStream();
-
+		final XStream stream = super.getXStream();		
+		stream.addDefaultImplementation(java.sql.Date.class, java.util.Date.class);  
 		stream.registerConverter(new CollectionConverter(stream.getMapper()) {
 			@Override
 			public boolean canConvert(Class type) {
