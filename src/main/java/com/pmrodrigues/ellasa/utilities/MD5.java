@@ -16,8 +16,6 @@ public final class MD5 {
 		final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 		messageDigest.reset();
 		messageDigest.update(message.getBytes(Charset.forName("UTF8")));
-		final byte[] resultByte = messageDigest.digest();
-		final String result = new String(Hex.encodeHex(resultByte));
-		return result;
+		return new String(Hex.encodeHex(messageDigest.digest()));
 	}
 }

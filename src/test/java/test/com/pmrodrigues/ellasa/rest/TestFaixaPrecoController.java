@@ -1,6 +1,6 @@
 package test.com.pmrodrigues.ellasa.rest;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -34,8 +34,12 @@ public class TestFaixaPrecoController
 	@Test
 	public void deveListarTodasAsSecoes() {
 		
+		@SuppressWarnings("deprecation")
+		final Long count = this.jdbcTemplate
+				.queryForLong("select count(1) from faixa_preco");
+
 		final List<FaixaPreco> faixas = service.faixas();
-		assertTrue( 120L == Long.valueOf(faixas.size()));
+		assertEquals( count , Long.valueOf(faixas.size()));
 		
 		
 	}
