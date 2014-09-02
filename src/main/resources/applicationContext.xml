@@ -6,6 +6,7 @@
 
 	<import resource="applicationContext-data.xml" />
 	<import resource="applicationContext-email.xml" />
+	<import resource="applicationContext-security.xml" />
 
 	<context:property-placeholder location="classpath:akatus.properties"/>
 	

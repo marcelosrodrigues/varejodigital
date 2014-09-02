@@ -16,11 +16,11 @@ import com.pmrodrigues.ellasa.repositories.CEPRepository;
 @Resource
 public class CEPController {
 
-	private final CEPRepository repository;
+	private final CEPRepository repository; //NOPMD
 	
-	private final Result result;
+	private final Result result; //NOPMD
 	
-	private static final Logger logging = Logger.getLogger(CEPController.class);
+	private static final Logger logging = Logger.getLogger(CEPController.class); //NOPMD
 	
 	public CEPController( final CEPRepository repository , final Result result ) {
 		this.repository = repository;
@@ -34,7 +34,7 @@ public class CEPController {
 		logging.debug("listando os ceps cadastrados no prestashop");
 		final List<CEP> ceps = repository.list();
 		logging.debug("lista encontrada");
-		result.use(Results.json())
+		result.use(Results.json()) //NOPMD
 		  .from(ceps)
 		  .recursive()
 		  .serialize();

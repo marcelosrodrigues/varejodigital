@@ -28,14 +28,14 @@ import com.pmrodrigues.ellasa.utilities.MD5;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 		@NamedQuery(name = "Usuario.All", query = "FROM Usuario"),
-		@NamedQuery(name = "Usuario.FindByEmail", query = "FROM Usuario WHERE email = :email")})
+		@NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u inner join fetch u.celular left join fetch u.residencial WHERE email = :email")})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Transient
 	private final String cleanPassword = RandomStringUtils
-			.randomAlphanumeric(16);
+			.randomAlphanumeric(10);
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

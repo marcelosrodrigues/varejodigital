@@ -18,18 +18,16 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
 	private static final Logger LOGGER = Logger
 			.getLogger(UsuarioRepositoryImpl.class);
 
-	/* (non-Javadoc)
-	 * @see com.pmrodrigues.ellasa.repositories.impl.UsuarioRepository#findByEmail(java.lang.String)
-	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public Usuario findByEmail(final String email) {
 
 		LOGGER.debug(format("Pesquisando usuário pelo email %s", email));
-
+		
 		final Usuario usuario = (Usuario) super.getSession()
 				.getNamedQuery("Usuario.FindByEmail")
-				.setParameter("email", email).uniqueResult();
+				.setParameter("email", email)
+				.uniqueResult();
 
 		LOGGER.debug(format("Usuario %s encontrado", usuario));
 

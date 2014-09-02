@@ -6,6 +6,7 @@
 
 	<import resource="test-applicationContext-data.xml" />
 	<import resource="test-applicationContext-email.xml" />
+	<import resource="test-applicationContext-security.xml" />
 
 </beans>
 

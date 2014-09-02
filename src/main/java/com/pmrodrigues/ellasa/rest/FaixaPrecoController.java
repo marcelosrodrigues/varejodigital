@@ -20,7 +20,7 @@ public class FaixaPrecoController {
 
 	private final Result result;
 
-	private static final Logger logging = Logger.getLogger(CEPController.class);
+	private static final Logger logging = Logger.getLogger(FaixaPrecoController.class);
 
 	public FaixaPrecoController(final FaixaRepository repository,
 			final Result result) {

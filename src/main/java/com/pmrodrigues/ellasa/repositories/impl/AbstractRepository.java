@@ -26,9 +26,9 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory; //NOPMD
 
-	private final Class<E> persistentClass;
+	private final Class<E> persistentClass; //NOPMD
 
 	private static final Logger LOGGER = Logger
 			.getLogger(AbstractRepository.class);
@@ -53,44 +53,44 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
 	// TODO isto deve sair daqui e virar um EventListener.
-	private void preInsert(final E e) {
-		for (Method method : e.getClass().getMethods()) {
+	private void preInsert(final E entity) { //NOPMD
+		for (final Method method : entity.getClass().getMethods()) { //NOPMD
 			if (method.isAnnotationPresent(PrePersist.class)) {
 				try {
-					method.invoke(e);
+					method.invoke(entity);
 				} catch (IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e1) {
-					throw new RuntimeException(e1);
+						| InvocationTargetException e) {
+					throw new RuntimeException(e);
 				}
 			}
 		}
 	}
 
 	@Override
-	public void set(final E e) {
-		LOGGER.debug(format("Atualizando o valor %s no banco de dados", e));
-		this.getSession().update(e);
-		LOGGER.debug(format("%s salvo com sucesso", e));
+	public void set(final E entity) {
+		LOGGER.debug(format("Atualizando o valor %s no banco de dados", entity));
+		this.getSession().update(entity);
+		LOGGER.debug(format("%s salvo com sucesso", entity));
 
 	}
 
 	@Override
-	public void remove(final E e) {
-		LOGGER.debug(format("Removendo o valor %s do banco de dados", e));
-		this.getSession().delete(e);
-		LOGGER.debug(format("%s removido do banco de dados", e));
+	public void remove(final E entity) {
+		LOGGER.debug(format("Removendo o valor %s do banco de dados", entity));
+		this.getSession().delete(entity);
+		LOGGER.debug(format("%s removido do banco de dados", entity));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(propagation = Propagation.SUPPORTS)
 	@Override
-	public E findById(final Serializable id) {
+	public E findById(final Serializable id) { //NOPMD
 		LOGGER.debug(format(
 				"Recuperando o valor de %s do banco de dados pela chave %s",
 				persistentClass.getName(), id));
-		E e = (E) this.getSession().get(persistentClass, id);
-		LOGGER.debug(format("Valor encontrado %s", e));
-		return e;
+		final E entity = (E) this.getSession().get(persistentClass, id);
+		LOGGER.debug(format("Valor encontrado %s", entity));
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -112,9 +112,8 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
 	protected Session getSession() {
-		
 		Session session = this.sessionFactory.getCurrentSession();
-		if (session == null || !session.isOpen()) {
+		if (session == null || !session.isOpen()) { //NOPMD
 			session = this.sessionFactory.openSession();
 		}
 		return session;
