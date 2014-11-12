@@ -197,7 +197,7 @@ public class CartOperation extends AkatusOperation {
 	}
 
 	/**
-	 * Esse método recupera o objeto {@link Transaction} e já calcula os valores
+	 * Esse método recupera o objeto {@link Transaction} e já geraComissao os valores
 	 * do carrinho.
 	 * 
 	 * @return A instância de {@link Transaction}

@@ -9,6 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -49,7 +50,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		preInsert(e);
 
 		this.getSession().save(e);
-		LOGGER.debug(format(" %s salvo com sucesso", e));
+        LOGGER.debug(format(" %s salvo com sucesso", e));
 	}
 
 	// TODO isto deve sair daqui e virar um EventListener.
@@ -66,10 +67,25 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		}
 	}
 
+    // TODO isto deve sair daqui e virar um EventListener.
+    private void preUpdate(final E entity) { //NOPMD
+        for (final Method method : entity.getClass().getMethods()) { //NOPMD
+            if (method.isAnnotationPresent(PreUpdate.class)) {
+                try {
+                    method.invoke(entity);
+                } catch (IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
 	@Override
 	public void set(final E entity) {
 		LOGGER.debug(format("Atualizando o valor %s no banco de dados", entity));
-		this.getSession().update(entity);
+        preUpdate(entity);
+        this.getSession().update(entity);
 		LOGGER.debug(format("%s salvo com sucesso", entity));
 
 	}

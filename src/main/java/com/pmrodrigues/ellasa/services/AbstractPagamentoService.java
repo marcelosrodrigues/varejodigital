@@ -1,14 +1,12 @@
 package com.pmrodrigues.ellasa.services;
 
+import com.pmrodrigues.ellasa.factory.PayerFactory;
+import com.pmrodrigues.ellasa.models.*;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 
-import com.pmrodrigues.ellasa.models.Endereco;
-import com.pmrodrigues.ellasa.models.Franqueado;
-import com.pmrodrigues.ellasa.models.OrdemPagamento;
-import com.pmrodrigues.ellasa.models.Telefone;
 import com.pmrodrigues.ellasa.pagamentos.Akatus;
 import com.pmrodrigues.ellasa.pagamentos.Akatus.Environment;
 import com.pmrodrigues.ellasa.pagamentos.entity.Address;
@@ -19,6 +17,7 @@ import com.pmrodrigues.ellasa.pagamentos.entity.Phone;
 import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
 import com.pmrodrigues.ellasa.pagamentos.v1.cart.CartOperation;
 import com.pmrodrigues.ellasa.pagamentos.v1.cart.CartResponse;
+import sun.net.www.content.text.Generic;
 
 
 @PropertySource("classpath:akatus.properties")
@@ -42,77 +41,31 @@ public abstract class AbstractPagamentoService implements PagamentoService {
 		return new Recebedor(user, key);
 	}
 
-	protected Address criarEndereco(final Endereco endereco) {
-		final Address address = new Address();
-		address.setCity(endereco.getCidade());
-		address.setComplement(endereco.getComplemento());
-		address.setCountry(Country.BRA);
-		address.setNeighbourhood(endereco.getBairro());
-		address.setNumber(Integer.parseInt(endereco.getNumero()));
-		address.setState(State.valueOf(endereco.getEstado().getUf()));
-		address.setStreet(endereco.getLogradouro());
-		address.setType(Address.Type.SHIPPING);
-		address.setZip(endereco.getCep());
-		return address;
-	}
-
-	protected Payer criarPagador(final Franqueado franqueado) {
-		final Payer pagador = new Payer();
-		pagador.setEmail(franqueado.getEmail());
-		pagador.setName(franqueado.getNome());
-		return pagador;
-	}
-
-	protected Transaction criarTransacao(final OrdemPagamento pagamento) {
+    protected Transaction criarTransacao(final OrdemPagamento pagamento) {
 		final Recebedor recebedor = this.getRecebedor();
 		this.carrinho = new Akatus(Environment.valueOf(enviroment),
 				recebedor.getEmail(),
 				recebedor.getApiKey()).cart();
 
-		final Payer pagador = criarPagador(pagamento.getContrato()
-				.getFranqueado());
+		final Payer pagador = PayerFactory.getInstance(pagamento)
+                                          .create();
 
-		final Address address = criarEndereco(pagamento.getContrato()
-				.getFranqueado().getEndereco());
-
-		pagador.addAddress(address);
-
-		if (pagamento.getContrato().getFranqueado().getCelular() != null
-				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
-						.getFranqueado().getCelular().getDdd())
-				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
-						.getFranqueado().getCelular().getNumero())) {
-			Phone phone = createTelefone(pagamento.getContrato()
-					.getFranqueado().getCelular());
-			pagador.addPhone(phone);
-		}
-
-		if (pagamento.getContrato().getFranqueado().getResidencial().getDdd() != null
-				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
-						.getFranqueado().getResidencial().getDdd())
-				&& !GenericValidator.isBlankOrNull(pagamento.getContrato()
-						.getFranqueado().getResidencial().getNumero())) {
-			Phone phone = createTelefone(pagamento.getContrato()
-					.getFranqueado().getResidencial());
-			pagador.addPhone(phone);
-		}
-
-		carrinho.setPayer(pagador);
-		carrinho.addProduct(pagamento.getCarrinho(), pagamento.getDescricao(),
-				pagamento.getValor().doubleValue(), 0D, 1, 0D);
+        carrinho.setPayer(pagador);
+        if( pagamento.getPedido() == null ) {
+            carrinho.addProduct(pagamento.getCarrinho(), pagamento.getDescricao(),
+                    pagamento.getValor().doubleValue(), 0D, 1, 0D);
+        } else {
+            for(ItemPedido item : pagamento.getPedido().getItens()) {
+                carrinho.addProduct(item.getProduto().getId().toString(), item.getProduto().getNome(),
+                        item.getProduto().getPreco().doubleValue(), item.getProduto().getPeso().doubleValue(), item.getQuantidade().intValue());
+            }
+        }
 
 		final Transaction trans = carrinho.getTransaction();
 		trans.setReference(pagamento.getCarrinho());
 		trans.setInstallments(1);
 
 		return trans;
-	}
-
-	private Phone createTelefone(final Telefone telefone) {
-		Phone phone = new Phone();
-		phone.setNumber(telefone.getDdd() + telefone.getNumero());
-		phone.setType(Phone.Type.RESIDENTIAL);
-		return phone;
 	}
 
 	protected void execute(final OrdemPagamento pagamento) {

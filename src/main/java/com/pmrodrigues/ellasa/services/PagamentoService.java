@@ -4,6 +4,5 @@ import com.pmrodrigues.ellasa.models.OrdemPagamento;
 
 public interface PagamentoService {
 
-
 	void pagar(OrdemPagamento pagamento);
 }

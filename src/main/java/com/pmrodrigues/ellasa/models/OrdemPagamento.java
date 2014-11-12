@@ -69,7 +69,11 @@ public class OrdemPagamento implements Serializable {
 	@Column
 	private String documento;
 
-	public OrdemPagamento(final MeioPagamento meiopagamento,
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "id_order")
+    private Pedido pedido;
+
+    public OrdemPagamento(final MeioPagamento meiopagamento,
 			final Contrato contrato, final BigDecimal valor) {
 		this();
 		this.meioPagamento = meiopagamento;
@@ -158,4 +162,11 @@ public class OrdemPagamento implements Serializable {
 		return this.documento;
 	}
 
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 }
