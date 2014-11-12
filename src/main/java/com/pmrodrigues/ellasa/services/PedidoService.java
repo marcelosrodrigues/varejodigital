@@ -64,6 +64,8 @@ public class PedidoService {
 
         if( pedido.getDadosPagamento().isSucesso() ) {
             pedido.setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
+        } else {
+            pedido.setStatus(StatusPagamento.CANCELADO);
         }
 
     }
