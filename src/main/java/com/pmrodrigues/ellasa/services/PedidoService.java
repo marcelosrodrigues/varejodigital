@@ -42,7 +42,7 @@ public class PedidoService {
     private PagamentoFactory pagamentoService;
 
     @Transactional
-    public void efetuarPedido(final Pedido pedido) {
+    public void pagar(final Pedido pedido) {
 
         logging.info(format("salvando o pedido %s", pedido));
         final String CODIGO_TRANSACAO = RandomStringUtils.randomAlphanumeric(20).toUpperCase();

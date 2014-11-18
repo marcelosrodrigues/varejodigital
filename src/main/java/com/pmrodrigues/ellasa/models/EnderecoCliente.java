@@ -117,6 +117,8 @@ public class EnderecoCliente {
 
     public void setCliente(final Cliente cliente) {
         this.cliente = cliente;
+        this.primeiroNome = cliente.getPrimeiroNome();
+        this.ultimoNome = cliente.getUltimoNome();
     }
 
     public void setLogradouro(final String logradouro) {

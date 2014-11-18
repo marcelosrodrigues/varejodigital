@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +55,7 @@ public class TestPedidoService  extends AbstractTransactionalJUnit4SpringContext
             pedido.adicionar(produto);
         }
 
-        service.efetuarPedido(pedido);
+        service.pagar(pedido);
 
     }
 
@@ -93,7 +92,7 @@ public class TestPedidoService  extends AbstractTransactionalJUnit4SpringContext
             pedido.adicionar(produto);
         }
 
-        service.efetuarPedido(pedido);
+        service.pagar(pedido);
 
     }
 

@@ -59,11 +59,14 @@ public class Cliente implements Serializable{
     public void onInsert() {
         dataCriacaco = DateTime.now().toDate();
         dataAlteracao = DateTime.now().toDate();
+        this.endereco.setCliente(this);
+
     }
 
     @PreUpdate
     public void onUpdate() {
         dataAlteracao = DateTime.now().toDate();
+        this.endereco.setCliente(this);
     }
 
     public Long getId() {

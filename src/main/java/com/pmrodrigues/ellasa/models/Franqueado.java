@@ -1,24 +1,12 @@
 package com.pmrodrigues.ellasa.models;
 
+import static com.pmrodrigues.ellasa.Constante.FRANQUEADO;
 import static com.pmrodrigues.ellasa.Constante.QUANTIDADE_MAXIMA_DE_FRANQUEADOS;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -50,6 +38,10 @@ public abstract class Franqueado extends Usuario {
 	@OneToMany()
 	@JoinColumn(name = "pai_id", referencedColumnName = "id")
 	private final Set<Franqueado> rede = new HashSet<>();
+
+    @OneToMany()
+    @JoinColumn(name = "franqueado_id")
+    private Set<Venda> vendas = new HashSet<>();
 
 	public Franqueado() {
 		super();

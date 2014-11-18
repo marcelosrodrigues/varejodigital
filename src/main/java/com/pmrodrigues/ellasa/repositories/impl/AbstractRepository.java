@@ -46,45 +46,13 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 
 		LOGGER.debug(format("Tentando inserir %s novo valor no banco de dados",
 				e));
-
-		preInsert(e);
-
 		this.getSession().save(e);
         LOGGER.debug(format(" %s salvo com sucesso", e));
 	}
 
-	// TODO isto deve sair daqui e virar um EventListener.
-	private void preInsert(final E entity) { //NOPMD
-		for (final Method method : entity.getClass().getMethods()) { //NOPMD
-			if (method.isAnnotationPresent(PrePersist.class)) {
-				try {
-					method.invoke(entity);
-				} catch (IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}
-	}
-
-    // TODO isto deve sair daqui e virar um EventListener.
-    private void preUpdate(final E entity) { //NOPMD
-        for (final Method method : entity.getClass().getMethods()) { //NOPMD
-            if (method.isAnnotationPresent(PreUpdate.class)) {
-                try {
-                    method.invoke(entity);
-                } catch (IllegalAccessException | IllegalArgumentException
-                        | InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-    }
-
 	@Override
 	public void set(final E entity) {
 		LOGGER.debug(format("Atualizando o valor %s no banco de dados", entity));
-        preUpdate(entity);
         this.getSession().update(entity);
 		LOGGER.debug(format("%s salvo com sucesso", entity));
 

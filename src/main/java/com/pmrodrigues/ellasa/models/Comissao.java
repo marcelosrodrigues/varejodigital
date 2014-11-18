@@ -31,4 +31,8 @@ public class Comissao implements Serializable{
     }
 
     public Comissao() {}
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
 }

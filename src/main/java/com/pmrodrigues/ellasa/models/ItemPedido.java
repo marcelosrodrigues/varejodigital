@@ -1,13 +1,11 @@
 package com.pmrodrigues.ellasa.models;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +16,7 @@ import static java.lang.String.format;
  */
 @Entity
 @Table(schema = "allinshopp" , name = "ps_order_detail")
+@XStreamAlias("item")
 public class ItemPedido implements Serializable{
 
     private static final java.math.BigDecimal CEM = new BigDecimal("100");
@@ -59,7 +58,7 @@ public class ItemPedido implements Serializable{
     @CollectionTable(name = "ps_order_detail_tax",
             schema = "allinshopp" ,
             joinColumns = @JoinColumn(name = "id_order_detail") )
-    private Set<Comissao> comissao = new HashSet<>();
+    private Set<Comissao> comissoes = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_shop")
@@ -99,9 +98,21 @@ public class ItemPedido implements Serializable{
 
         }
 
-        this.comissao.add(new Comissao(taxa,this.preco.multiply(taxa.getValor().divide(CEM)),this.quantidade));
+        this.comissoes.add(new Comissao(taxa, this.preco.multiply(taxa.getValor().divide(CEM)), this.quantidade));
 
     }
 
 
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public BigDecimal getValorLiquido() {
+        BigDecimal totalComissao = BigDecimal.ZERO;
+        for(Comissao comissao : this.comissoes ){
+            totalComissao = totalComissao.add(comissao.getValorTotal() );
+        }
+
+        return this.valor.subtract(totalComissao);
+    }
 }
