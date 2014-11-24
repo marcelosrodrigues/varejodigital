@@ -2,12 +2,9 @@ package com.pmrodrigues.ellasa.rest;
 
 import java.util.List;
 
+import br.com.caelum.vraptor.*;
 import org.apache.log4j.Logger;
 
-import br.com.caelum.vraptor.Get;
-import br.com.caelum.vraptor.Path;
-import br.com.caelum.vraptor.Resource;
-import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 
 import com.pmrodrigues.ellasa.models.FaixaPreco;
@@ -30,6 +27,7 @@ public class FaixaPrecoController {
 
 	@Get
 	@Path("/faixas.json")
+    @Consumes("application/json")
 	public List<FaixaPreco> faixas() {
 
 		logging.debug("listando as faixas cadastrados no prestashop");

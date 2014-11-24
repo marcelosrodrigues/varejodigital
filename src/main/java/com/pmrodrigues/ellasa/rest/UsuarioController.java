@@ -2,15 +2,12 @@ package com.pmrodrigues.ellasa.rest;
 
 import static java.lang.String.format;
 
+import br.com.caelum.vraptor.*;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import br.com.caelum.vraptor.Get;
-import br.com.caelum.vraptor.Path;
-import br.com.caelum.vraptor.Resource;
-import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 
 import com.pmrodrigues.ellasa.models.Usuario;
@@ -33,6 +30,7 @@ public class UsuarioController {
 	
 	@Get
 	@Path("/meus-dados.json")
+    @Consumes("application/json")
 	public Usuario meusDados() {
 		final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
 		final UserDetails user = (UserDetails) userAuthenticated.getPrincipal();
