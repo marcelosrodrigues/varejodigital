@@ -17,4 +17,8 @@ public class Loja implements Serializable{
 
      @Column(name = "name")
      private String nome;
+
+    public Long getId() {
+        return id;
+    }
 }

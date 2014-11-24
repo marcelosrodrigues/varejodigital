@@ -67,6 +67,7 @@ public class ItemPedido implements Serializable{
     @Column(name="product_weight")
     private BigDecimal peso;
 
+
     public ItemPedido(final Produto produto, final Long quantidade) {
         this();
         this.produto = produto;
@@ -104,6 +105,9 @@ public class ItemPedido implements Serializable{
 
 
     public BigDecimal getValor() {
+        if( valor == null ) {
+            valor = this.preco.multiply(new BigDecimal(quantidade));
+        }
         return valor;
     }
 
@@ -114,5 +118,22 @@ public class ItemPedido implements Serializable{
         }
 
         return this.valor.subtract(totalComissao);
+    }
+
+    public void setLoja(final Loja loja) {
+        this.loja = loja;
+    }
+
+    public Loja getLoja() {
+        return loja;
+    }
+
+    public void setProduto(final Produto produto) {
+        this.produto = produto;
+        this.valorUnitario = produto.getPreco();
+        this.valor = produto.getPreco().multiply(new BigDecimal(this.quantidade));
+        this.nome = this.produto.getNome();
+        this.preco = produto.getPreco();
+        this.peso = produto.getPeso();
     }
 }

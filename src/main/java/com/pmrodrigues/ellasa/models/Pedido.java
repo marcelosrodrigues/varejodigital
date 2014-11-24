@@ -1,6 +1,7 @@
 package com.pmrodrigues.ellasa.models;
 
 import com.pmrodrigues.ellasa.enumarations.StatusPagamento;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Pedido implements Serializable{
 
     @Transient
+    @XStreamAlias("pagamento")
     private OrdemPagamento dadosPagamento;
 
     @Id
@@ -192,5 +194,9 @@ public class Pedido implements Serializable{
     public void associar(final Venda venda) {
         this.venda = venda;
         this.venda.associar(this);
+    }
+
+    public Loja getLoja() {
+        return loja;
     }
 }

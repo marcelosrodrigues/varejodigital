@@ -269,8 +269,19 @@
 			<groupId>br.com.caelum.stella</groupId>
 			<artifactId>caelum-stella-bean-validation</artifactId>
 			<version>2.0.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.vidageek</groupId>
+                    <artifactId>mirror</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
-		<dependency>
+        <dependency>
+            <groupId>net.vidageek</groupId>
+            <artifactId>mirror</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>

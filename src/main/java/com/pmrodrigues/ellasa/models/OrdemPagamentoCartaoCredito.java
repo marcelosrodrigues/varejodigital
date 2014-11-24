@@ -10,6 +10,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -18,6 +19,7 @@ import br.com.caelum.stella.bean.validation.CPF;
 
 @Entity
 @Table
+@XStreamAlias("pagamento")
 public class OrdemPagamentoCartaoCredito extends OrdemPagamento {
 
 	private static final long serialVersionUID = 1L;

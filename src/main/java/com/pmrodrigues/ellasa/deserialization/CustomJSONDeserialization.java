@@ -5,10 +5,15 @@ import br.com.caelum.vraptor.http.ParameterNameProvider;
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilder;
+import com.pmrodrigues.ellasa.models.OrdemPagamento;
+import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.collections.CollectionConverter;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import org.hibernate.collection.internal.PersistentSet;
 
 import java.util.Collection;
@@ -38,6 +43,23 @@ public class CustomJSONDeserialization extends JsonDeserializer
                 Collection collection = new HashSet();
                 populateCollection(reader, context, collection);
                 return collection;
+            }
+        });
+        stream.registerConverter(new Converter() {
+
+            @Override
+            public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
+
+            }
+
+            @Override
+            public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
+                return context.convertAnother(context.currentObject(), OrdemPagamentoCartaoCredito.class);
+            }
+
+            @Override
+            public boolean canConvert(Class type) {
+                return type.isAssignableFrom(OrdemPagamento.class);
             }
         });
 

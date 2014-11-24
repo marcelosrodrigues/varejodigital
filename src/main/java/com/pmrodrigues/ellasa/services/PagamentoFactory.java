@@ -2,6 +2,9 @@ package com.pmrodrigues.ellasa.services;
 
 import java.io.Serializable;
 
+import com.pmrodrigues.ellasa.models.MeioPagamento;
+import com.pmrodrigues.ellasa.models.OrdemPagamento;
+import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class PagamentoFactory implements Serializable {
 
 	@Autowired
 	private TEFService tef;
+
+    @Autowired
+    private MeioPagamentoRepository repository;
 
 	public final PagamentoService getPagamentoService(
 			final PaymentMethod method) {
@@ -41,4 +47,11 @@ public class PagamentoFactory implements Serializable {
 
 	}
 
+    public void pagar(final OrdemPagamento dadosPagamento) {
+
+        final MeioPagamento meiopagamento = repository.findById(dadosPagamento.getMeioPagamento().getId());
+        dadosPagamento.setMeioPagamento(meiopagamento);
+        getPagamentoService(meiopagamento.getTipo()).pagar(dadosPagamento);
+
+    }
 }

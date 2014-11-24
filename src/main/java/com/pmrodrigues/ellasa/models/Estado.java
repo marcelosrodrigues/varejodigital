@@ -44,4 +44,8 @@ public class Estado implements Serializable {
 	public void setNome(final String nome) {
 		this.nome = nome;
 	}
+
+    public Long getId() {
+        return id;
+    }
 }
