@@ -28,8 +28,7 @@ public class SecaoController {
 
 	@Get
     @Path("/secoes.json")
-    @Consumes("application/json")
-	public List<Secao> secoes() {
+    public List<Secao> secoes() {
 
 		logging.debug("carregando a listagem de secoes");
 		final List<Secao> secoes = repository.list();

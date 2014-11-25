@@ -26,7 +26,6 @@ public class ProdutoController {
 
 	@Get
     @Path("/produtos.json")
-    @Consumes("application/json")
 	public List<Produto> produtos() {
 		logging.debug("iniciando a leitura dos produtos cadastrados no prestashop");
 		final List<Produto> produtos = repository.list();

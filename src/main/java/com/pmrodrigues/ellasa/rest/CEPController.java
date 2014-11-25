@@ -26,8 +26,7 @@ public class CEPController {
 	
 	@Get
 	@Path("/cep.json")
-    @Consumes("application/json")
-	public List<CEP> ceps() {
+    public List<CEP> ceps() {
 		
 		logging.debug("listando os ceps cadastrados no prestashop");
 		final List<CEP> ceps = repository.list();

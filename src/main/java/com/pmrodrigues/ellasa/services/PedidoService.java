@@ -93,7 +93,7 @@ public class PedidoService {
 
     }
 
-    protected void updateCliente(Pedido pedido, Cliente cliente) {
+    protected void updateCliente(final Pedido pedido,final Cliente cliente) {
         final Cliente existed = clienteRepository.findById(cliente.getId());
         if( existed != null ) {
             existed.setPrimeiroNome(cliente.getPrimeiroNome());

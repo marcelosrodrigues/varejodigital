@@ -30,7 +30,6 @@ public class UsuarioController {
 	
 	@Get
 	@Path("/meus-dados.json")
-    @Consumes("application/json")
 	public Usuario meusDados() {
 		final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
 		final UserDetails user = (UserDetails) userAuthenticated.getPrincipal();

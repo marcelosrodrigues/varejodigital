@@ -27,8 +27,7 @@ public class FaixaPrecoController {
 
 	@Get
 	@Path("/faixas.json")
-    @Consumes("application/json")
-	public List<FaixaPreco> faixas() {
+    public List<FaixaPreco> faixas() {
 
 		logging.debug("listando as faixas cadastrados no prestashop");
 		final List<FaixaPreco> faixas = repository.list();

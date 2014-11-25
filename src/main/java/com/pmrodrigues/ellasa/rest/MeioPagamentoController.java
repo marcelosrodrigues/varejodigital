@@ -28,7 +28,6 @@ public class MeioPagamentoController {
 
     @Get
     @Path("/formaspagamento.json")
-    @Consumes("application/json")
     public List<MeioPagamento> listar() {
 
         final List<MeioPagamento> meiospagamento = repository.list();

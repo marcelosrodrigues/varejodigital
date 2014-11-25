@@ -26,8 +26,7 @@ public class ClienteController {
 
 	@Get
 	@Path("/clientes.json")
-    @Consumes("application/json")
-	public List<Cliente> clientes() {
+    public List<Cliente> clientes() {
 		logging.debug("listando todos os clientes cadastrados no sistema");
 		List<Cliente> clientes = repository.list();
 		logging.debug("cliente encontrado com sucesso");

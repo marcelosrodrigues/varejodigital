@@ -26,8 +26,7 @@ public class EstadoController {
 	
 	@Get
 	@Path("/estados.json")
-    @Consumes("application/json")
-	public List<Estado> estados() {
+    public List<Estado> estados() {
 		
 		logging.debug("listando os estados cadastrados no prestashop");
 		final List<Estado> estados = repository.list();
