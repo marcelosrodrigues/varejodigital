@@ -1,28 +1,19 @@
 package com.pmrodrigues.ellasa.events;
 
 import org.apache.log4j.Logger;
-import org.hibernate.SessionFactory;
-import org.hibernate.annotations.common.reflection.ReflectionManager;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.ejb.event.EntityCallbackHandler;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.*;
 import org.hibernate.integrator.spi.Integrator;
-import org.hibernate.mapping.PersistentClass;
 import org.hibernate.metamodel.source.MetadataImplementor;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
 import static java.lang.String.format;
 

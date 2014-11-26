@@ -1,5 +1,7 @@
 package test.com.pmrodrigues.ellasa.repositories;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -9,6 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
@@ -42,50 +46,35 @@ public class TestRepository
 		estado = (Estado) session.get(Estado.class, 313L);
 	}
 
-	@SuppressWarnings("deprecation")
 	private void deleteDadosDeTeste() {
 
-		if (this.jdbcTemplate.queryForInt(
-				"select count(1) from usuario where email = ?",
-				"marsilvarodrigues@gmail.com") > 0) {
-			Long id = this.jdbcTemplate.queryForLong(
-					"select id from usuario where email = ?",
-					"marsilvarodrigues@gmail.com");
 
-			Long celular_id = this.jdbcTemplate.queryForLong(
-					"select celular_id from usuario where id = ?", id);
-			Long residencial_id = this.jdbcTemplate.queryForLong(
-					"select residencial_id from usuario where id = ?", id);
+        this.jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
+            @Override
+            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-			if (this.jdbcTemplate.queryForInt(
-					"select count(id) from contrato where franqueado_id = ?",
-					id) > 0) {
-				Long contrato_id = this.jdbcTemplate.queryForLong(
-						"select id from contrato where franqueado_id = ?", id);
+                    final Long userId = rs.getLong("id");
+                    final Long celularId = rs.getLong("celular_id");
+                    final Long residencialId = rs.getLong("residencial_id");
 
-				this.jdbcTemplate.update(
-						"delete from ordempagamento where contrato_id = ?",
-						contrato_id);
-				this.jdbcTemplate.update(
-						"delete from contrato where franqueado_id = ?", id);
-			}
-			this.jdbcTemplate.update(
-					"delete from franqueadopessoafisica where id = ?", id);
-			this.jdbcTemplate.update(
-					"delete from franqueadopessoajuridica where id = ?", id);
-			this.jdbcTemplate.update("delete from franqueado where id = ?", id);
-			this.jdbcTemplate.update("delete from usuario where id = ?", id);
-			this.jdbcTemplate.update("delete from telefone where id in (?,?)",
-					celular_id, residencial_id);
+                    TestRepository.this.jdbcTemplate.update("delete from ordempagamento where contrato_id = ( select id from contrato where franqueado_id = ?)" , userId);
+                    TestRepository.this.jdbcTemplate.update("delete from contrato where franqueado_id = ?" , userId);
+                    TestRepository.this.jdbcTemplate.update("delete from franqueadopessoafisica where id = ?", userId);
+                    TestRepository.this.jdbcTemplate.update("delete from franqueadopessoajuridica where id = ?", userId);
+                    TestRepository.this.jdbcTemplate.update("delete from franqueado where id = ?", userId);
+                    TestRepository.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
+                    TestRepository.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
 
-		}
+                    return null;
+            };
+        });
+
 	}
 
 	@After
 	public void after() {
 		deleteDadosDeTeste();
-
-	}
+    }
 
 	@Test
 	public void deveInserir() {

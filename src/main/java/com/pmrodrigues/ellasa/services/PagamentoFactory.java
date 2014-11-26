@@ -1,14 +1,13 @@
 package com.pmrodrigues.ellasa.services;
 
-import java.io.Serializable;
-
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
+import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
+import java.io.Serializable;
 
 @Service
 public class PagamentoFactory implements Serializable {
