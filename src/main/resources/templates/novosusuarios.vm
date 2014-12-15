@@ -1,0 +1,17 @@
+<html>
+<body>
+<h3>Parabéns $usuario.nome! Você é o mais novo membro da família Ella S/A!</h3>
+
+<div>
+
+   <p>Abaixo seguem as instruções para instalação do seu Catálogo Digital Ella S/A e o seu código de ativação de franqueado.</p>
+   <p>Obrigado por sua participação e Seja Bem-Vindo!</>
+   <p>Sua sua senha é $usuario.cleanPassword.</p>
+</div>
+</body>
+
+</html>
+
+
+
+

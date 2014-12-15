@@ -5,7 +5,13 @@ import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.view.DefaultPathResolver;
 
+import com.pmrodrigues.ellasa.annotations.CRUD;
 import com.pmrodrigues.ellasa.annotations.Tiles;
+import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
+
+import java.lang.reflect.ParameterizedType;
+
+import static java.lang.String.format;
 
 @Component
 public class TilesPathResolver extends DefaultPathResolver {
@@ -18,7 +24,10 @@ public class TilesPathResolver extends DefaultPathResolver {
 	public String pathFor(ResourceMethod method) {
 
 		if (method.getMethod().isAnnotationPresent(Tiles.class)) {
-			return method.getMethod().getAnnotation(Tiles.class).definition();
+            return method.getMethod().getAnnotation(Tiles.class).definition();
+        } else if ( method.getResource().getType().isAnnotationPresent(CRUD.class) ){
+
+            return format("%s-template",method.getMethod().getName().toLowerCase());
 		} else {
 			return super.pathFor(method);
 		}

@@ -41,7 +41,7 @@ public class FranqueadoPessoaFisica extends Franqueado {
 		return nomeCompleto;
 	}
 
-	public void setCPF(final String cpf) {
+	public void setCpf(final String cpf) {
 		this.cpf = cpf;
 	}
 
@@ -49,7 +49,7 @@ public class FranqueadoPessoaFisica extends Franqueado {
 		this.dataNascimento = dataNascimento;
 	}
 
-	public String getCPF() {
+	public String getCpf() {
 		return this.cpf;
 	}
 

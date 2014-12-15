@@ -24,9 +24,6 @@ public abstract class Franqueado extends Usuario {
 	@Column(insertable = true, updatable = false, nullable = false, unique = true, columnDefinition = "CHAR(5)")
 	private String codigo;
 
-	@Embedded
-	private final Endereco endereco = new Endereco();
-
 	@ManyToOne(optional = true, fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "franqueado_id")
 	private Franqueado indicadoPor;
@@ -38,10 +35,6 @@ public abstract class Franqueado extends Usuario {
 	@OneToMany()
 	@JoinColumn(name = "pai_id", referencedColumnName = "id")
 	private final Set<Franqueado> rede = new HashSet<>();
-
-    @OneToMany()
-    @JoinColumn(name = "franqueado_id")
-    private Set<Venda> vendas = new HashSet<>();
 
 	public Franqueado() {
 		super();
@@ -89,10 +82,6 @@ public abstract class Franqueado extends Usuario {
 	public void preInsert() {
 		super.preInsert();
 		this.codigo = RandomStringUtils.randomAlphanumeric(5).toLowerCase();
-	}
-
-	public Endereco getEndereco() {
-		return this.endereco;
 	}
 
 	public String getCodigo() {

@@ -3,7 +3,9 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
-    
+
+
+    <!-- formulario de cadastro de franqueado -->
     <definition name="base" template="/WEB-INF/template/principal.jsp">        
         <put-attribute name="conteudo" value="" />
     </definition>
@@ -27,5 +29,51 @@
     <definition name="boas-vindas-boleto-template" extends="base">
         <put-attribute name="conteudo" value="/WEB-INF/formulario/pagamento/boasvindas-boleto.jsp" />
     </definition>
-    
+
+
+    <!-- sistema -->
+    <definition name="principal" template="/WEB-INF/template/sistema/base.jsp">
+        <put-attribute name="header" value="" />
+        <put-attribute name="conteudo" value="" />
+    </definition>
+
+    <definition name="index-template" extends="principal">
+        <put-attribute name="header" value="Dashboard" />
+        <put-attribute name="conteudo" value="" />
+    </definition>
+
+    <definition name="loja/formulario-template" extends="principal">
+        <put-attribute name="header" value="Parceiro" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/loja/formulario.jsp" />
+    </definition>
+
+    <definition name="loja/show-template" extends="loja/formulario-template" />
+
+    <definition name="loja/index-template" extends="principal">
+        <put-attribute name="header" value="Parceiros" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/loja/index.jsp" />
+    </definition>
+
+    <definition name="loja/search-template" extends="loja/index-template" />
+
+    <definition name="usuario/index-template" extends="principal">
+        <put-attribute name="header" value="Usuários" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/usuario/index.jsp" />
+    </definition>
+
+    <definition name="usuario/search-template" extends="usuario/index-template" />
+
+    <definition name="usuario/formulario-template" extends="principal">
+        <put-attribute name="header" value="Usuário" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/usuario/formulario.jsp" />
+    </definition>
+
+    <definition name="usuario/show-template" extends="usuario/formulario-template" />
+
+    <definition name="usuario/meus-dados-template" extends="principal">
+        <put-attribute name="header" value="Usuário" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/usuario/meus-dados.jsp" />
+    </definition>
+
+
 </tiles-definitions>

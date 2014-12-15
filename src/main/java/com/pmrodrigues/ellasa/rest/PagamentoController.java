@@ -43,16 +43,15 @@ public class PagamentoController {
         logging.debug(format("Pesquisando os dados do franqueado pelo email %s",user.getUsername()));
 
         final Usuario usuario = repository.findByEmail(user.getUsername());
-        if( usuario instanceof Franqueado ) {
-            Franqueado franqueado = (Franqueado) usuario;
-            pedido.associar(new Venda(franqueado));
-            service.pagar(pedido);
-            result.use(Results.json())
-                    .from(pedido)
-                    .include("dadosPagamento")
-                    .exclude("transportadora","idioma","carrinho","moeda","pagamento","dataCompra","dataEntrega","dataCriacaco","dataAlteracao","valorPedido","valorBruto","valorLiquido","totalPedido")
-                    .serialize();
-        }
+
+        pedido.associar(usuario);
+        service.pagar(pedido);
+        result.use(Results.json())
+                .from(pedido)
+                .include("dadosPagamento")
+                .exclude("transportadora","idioma","carrinho","moeda","pagamento","dataCompra","dataEntrega","dataCriacaco","dataAlteracao","valorPedido","valorBruto","valorLiquido","totalPedido")
+                .serialize();
+
 
         return pedido;
 

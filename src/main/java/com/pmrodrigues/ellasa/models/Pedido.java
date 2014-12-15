@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Marceloo on 13/10/2014.
  */
 @Entity
-@Table(schema = "allinshopp" , name = "ps_orders")
+@Table(schema = "pedido")
 public class Pedido implements Serializable{
 
     @Transient
@@ -55,21 +55,6 @@ public class Pedido implements Serializable{
     @Enumerated(EnumType.ORDINAL)
     private StatusPagamento status = StatusPagamento.EM_ABERTO;
 
-    @Column(name="id_carrier")
-    private Long transportadora = 1L;
-
-    @Column(name="id_lang")
-    private Long idioma = 1L;
-
-    @Column(name="id_cart")
-    private Long carrinho = 0L;
-
-    @Column(name="id_currency")
-    private Long moeda = 1L;
-
-    @Column(name="payment")
-    private String pagamento = "";
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "invoice_date")
     private Date dataCompra = DateTime.now().toDate();
@@ -86,50 +71,19 @@ public class Pedido implements Serializable{
     @Column(name = "date_upd")
     private Date dataAlteracao;
 
-    @Column(name = "total_paid" )
-    private BigDecimal valorPedido = BigDecimal.ZERO;
-
-    @Column(name = "total_paid_tax_incl")
-    private BigDecimal valorBruto = BigDecimal.ZERO;
-
-    @Column(name = "total_paid_tax_excl")
-    private BigDecimal valorLiquido = BigDecimal.ZERO;
-
-    @Column(name = "total_paid_real" )
-    private BigDecimal totalPedido =  BigDecimal.ZERO;
-
-    @OneToOne(cascade = CascadeType.ALL , mappedBy = "pedido")
-    @JoinTable(name = "vendas" , joinColumns =  {@JoinColumn(name = "pedido_id") })
-    private Venda venda;
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @JoinColumn(name = "vendedor_id")
+    private Usuario usuario;
 
     @PrePersist
     public void onInsert() {
         dataCriacaco = DateTime.now().toDate();
         dataAlteracao = DateTime.now().toDate();
-
-        calcularVenda();
-
-    }
-
-    protected void calcularVenda() {
-
-        valorPedido = BigDecimal.ZERO;
-        valorBruto = BigDecimal.ZERO;
-        totalPedido = BigDecimal.ZERO;
-        valorLiquido = BigDecimal.ZERO;
-
-        for( final ItemPedido item : this.itens ){
-            valorPedido = valorPedido.add(item.getValor());
-            valorBruto = valorBruto.add(item.getValor());
-            totalPedido = totalPedido.add(item.getValor());
-            valorLiquido = valorLiquido.add(item.getValorLiquido());
-        }
     }
 
     @PreUpdate
     public void onUpdate() {
         dataAlteracao = DateTime.now().toDate();
-        calcularVenda();
     }
 
     public OrdemPagamento getDadosPagamento() {
@@ -171,7 +125,7 @@ public class Pedido implements Serializable{
 
     public void calcula(final List<Taxa> taxas) {
 
-        for(ItemPedido item : this.itens ){
+        for(final ItemPedido item : this.itens ){
             for(Taxa taxa : taxas) {
                 item.geraComissao(taxa);
             }
@@ -191,9 +145,8 @@ public class Pedido implements Serializable{
         return id;
     }
 
-    public void associar(final Venda venda) {
-        this.venda = venda;
-        this.venda.associar(this);
+    public void associar(final Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Loja getLoja() {

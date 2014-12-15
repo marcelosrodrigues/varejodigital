@@ -8,6 +8,7 @@ import static org.junit.Assert.assertNotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.pmrodrigues.ellasa.models.*;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -21,13 +22,6 @@ import br.com.caelum.vraptor.util.test.MockValidator;
 import com.pmrodrigues.ellasa.controllers.FranqueadoPessoaJuridicaController;
 import com.pmrodrigues.ellasa.exceptions.EstouroTamanhoDeRedeException;
 import com.pmrodrigues.ellasa.exceptions.IndicacaoFranqueadoNaoEncontradoException;
-import com.pmrodrigues.ellasa.models.Endereco;
-import com.pmrodrigues.ellasa.models.Estado;
-import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
-import com.pmrodrigues.ellasa.models.FranqueadoPessoaJuridica;
-import com.pmrodrigues.ellasa.models.MeioPagamento;
-import com.pmrodrigues.ellasa.models.Residencial;
-import com.pmrodrigues.ellasa.models.TipoFranquia;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import com.pmrodrigues.ellasa.repositories.TipoFranquiaRepository;
@@ -103,7 +97,7 @@ public class TestFranqueadoPessoaJuridicaController {
 		final MeioPagamento meio = context.mock(MeioPagamento.class);
 		final FranqueadoPessoaJuridica franqueado = context.mock(
 				FranqueadoPessoaJuridica.class, "juridica");
-		final Residencial residencial = context.mock(Residencial.class);
+		final Telefone residencial = context.mock(Telefone.class);
 
 		context.checking(new Expectations() {
 			{
@@ -145,7 +139,7 @@ public class TestFranqueadoPessoaJuridicaController {
 		final FranqueadoPessoaJuridica franqueado = context.mock(
 				FranqueadoPessoaJuridica.class, "juridica");
 
-		final Residencial residencial = context.mock(Residencial.class);
+		final Telefone residencial = context.mock(Telefone.class);
 
 		context.checking(new Expectations() {
 			{

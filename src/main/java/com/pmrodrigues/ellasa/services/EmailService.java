@@ -78,7 +78,7 @@ public class EmailService {
 
 		try {
 			createMimeMessage();
-			String text = VelocityEngineUtils.mergeTemplateIntoString(
+			final String text = VelocityEngineUtils.mergeTemplateIntoString(
 					velocityEngine, template, "UTF-8", parameters);
 
 			message.setContent(text, "text/html; charset=utf-8");

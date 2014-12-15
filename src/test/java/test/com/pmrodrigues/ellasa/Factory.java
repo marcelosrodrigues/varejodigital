@@ -1,10 +1,9 @@
 package test.com.pmrodrigues.ellasa;
 
-import org.joda.time.DateTime;
-
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.FranqueadoPessoaFisica;
-import com.pmrodrigues.ellasa.models.Residencial;
+import com.pmrodrigues.ellasa.models.Telefone;
+import org.joda.time.DateTime;
 
 public final class Factory {
 
@@ -23,9 +22,9 @@ public final class Factory {
 		franqueado.getEndereco().setCidade("teste");
 		franqueado.getEndereco().setNumero("84");
 		franqueado.getEndereco().setComplemento("teste");
-		franqueado.setCPF("070.323.277-02");
+		franqueado.setCpf("070.323.277-02");
 		franqueado.setDataNascimento(DateTime.now().minusYears(30).toDate());
-		Residencial telefone = new Residencial();
+		Telefone telefone = new Telefone();
 		telefone.setDdd("021");
 		telefone.setNumero("33926222");
 		franqueado.setResidencial(telefone);

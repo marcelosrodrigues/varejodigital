@@ -31,6 +31,10 @@
 		<url-pattern>*.html</url-pattern>
 	</servlet-mapping>
 
+    <servlet-mapping>
+        <servlet-name>TilesDispatchServlet</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
 
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -61,7 +65,7 @@
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
 
-	<filter>
+    <filter>
 		<filter-name>OpenSessionInViewFilter</filter-name>
 		<filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
 		<init-param>

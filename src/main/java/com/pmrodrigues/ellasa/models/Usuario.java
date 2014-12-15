@@ -2,33 +2,31 @@ package com.pmrodrigues.ellasa.models;
 
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
+import javax.persistence.*;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
 
+import br.com.caelum.stella.bean.validation.CPF;
 import org.apache.commons.lang.RandomStringUtils;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.pmrodrigues.ellasa.utilities.MD5;
 
 @Entity
 @Table
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 		@NamedQuery(name = "Usuario.All", query = "FROM Usuario"),
-		@NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u inner join fetch u.celular left join fetch u.residencial WHERE email = :email")})
+		@NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u left join fetch u.celular left join fetch u.residencial WHERE email = :email")})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -52,14 +50,63 @@ public class Usuario implements Serializable {
 	private boolean bloqueado = true;
 
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	private Celular celular;
+	private Telefone celular = new Telefone();
 
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	private Residencial residencial;
+	private Telefone residencial = new Telefone();
+
+    @Embedded
+    private final Endereco endereco = new Endereco();
+
+    @NotBlank(message = "Nome é obrigatório")
+    @Column(nullable = false)
+    private String nomeCompleto;
+
+    @NotBlank(message = "CPF é obrigatório")
+    @Column(unique = true, nullable = false)
+    @CPF(formatted = true, message = "CPF inválido")
+    private String cpf;
+
+    @NotNull(message = "Data de nascimento é obrigatória")
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private Date dataNascimento;
+
+    public void setNomeCompleto(final String nome) {
+        this.nomeCompleto = nome;
+    }
+
+    public String getNomeCompleto() {
+        return nomeCompleto;
+    }
+
+    public void setCpf(final String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setDataNascimento(final Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getCpf() {
+        return this.cpf;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public Endereco getEndereco() {
+        return this.endereco;
+    }
 
 	public boolean isBloqueado() {
 		return bloqueado;
 	}
+
+    public void setBloqueado( boolean bloqueado ){
+        this.bloqueado = bloqueado;
+    }
 
 	public void desbloquear() {
 		this.bloqueado = false;
@@ -85,23 +132,27 @@ public class Usuario implements Serializable {
 		return id;
 	}
 
+    public void setId( final Long id ){
+        this.id = id;
+    }
+
 	public String getCleanPassword() {
 		return cleanPassword;
 	}
 
-	public Celular getCelular() {
+	public Telefone getCelular() {
 		return celular;
 	}
 
-	public void setCelular(final Celular celular) {
+	public void setCelular(final Telefone celular) {
 		this.celular = celular;
 	}
 
-	public Residencial getResidencial() {
+	public Telefone getResidencial() {
 		return residencial;
 	}
 
-	public void setResidencial(final Residencial residencial) {
+	public void setResidencial(final Telefone residencial) {
 		this.residencial = residencial;
 	}
 

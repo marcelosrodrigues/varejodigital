@@ -9,5 +9,5 @@
 	<import resource="applicationContext-security.xml" />
 
 	<context:property-placeholder location="classpath:akatus.properties"/>
-	
+
 </beans>

@@ -431,7 +431,7 @@ $.widget = function( name, base, prototype ) {
 			// originally used, but inherit from the new version of the base
 			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor, child._proto );
 		});
-		// remove the list of existing child constructors from the old constructor
+		// remove the getList of existing child constructors from the old constructor
 		// so the old child constructors can be garbage collected
 		delete existingConstructor._childConstructors;
 	} else {
@@ -1643,7 +1643,7 @@ $.ui.plugin.add("draggable", "connectToSortable", {
 
 					this.instance.isOver = 1;
 					//Now we fake the start of dragging for the sortable instance,
-					//by cloning the list group item, appending it to the sortable and using it as inst.currentItem
+					//by cloning the getList group item, appending it to the sortable and using it as inst.currentItem
 					//We can then fire the start event of the sortable with our passed browser event, and our own helper (so it doesn't create a new one)
 					this.instance.currentItem = $(that).clone().removeAttr("id").appendTo(this.instance.element).data("ui-sortable-item", true);
 					this.instance.options._helper = this.instance.options.helper; //Store helper option to later restore it
@@ -1690,7 +1690,7 @@ $.ui.plugin.add("draggable", "connectToSortable", {
 					this.instance._mouseStop(event, true);
 					this.instance.options.helper = this.instance.options._helper;
 
-					//Now we remove our currentItem, the list group clone again, and the placeholder, and animate the helper back to it's original size
+					//Now we remove our currentItem, the getList group clone again, and the placeholder, and animate the helper back to it's original size
 					this.instance.currentItem.remove();
 					if(this.instance.placeholder) {
 						this.instance.placeholder.remove();
@@ -2190,7 +2190,7 @@ $.ui.ddmanager = {
 	drop: function(draggable, event) {
 
 		var dropped = false;
-		// Create a copy of the droppables in case the list changes during the drop (#9116)
+		// Create a copy of the droppables in case the getList changes during the drop (#9116)
 		$.each(($.ui.ddmanager.droppables[draggable.options.scope] || []).slice(), function() {
 
 			if(!this.options) {
@@ -6993,7 +6993,7 @@ $.widget( "ui.autocomplete", {
 	search: function( value, event ) {
 		value = value != null ? value : this._value();
 
-		// always save the actual value, not the one passed as an argument
+		// always salvar the actual value, not the one passed as an argument
 		this.term = this._value();
 
 		if ( value.length < this.options.minLength ) {
@@ -11711,7 +11711,7 @@ $.widget( "ui.menu", {
 
 		menus = submenus.add( this.element );
 
-		// Don't refresh list items that are already adapted
+		// Don't refresh getList items that are already adapted
 		menus.children( ":not(.ui-menu-item):has(a)" )
 			.addClass( "ui-menu-item" )
 			.attr( "role", "presentation" )
@@ -13854,7 +13854,7 @@ $.widget( "ui.tabs", {
 			) ).sort();
 		}
 
-		// check for length avoids error when initializing empty list
+		// check for length avoids error when initializing empty getList
 		if ( this.options.active !== false && this.anchors.length ) {
 			this.active = this._findActive( options.active );
 		} else {
@@ -14205,7 +14205,7 @@ $.widget( "ui.tabs", {
 			.attr( "role", "tabpanel" );
 	},
 
-	// allow overriding how to find the list for rare usage scenarios (#7715)
+	// allow overriding how to find the getList for rare usage scenarios (#7715)
 	_getList: function() {
 		return this.element.find( "ol,ul" ).eq( 0 );
 	},

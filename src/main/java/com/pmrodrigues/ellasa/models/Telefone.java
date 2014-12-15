@@ -14,8 +14,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo", length = 1, discriminatorType = DiscriminatorType.STRING)
 public class Telefone implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -25,12 +25,16 @@ public class DateConverter implements Converter<Date> {
 		Date date = null;
 		try {
 
-			if (GenericValidator.isDate(value, "dd-MM-yyyy", true)
-					|| GenericValidator.isDate(value, "MM-yyyy", true)) {
+			if (GenericValidator.isDate(value, "dd-MM-yyyy", false)
+					|| GenericValidator.isDate(value, "MM-yyyy", false)
+                    || GenericValidator.isDate(value, "dd/MM/yyyy", false)
+                    || GenericValidator.isDate(value, "yyyy-MM-dd", false)) {
 
-				date = DateUtils.parseDate(value, new String[]{
+				date = DateUtils.parseDateStrictly(value, new String[]{
 						"dd-MM-yyyy",
-						"MM-yyyy"});
+						"MM-yyyy",
+                        "dd/MM/yyyy",
+                        "yyyy-MM-dd"});
 			}
 		} catch (ParseException e) {
 			LOGGER.warn("erro de conversão de data", e);

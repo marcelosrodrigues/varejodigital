@@ -15,4 +15,7 @@ public interface Repository<E> extends Serializable {
 
 	List<E> list();
 
+    ResultList<E> search(E e, Integer page);
+
+    ResultList<E> search(E e);
 }

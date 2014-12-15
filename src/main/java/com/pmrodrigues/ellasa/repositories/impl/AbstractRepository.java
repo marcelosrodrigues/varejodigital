@@ -11,10 +11,12 @@ import java.util.List;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import com.pmrodrigues.ellasa.repositories.ResultList;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,11 +46,12 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	@Override
 	public void add(final E e) {
 
-		LOGGER.debug(format("Tentando inserir %s novo valor no banco de dados",
-				e));
-		this.getSession().save(e);
+        LOGGER.debug(format("Tentando inserir %s novo valor no banco de dados",
+                    e));
+        this.getSession().save(e);
         LOGGER.debug(format(" %s salvo com sucesso", e));
-	}
+
+    }
 
 	@Override
 	public void set(final E entity) {
@@ -102,5 +105,14 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 		}
 		return session;
 	}
+
+    public ResultList<E> search(E e, Integer page){
+        return null;
+    }
+
+    public ResultList<E> search(E e) {
+        return search(e,0);
+    }
+
 
 }
