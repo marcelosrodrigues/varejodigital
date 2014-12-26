@@ -88,7 +88,6 @@ CREATE TABLE tipofranquia (
   id        BIGINT         NOT NULL AUTO_INCREMENT,
   descricao VARCHAR(255)   NOT NULL,
   nome      VARCHAR(255)   NOT NULL,
-  valor     DECIMAL(19, 2) NOT NULL,
   PRIMARY KEY (id)
 );
 
