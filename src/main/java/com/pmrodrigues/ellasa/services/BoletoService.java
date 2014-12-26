@@ -23,9 +23,9 @@ public class BoletoService extends AbstractPagamentoService {
 		trans.setPaymentMethod(PaymentMethod.BOLETO);
 		trans.setHolder(new Holder());
 		trans.getHolder().setDocument(
-				pagamento.getContrato().getFranqueado().getDocumento());
+				pagamento.getContrato().getFranqueado().getCpf());
 		trans.getHolder().setName(
-				pagamento.getContrato().getFranqueado().getNome());
+				pagamento.getContrato().getFranqueado().getNomeCompleto());
 		
 		super.execute(pagamento);
 	}
