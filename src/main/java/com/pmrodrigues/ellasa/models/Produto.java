@@ -1,20 +1,10 @@
 package com.pmrodrigues.ellasa.models;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "produto")
@@ -24,10 +14,11 @@ public class Produto implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "loja_id" , referencedColumnName = "id_shop")
+    @JoinColumn(name = "loja_id")
 	private Loja loja;
 
 	@ManyToOne(fetch=FetchType.EAGER)

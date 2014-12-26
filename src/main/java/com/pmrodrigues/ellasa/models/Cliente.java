@@ -1,15 +1,13 @@
 package com.pmrodrigues.ellasa.models;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
-
 @Entity
-@Table(name="ps_customer" , schema = "allinshopp")
+@Table(name="cliente")
 @NamedQueries({@NamedQuery(name = "Cliente.All", query = "SELECT c FROM Cliente c inner join fetch c.endereco e inner join fetch e.estado ORDER BY c.id ASC")})
 public class Cliente implements Serializable{
 
@@ -17,41 +15,31 @@ public class Cliente implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_customer")
 	private Long id;
 	
-	@Column(name="firstname")
+	@Column
 	private String primeiroNome;
 	
-	@Column(name="lastname")
+	@Column
 	private String ultimoNome;
 	
-	@Column(name="email")
+	@Column
 	private String email;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="birthday")
+	@Column
 	private Date dataNascimento;
 
-    @Column(name = "id_gender")
-    private final Long tratamento = 3L;
-
-    @Column(name = "passwd")
-    private final String passwd = RandomStringUtils.randomAlphanumeric(10);
-	
-	@Column(name = "active")
-	private final boolean active = true;
-	
 	@OneToOne(mappedBy="cliente" , cascade = CascadeType.ALL , fetch = FetchType.EAGER)
-	@JoinColumn(name="id_customer")
+	@JoinColumn(name="cliente_id")
 	private EnderecoCliente endereco;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_add")
+    @Column
     private Date dataCriacaco = DateTime.now().toDate();
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_upd")
+    @Column
     private Date dataAlteracao = DateTime.now().toDate();
 
 
@@ -76,8 +64,6 @@ public class Cliente implements Serializable{
 
     public void setEndereco(EnderecoCliente endereco) {
         this.endereco = endereco;
-        this.endereco.setPrimeiroNome(this.primeiroNome);
-        this.endereco.setUltimoNome(this.ultimoNome);
         this.endereco.setCliente(this);
     }
 
@@ -116,5 +102,9 @@ public class Cliente implements Serializable{
 
     public Date getDataNascimento() {
         return dataNascimento;
+    }
+
+    public boolean isNovo() {
+        return this.id != null && 0L != this.id;
     }
 }

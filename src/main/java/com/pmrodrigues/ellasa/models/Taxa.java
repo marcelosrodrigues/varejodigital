@@ -1,7 +1,5 @@
 package com.pmrodrigues.ellasa.models;
 
-import org.hibernate.annotations.Generated;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,6 +15,7 @@ import java.math.BigDecimal;
 public class Taxa implements Serializable{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column

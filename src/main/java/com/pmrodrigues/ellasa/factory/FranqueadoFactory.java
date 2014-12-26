@@ -23,7 +23,7 @@ class FranqueadoFactory extends PayerFactory {
 
         final Payer pagador = new Payer();
         pagador.setEmail(pagamento.getContrato().getFranqueado().getEmail());
-        pagador.setName(pagamento.getContrato().getFranqueado().getNome());
+        pagador.setName(pagamento.getContrato().getFranqueado().getNomeCompleto());
 
 
         final Address address = new Address();

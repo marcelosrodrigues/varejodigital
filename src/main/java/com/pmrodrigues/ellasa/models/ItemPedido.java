@@ -15,7 +15,7 @@ import static java.lang.String.format;
  * Created by Marceloo on 13/10/2014.
  */
 @Entity
-@Table(schema = "allinshopp" , name = "ps_order_detail")
+@Table(name="item_pedido")
 @XStreamAlias("item")
 public class ItemPedido implements Serializable{
 
@@ -25,59 +25,32 @@ public class ItemPedido implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_order_detail")
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "produto_id")
     private Produto produto;
 
     @ManyToOne
-    @JoinColumn(name = "product_attribute_id")
+    @JoinColumn(name = "atributo_id")
     private Atributo atributo;
 
-    @Column(name = "product_quantity")
+    @Column(name = "quantidade")
     private Long quantidade;
 
-    @Column(name = "product_price")
-    private BigDecimal preco;
-
-    @Column(name = "total_price_tax_incl")
-    private BigDecimal valor;
-
-    @Column(name = "unit_price_tax_incl")
-    private BigDecimal valorUnitario;
-
-    @Column(name = "product_name")
-    private String nome;
-
-    @Column(name = "tax_name")
-    private String taxName = "ELLASA";
-
     @ElementCollection
-    @CollectionTable(name = "ps_order_detail_tax",
-            schema = "allinshopp" ,
-            joinColumns = @JoinColumn(name = "id_order_detail") )
+    @CollectionTable(name = "comissao", joinColumns = @JoinColumn(name = "item_id") )
     private Set<Comissao> comissoes = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_shop")
-    private Loja loja;
-
-    @Column(name="product_weight")
-    private BigDecimal peso;
+    @Column
+    private BigDecimal preco;
 
 
     public ItemPedido(final Produto produto, final Long quantidade) {
         this();
         this.produto = produto;
-        this.nome = produto.getNome();
-        this.loja = produto.getLoja();
-        this.preco = produto.getPreco();
         this.quantidade = quantidade;
-        this.peso = produto.getPeso();
-        this.valor = this.preco.multiply(new BigDecimal(quantidade));
-        this.valorUnitario = this.preco;
+        this.preco = produto.getPreco();
     }
 
     public ItemPedido() {}
@@ -105,35 +78,11 @@ public class ItemPedido implements Serializable{
 
 
     public BigDecimal getValor() {
-        if( valor == null ) {
-            valor = this.preco.multiply(new BigDecimal(quantidade));
-        }
-        return valor;
-    }
-
-    public BigDecimal getValorLiquido() {
-        BigDecimal totalComissao = BigDecimal.ZERO;
-        for(Comissao comissao : this.comissoes ){
-            totalComissao = totalComissao.add(comissao.getValorTotal() );
-        }
-
-        return this.valor.subtract(totalComissao);
-    }
-
-    public void setLoja(final Loja loja) {
-        this.loja = loja;
-    }
-
-    public Loja getLoja() {
-        return loja;
+        return this.preco.multiply(new BigDecimal(quantidade));
     }
 
     public void setProduto(final Produto produto) {
         this.produto = produto;
-        this.valorUnitario = produto.getPreco();
-        this.valor = produto.getPreco().multiply(new BigDecimal(this.quantidade));
-        this.nome = this.produto.getNome();
         this.preco = produto.getPreco();
-        this.peso = produto.getPeso();
     }
 }

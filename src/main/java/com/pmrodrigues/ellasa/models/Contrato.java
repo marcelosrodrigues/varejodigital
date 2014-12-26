@@ -1,21 +1,10 @@
 package com.pmrodrigues.ellasa.models;
 
+import org.joda.time.DateTime;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.joda.time.DateTime;
 
 @Entity
 @Table
@@ -37,17 +26,17 @@ public class Contrato implements Serializable {
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "franqueado_id")
-	private Franqueado franqueado;
+	private Usuario franqueado;
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "contrato_id")
 	private TipoFranquia tipoContrato;
 
-	public void setFranqueado(final Franqueado franqueado) {
+	public void setFranqueado(final Usuario franqueado) {
 		this.franqueado = franqueado;
 	}
 
-	public Franqueado getFranqueado() {
+	public Usuario getFranqueado() {
 		return this.franqueado;
 	}
 
@@ -59,7 +48,7 @@ public class Contrato implements Serializable {
 		return this.tipoContrato;
 	}
 
-	public Contrato(final Franqueado franqueado, final TipoFranquia tipo) {
+	public Contrato(final Usuario franqueado, final TipoFranquia tipo) {
 		this();
 		this.franqueado = franqueado;
 		this.tipoContrato = tipo;

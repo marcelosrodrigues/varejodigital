@@ -1,8 +1,9 @@
 package com.pmrodrigues.ellasa.models;
 
-import com.sun.mail.imap.protocol.Item;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -14,13 +15,13 @@ public class Comissao implements Serializable{
 
 
     @ManyToOne(optional = false)
-    @JoinColumn( name = "id_tax")
+    @JoinColumn( name = "taxa_id")
     private Taxa taxa;
 
-    @Column(name = "unit_amount")
+    @Column
     private BigDecimal valorUnitario;
 
-    @Column(name = "total_amount")
+    @Column
     private BigDecimal valorTotal;
 
     public Comissao(final Taxa taxa, final BigDecimal valorUnitario, final Long quantidade) {

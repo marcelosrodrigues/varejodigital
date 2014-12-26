@@ -75,12 +75,12 @@
 <div class="row">
     <div class="col-sm-3" style="margin-left: 15px;">
         <div class="form-group">
-            <label for="object.endereco.estado.id"><fmt:message key="endereco.estado"
+            <label for="object.endereco.estado"><fmt:message key="endereco.estado"
                                                                 bundle="${labels}"/></label>
-            <select name="object.endereco.estado.id" id="object.endereco.estado.id" class="form-control">
+            <select name="object.endereco.estado" id="object.endereco.estado" class="form-control">
                 <c:forEach items="${estados}" var="estado">
                     <option value="${estado.id}"
-                            <c:if test="${estado.id eq object.endereco.estado.id}">selected="selected"</c:if>>${estado.uf} - ${estado.nome}</option>
+                            <c:if test="${estado.equals(object.endereco.estado)}">selected="selected"</c:if>>${estado.uf} - ${estado.nome}</option>
                 </c:forEach>
             </select>
         </div>

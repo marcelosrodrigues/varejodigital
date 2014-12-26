@@ -1,26 +1,13 @@
 package com.pmrodrigues.ellasa.models;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.validator.GenericValidator;
 import org.joda.time.DateTime;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Entity
 @Table
@@ -70,7 +57,7 @@ public class OrdemPagamento implements Serializable {
 	private String documento;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "id_order")
+    @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
     public OrdemPagamento(final MeioPagamento meiopagamento,

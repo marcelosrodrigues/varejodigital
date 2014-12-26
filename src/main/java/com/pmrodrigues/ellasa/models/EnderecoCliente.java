@@ -6,61 +6,45 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "ps_address" , schema = "allinshopp")
+@Table(name = "endereco")
 public class EnderecoCliente {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id_address")
 	private Long id;
 	
 	@ManyToOne(optional = false)
-	@JoinColumn(name="id_customer")
+	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
-	
-	@Column(name = "alias")
-	private final String alias = "ELLASA";
-	
-	@Column(name="firstname")
-	private String primeiroNome;
-	
-	@Column(name="lastname")
-	private String ultimoNome;
-	
-	@Column(name="address1")
+
+	@Column
 	private String logradouro;
 	
-	@Column(name="address2")
+	@Column
 	private String bairro;
 	
-	@Column(name="postcode")
+	@Column
 	private String cep;
 	
-	@Column(name="city")
+	@Column
 	private String cidade;
 	
-	@Column(name="phone")
+	@Column
 	private String telefone;
 	
-	@Column(name="phone_mobile")
+	@Column
 	private String celular;
-	
-	@Column(name="active")
-	private boolean active = true;
-	
+
 	@ManyToOne(optional = false)
-	@JoinColumn(name="id_state")
+	@JoinColumn(name="estado_id")
 	private Estado estado;
 
-    @Column(name = "id_country")
-    private Long pais = 58L;
-
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_add")
+    @Column
     private Date dataCriacaco = DateTime.now().toDate();
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_upd")
+    @Column
     private Date dataAlteracao = DateTime.now().toDate();
 
 
@@ -107,18 +91,9 @@ public class EnderecoCliente {
         this.estado = estado;
     }
 
-    public void setPrimeiroNome(final String primeiroNome) {
-        this.primeiroNome = primeiroNome;
-    }
-
-    public void setUltimoNome(final String ultimoNome) {
-        this.ultimoNome = ultimoNome;
-    }
 
     public void setCliente(final Cliente cliente) {
         this.cliente = cliente;
-        this.primeiroNome = cliente.getPrimeiroNome();
-        this.ultimoNome = cliente.getUltimoNome();
     }
 
     public void setLogradouro(final String logradouro) {

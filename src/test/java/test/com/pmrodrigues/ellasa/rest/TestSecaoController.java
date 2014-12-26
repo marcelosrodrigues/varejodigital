@@ -1,20 +1,19 @@
 package test.com.pmrodrigues.ellasa.rest;
 
-import static org.junit.Assert.assertFalse;
-
-import java.util.List;
-
+import br.com.caelum.vraptor.util.test.MockResult;
+import com.pmrodrigues.ellasa.models.Secao;
+import com.pmrodrigues.ellasa.repositories.SecaoRepository;
+import com.pmrodrigues.ellasa.rest.SecaoController;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import br.com.caelum.vraptor.util.test.MockResult;
+import java.util.List;
 
-import com.pmrodrigues.ellasa.models.Secao;
-import com.pmrodrigues.ellasa.repositories.SecaoRepository;
-import com.pmrodrigues.ellasa.rest.SecaoController;
+import static org.junit.Assert.assertFalse;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestSecaoController
@@ -29,7 +28,13 @@ public class TestSecaoController
 	@Before
 	public void  setup() {
 		service = new SecaoController(repository, new MockResult());
+        jdbcTemplate.update("insert into secao ( secao ) values ( 'teste' )");
 	}
+
+    @After
+    public void after() {
+        jdbcTemplate.update("delete from secao where secao = 'teste'");
+    }
 	
 	@Test
 	public void deveListarTodasAsSecoes() {

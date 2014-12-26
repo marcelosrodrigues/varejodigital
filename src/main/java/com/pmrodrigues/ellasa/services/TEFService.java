@@ -1,11 +1,10 @@
 package com.pmrodrigues.ellasa.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.pagamentos.entity.Holder;
 import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class TEFService extends AbstractPagamentoService {
@@ -19,9 +18,9 @@ public class TEFService extends AbstractPagamentoService {
 		trans.setPaymentMethod(pagamento.getMeioPagamento().getTipo());
 		trans.setHolder(new Holder());
 		trans.getHolder().setDocument(
-				pagamento.getContrato().getFranqueado().getDocumento());
+				pagamento.getContrato().getFranqueado().getCpf());
 		trans.getHolder().setName(
-				pagamento.getContrato().getFranqueado().getNome());
+				pagamento.getContrato().getFranqueado().getNomeCompleto());
 
 		super.execute(pagamento);
 	}

@@ -6,7 +6,6 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,7 +15,7 @@ import java.util.List;
  * Created by Marceloo on 13/10/2014.
  */
 @Entity
-@Table(schema = "pedido")
+@Table
 public class Pedido implements Serializable{
 
     @Transient
@@ -24,56 +23,51 @@ public class Pedido implements Serializable{
     private OrdemPagamento dadosPagamento;
 
     @Id
-    @Column(name = "id_order")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne(optional = false , cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_customer" , referencedColumnName = "id_customer")
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_address_delivery" , referencedColumnName = "id_address")
+    @JoinColumn(name = "enderecoentrega_id")
     private EnderecoCliente enderecoEntrega;
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
-    @JoinColumn(name = "id_order", referencedColumnName = "id_order" ,nullable = false)
+    @JoinColumn(name = "pedido_id", nullable = false)
     private Collection<ItemPedido> itens = new HashSet<>();
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "id_shop" , referencedColumnName = "id_shop")
+    @JoinColumn(name = "loja_id")
     private Loja loja;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "id_address_invoice" , referencedColumnName = "id_address")
-    private EnderecoCliente enderecoPedido;
-
-    @Column(name = "reference")
+    @Column
     private String codigoTransacao;
 
-    @Column(name="current_state")
+    @Column
     @Enumerated(EnumType.ORDINAL)
     private StatusPagamento status = StatusPagamento.EM_ABERTO;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "invoice_date")
+    @Column
     private Date dataCompra = DateTime.now().toDate();
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "delivery_date")
+    @Column
     private Date dataEntrega = DateTime.now().toDate();
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_add")
+    @Column
     private Date dataCriacaco;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "date_upd")
+    @Column
     private Date dataAlteracao;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name = "vendedor_id")
-    private Usuario usuario;
+    private Usuario vendedor;
 
     @PrePersist
     public void onInsert() {
@@ -104,7 +98,6 @@ public class Pedido implements Serializable{
 
     public void setEnderecoEntrega(final EnderecoCliente enderecoEntrega) {
         this.enderecoEntrega = enderecoEntrega;
-        this.enderecoPedido = enderecoEntrega;
     }
 
     public EnderecoCliente getEnderecoEntrega() {
@@ -146,7 +139,7 @@ public class Pedido implements Serializable{
     }
 
     public void associar(final Usuario usuario) {
-        this.usuario = usuario;
+        this.vendedor = usuario;
     }
 
     public Loja getLoja() {

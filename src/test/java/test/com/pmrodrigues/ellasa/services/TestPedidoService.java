@@ -1,120 +1,154 @@
 package test.com.pmrodrigues.ellasa.services;
 
+import com.pmrodrigues.ellasa.enumarations.StatusPagamento;
 import com.pmrodrigues.ellasa.models.*;
-import com.pmrodrigues.ellasa.pagamentos.entity.Transaction;
 import com.pmrodrigues.ellasa.repositories.*;
+import com.pmrodrigues.ellasa.services.PagamentoFactory;
 import com.pmrodrigues.ellasa.services.PedidoService;
-import org.joda.time.DateTime;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.math.BigDecimal;
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Created by Marceloo on 13/10/2014.
  */
-@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
-public class TestPedidoService  extends AbstractTransactionalJUnit4SpringContextTests {
+public class TestPedidoService{
 
-    @Resource(name = "PedidoService")
-    private PedidoService service;
+    private final Mockery context = new Mockery() {
+        {
+            setImposteriser(ClassImposteriser.INSTANCE);
+        }
+    };
 
-    @Resource(name = "ClienteRepository")
-    private ClienteRepository clienteRepository;
+    private PedidoService service = new PedidoService();
+    private ClienteRepository clienteRepository = context.mock(ClienteRepository.class);
+    private TaxaRepository taxaRepository = context.mock(TaxaRepository.class);
+    private PedidoRepository pedidoRepository = context.mock(PedidoRepository.class);
+    private PagamentoFactory pagamentoService = context.mock(PagamentoFactory.class);
+    private ShoppingRepository lojaRepository = context.mock(ShoppingRepository.class);
+    private ProdutoRepository produtoRepository = context.mock(ProdutoRepository.class);
+    private Pedido pedido = context.mock(Pedido.class);
+    private Cliente cliente = context.mock(Cliente.class,"novo");
+    private Cliente existed = context.mock(Cliente.class,"existed");
+    private List<Taxa> taxas = context.mock(List.class,"taxas");
+    private OrdemPagamento pagamento = context.mock(OrdemPagamento.class);
 
-    @Resource(name = "ProdutoRepository")
-    private ProdutoRepository produtoRepository;
+    @Before
+    public void before() throws Exception {
+       this.setField("clienteRepository",clienteRepository);
+       this.setField("taxaRepository",taxaRepository);
+       this.setField("pedidoRepository",pedidoRepository);
+       this.setField("pagamentoService",pagamentoService);
+       this.setField("lojaRepository",lojaRepository);
+       this.setField("produtoRepository",produtoRepository);
 
-    @Resource(name = "EstadoRepository")
-    private EstadoRepository estadoRepository;
+    }
 
-    @Resource(name = "ShoppingRepository")
-    private ShoppingRepository lojaRepository;
+    private void setField(String name , Object value ) throws Exception {
+
+        Field atributo = service.getClass().getDeclaredField(name);
+        atributo.setAccessible(true);
+        atributo.set(service, value);
+
+    }
 
 
     @Test
-    @Transactional
-    @Rollback(false)
     public void efetuarPedido() {
 
-        Pedido pedido = new Pedido();
-        Loja loja = lojaRepository.findById(12L);
-        pedido.setLoja(loja);
+        context.checking(new Expectations() {{
+            allowing(pedido).getCliente();
+            will(returnValue(cliente));
 
-        pedido.setCliente(clienteRepository.findById(28L));
-        pedido.setDadosPagamento(criarOrdemPagamento());
+            allowing(cliente).isNovo();
+            will(returnValue(Boolean.TRUE));
 
-        List<Produto> produtos = produtoRepository.listByLoja(loja);
-        for( Produto produto : produtos ){
-            pedido.adicionar(produto);
-        }
+            allowing(pedido).setCodigoTransacao(with(aNonNull(String.class)));
+
+            allowing(cliente).getEndereco();
+            will(returnValue(new EnderecoCliente()));
+            allowing(pedido).setEnderecoEntrega(with(aNonNull(EnderecoCliente.class)));
+
+            oneOf(taxaRepository).list();
+            will(returnValue(taxas));
+
+            allowing(pedido).calcula(taxas);
+
+            oneOf(pedidoRepository).add(pedido);
+
+            allowing(pedido).getDadosPagamento();
+            will(returnValue(pagamento));
+
+            oneOf(pagamento).setPedido(pedido);
+
+            oneOf(pagamentoService).pagar(pagamento);
+
+            oneOf(pagamento).isSucesso();
+            will(returnValue(Boolean.TRUE));
+
+            oneOf(pedido).setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
+        }});
+
 
         service.pagar(pedido);
 
     }
 
     @Test
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Rollback(false)
-    public void efetuarPedidoComClienteNovo() {
+    public void efetuarPedidoAtualizandoCliente() {
 
-        Cliente cliente = new Cliente();
+        context.checking(new Expectations() {{
+            allowing(pedido).getCliente();
+            will(returnValue(cliente));
 
-        cliente.setPrimeiroNome("MARCELO");
-        cliente.setUltimoNome("RODRIGUES");
-        cliente.setEmail("marcelosrodrigues@globo.com");
-        cliente.setDataNascimento(DateTime.now().withYear(1977).toDate());
+            allowing(cliente).isNovo();
+            will(returnValue(Boolean.FALSE));
 
-        EnderecoCliente endereco = new EnderecoCliente();
-        endereco.setEstado(estadoRepository.findById(330L));
-        endereco.setLogradouro("Estrada Campo do Areia, 84 apto 206");
-        endereco.setBairro("Pechincha");
-        endereco.setCidade("Rio de Janeiro");
-        endereco.setCep("22743310");
-        endereco.setTelefone("2133926222");
-        endereco.setCelular("21981363699");
-        cliente.setEndereco(endereco);
+            allowing(cliente).getId();
+            will(returnValue(0L));
 
-        Pedido pedido = new Pedido();
-        Loja loja = lojaRepository.findById(12L);
-        pedido.setLoja(loja);
-        pedido.setCliente(cliente);
-        pedido.setDadosPagamento(criarOrdemPagamento());
+            oneOf(clienteRepository).findById(with(aNonNull(Long.class)));
+            will(returnValue(existed));
 
-        List<Produto> produtos = produtoRepository.listByLoja(loja);
-        for( Produto produto : produtos ){
-            pedido.adicionar(produto);
-        }
+            allowing(existed);
+            allowing(cliente);
+
+            allowing(pedido).setCliente(existed);
+
+            allowing(pedido).setCodigoTransacao(with(aNonNull(String.class)));
+
+            allowing(cliente).getEndereco();
+            will(returnValue(new EnderecoCliente()));
+            allowing(pedido).setEnderecoEntrega(with(aNonNull(EnderecoCliente.class)));
+
+            oneOf(taxaRepository).list();
+            will(returnValue(taxas));
+
+            allowing(pedido).calcula(taxas);
+
+            oneOf(pedidoRepository).add(pedido);
+
+            allowing(pedido).getDadosPagamento();
+            will(returnValue(pagamento));
+
+            oneOf(pagamento).setPedido(pedido);
+
+            oneOf(pagamentoService).pagar(pagamento);
+
+            oneOf(pagamento).isSucesso();
+            will(returnValue(Boolean.TRUE));
+
+            oneOf(pedido).setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
+        }});
+
 
         service.pagar(pedido);
 
-    }
-
-    private OrdemPagamentoCartaoCredito criarOrdemPagamento() {
-        final OrdemPagamentoCartaoCredito ordem = new OrdemPagamentoCartaoCredito();
-
-        final MeioPagamento cartao = new MeioPagamento();
-        cartao.setDescricao("Cartão Visa");
-        cartao.setTipo(Transaction.PaymentMethod.CARTAO_VISA);
-        ordem.setMeioPagamento(cartao);
-        ordem.setValor(new BigDecimal("1"));
-
-        ordem.setNumero("4012001038443335");
-        ordem.setCodigoSeguranca("123");
-        ordem.setPortador("MARCELO DA S RODRIGUES");
-        ordem.setCPF("070.323.277-02");
-        ordem.setTelefone("02133926222");
-
-        DateTime dataexpiracao = new DateTime(2018, 5, 01, 0, 0);
-        ordem.setDataExpiracao(dataexpiracao.toDate());
-
-        return ordem;
     }
 }
 

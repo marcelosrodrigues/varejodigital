@@ -1,5 +1,8 @@
 package test.com.pmrodrigues.ellasa.repositories;
 
+import com.pmrodrigues.ellasa.models.Usuario;
+import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
+import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
-
-import com.pmrodrigues.ellasa.models.Usuario;
-import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,7 +23,7 @@ public class TestUsuarioRepository
 	@Autowired
 	private UsuarioRepository repository;
 
-	private void deleteDadosDeTeste() {
+	private void prepare() {
 
         this.jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
             @Override
@@ -33,32 +33,37 @@ public class TestUsuarioRepository
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from ordempagamento where contrato_id = ( select id from contrato where franqueado_id = ?)" , userId);
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from contrato where franqueado_id = ?" , userId);
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from franqueadopessoafisica where id = ?", userId);
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from franqueadopessoajuridica where id = ?", userId);
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from franqueado where id = ?", userId);
                 TestUsuarioRepository.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
                 TestUsuarioRepository.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
 
                 return null;
             };
         });
+
 	}
 
 	@Before
 	public void before() {
 
-		deleteDadosDeTeste();
+		prepare();
+        Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
 
-		final Usuario usuario = new Usuario();
-		usuario.setEmail("marsilvarodrigues@gmail.com");
-		repository.add(usuario);
+        this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
+                        "   value (?, ?, md5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                true,
+                "marsilvarodrigues@gmail.com",
+                "123456",
+                "070.323.277-02",
+                DateTime.now().toDate(),
+                "pechincha",
+                "RIO DE JANEIRO",
+                "RJ", "APTO 206", "ESTRADA CAMPO DA AREA", "84", "MARCELO DA SILVA RODRIGUES", estado
+        );
 	}
 
 	@After
 	public void after() {
-		deleteDadosDeTeste();
+		prepare();
 	}
 
 	@Test

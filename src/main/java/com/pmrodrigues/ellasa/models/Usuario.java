@@ -1,24 +1,17 @@
 package com.pmrodrigues.ellasa.models;
 
+import br.com.caelum.stella.bean.validation.CPF;
+import com.pmrodrigues.ellasa.utilities.MD5;
+import org.apache.commons.lang.RandomStringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-
-import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
-
-import br.com.caelum.stella.bean.validation.CPF;
-import org.apache.commons.lang.RandomStringUtils;
-import org.hibernate.annotations.*;
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.pmrodrigues.ellasa.utilities.MD5;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -26,7 +19,7 @@ import com.pmrodrigues.ellasa.utilities.MD5;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 		@NamedQuery(name = "Usuario.All", query = "FROM Usuario"),
-		@NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u left join fetch u.celular left join fetch u.residencial WHERE email = :email")})
+		@NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u inner join fetch u.endereco.estado left join fetch u.celular left join fetch u.residencial WHERE email = :email")})
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -71,6 +64,12 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date dataNascimento;
+
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name = "membros" , joinColumns = @JoinColumn(name = "usuario_id"),
+                                  inverseJoinColumns = @JoinColumn(name = "perfil_id"),
+                                  uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","perfil_id"}))
+    private Set<Perfil> perfis = new HashSet<>();
 
     public void setNomeCompleto(final String nome) {
         this.nomeCompleto = nome;
