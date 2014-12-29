@@ -63,7 +63,7 @@
                                     <input class="form-control" placeholder="Senha" name="j_password" type="password" value="">
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Acessar</button>
+                                <button id="login" type="submit" class="btn btn-lg btn-success btn-block">Acessar</button>
                             </fieldset>
                         </form>
                     </div>

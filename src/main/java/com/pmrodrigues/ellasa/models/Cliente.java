@@ -1,5 +1,6 @@
 package com.pmrodrigues.ellasa.models;
 
+import com.pmrodrigues.ellasa.enumarations.Genero;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -41,6 +42,9 @@ public class Cliente implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date dataAlteracao = DateTime.now().toDate();
+
+    @Enumerated(EnumType.ORDINAL)
+    private Genero sexo;
 
 
     @PrePersist

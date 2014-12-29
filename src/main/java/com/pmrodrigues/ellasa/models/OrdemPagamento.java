@@ -28,7 +28,7 @@ public class OrdemPagamento implements Serializable {
 	@JoinColumn(name = "meiopagamento_id")
 	private MeioPagamento meioPagamento;
 
-	@ManyToOne(optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(optional = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "contrato_id")
 	private Contrato contrato;
 
