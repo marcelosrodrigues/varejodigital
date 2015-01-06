@@ -2,17 +2,25 @@ package test.com.pmrodrigues.ellasa.integration.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.Select;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.annotations.ById;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.annotations.URL;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.tags.Tag;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.tags.TagFactory;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractPageObject {
 
 	private WebDriver driver;
 
 	public AbstractPageObject(final String url) {
+        this();
 		System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY,
 				"C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
@@ -24,6 +32,7 @@ public abstract class AbstractPageObject {
     public AbstractPageObject() {}
 
     public AbstractPageObject(final WebDriver driver) {
+        this();
         this.driver = driver;
     }
 
@@ -32,7 +41,7 @@ public abstract class AbstractPageObject {
 		this.driver.quit();
 	}
 
-	public abstract AbstractPageObject submit();
+	public abstract AbstractPageObject submit() throws Exception;
 
 	public AbstractPageObject textById(final String id, final String value) {
 		driver.findElement(By.id(id)).sendKeys(value);
@@ -44,29 +53,6 @@ public abstract class AbstractPageObject {
         return this;
     }
 
-	public AbstractPageObject selectById(final String id, final String value) {
-
-		final Select select = new Select(driver.findElement(By.id(id)));
-		for (WebElement option : select.getOptions()) {
-			if (value.equalsIgnoreCase(option.getAttribute("value"))) {
-				option.click();
-				break;
-			}
-		}
-		return this;
-
-	}
-
-	public AbstractPageObject radioById(final String id, final String value) {
-		driver.findElement(
-				By.xpath(String
-						.format("//input[contains(@id,'%s') and contains(@value, '%s')]",
-								id, value)))
-				.click();
-		return this;
-
-	}
-
 	public AbstractPageObject clickById(final String id) {
 		driver.findElement(By.id(id)).click();
 		return this;
@@ -77,14 +63,71 @@ public abstract class AbstractPageObject {
         this.driver.get(url);
     }
 
-    public AbstractPageObject to(final String url) {
-        switch(url) {
-            case "http://localhost:8080":
-                return new DashboardPage(driver);
-            case "http://localhost:8080/login.jsp":
-                return new LoginPage(driver);
-            default:
-                return null;
+
+    public AbstractPageObject to(Class<? extends AbstractPageObject> toPage ) throws Exception {
+        final AbstractPageObject page = toPage.getConstructor(WebDriver.class)
+                                        .newInstance(this.driver);
+        page.url(toPage.getAnnotation(URL.class).url());
+
+        final List<Field> atributos = getDeclaredFields(toPage);
+
+        for(final Field atributo : atributos ){
+
+            atributo.setAccessible(true);
+
+            if( !atributo.isAnnotationPresent(ById.class) ) continue;
+
+            final ById byid = atributo.getAnnotation(ById.class);
+
+            final Tag tag = TagFactory.getInstance(driver).createById(byid.value());
+
+            if( tag == null ) continue;
+
+            if( atributo.getType().equals(String.class) ) {
+                atributo.set(page, tag.getValue());
+            } else if( atributo.getType().equals(Boolean.class) ){
+                atributo.set(page,Boolean.valueOf(tag.getValue().toString()));
+            }
+
         }
+
+        return page;
+    }
+
+    private List<Field> getDeclaredFields(Class<? extends AbstractPageObject> toPage) {
+        final List<Field> atributos = new ArrayList<>();
+        if( toPage.getSuperclass() != null ) {
+            atributos.addAll(Arrays.asList(toPage.getSuperclass().getDeclaredFields()) );
+        }
+        atributos.addAll(Arrays.asList(toPage.getDeclaredFields()) );
+        return atributos;
+    }
+
+    private AbstractPageObject url(final String url) {
+        driver.get(url);
+        return this;
+    }
+
+    public void update(final AbstractPageObject pageObject) throws IllegalAccessException {
+
+        final List<Field> atributos = getDeclaredFields(pageObject.getClass());
+
+        for(final Field atributo : atributos ){
+
+            atributo.setAccessible(true);
+            final ById byid = atributo.getAnnotation(ById.class);
+            final Object value = atributo.get(pageObject);
+
+            if( byid != null && value != null ){
+
+                Tag tag = TagFactory.getInstance(driver).createById(byid.value());
+
+                if( tag == null ) continue;
+
+                tag.setValue(value);
+
+            }
+        }
+
     }
 }

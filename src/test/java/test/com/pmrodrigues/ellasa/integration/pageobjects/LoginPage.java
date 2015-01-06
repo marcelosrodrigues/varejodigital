@@ -26,9 +26,9 @@ public class LoginPage extends AbstractPageObject {
     }
 
     @Override
-    public AbstractPageObject submit() {
+    public AbstractPageObject submit() throws Exception {
         this.clickById("login");
-        return (DashboardPage) super.to("http://localhost:8080");
+        return super.to(DashboardPage.class);
     }
 
 }

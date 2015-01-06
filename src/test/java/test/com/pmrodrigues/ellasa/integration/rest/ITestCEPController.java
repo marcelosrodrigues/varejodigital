@@ -1,9 +1,8 @@
-package test.com.pmrodrigues.ellasa.integration;
+package test.com.pmrodrigues.ellasa.integration.rest;
 
 import com.pmrodrigues.ellasa.models.CEP;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
-import test.com.pmrodrigues.ellasa.integration.rest.AbstractTestRest;
 
 import java.util.List;
 

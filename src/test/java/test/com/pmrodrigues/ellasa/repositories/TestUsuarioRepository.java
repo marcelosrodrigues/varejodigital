@@ -71,4 +71,5 @@ public class TestUsuarioRepository
 		final Usuario usuario = repository.findByEmail("marsilvarodrigues@gmail.com");
 		Assert.assertNotNull(usuario);
 	}
+
 }

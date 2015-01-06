@@ -100,6 +100,4 @@
             <a href="<c:url value='/usuario/novo.do' />" class="btn btn-info">Adicionar</a>
         </div>
     </div>
-
-
 </div>

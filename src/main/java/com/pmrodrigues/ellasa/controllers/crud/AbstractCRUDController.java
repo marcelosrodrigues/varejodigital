@@ -10,13 +10,12 @@ import com.pmrodrigues.ellasa.annotations.After;
 import com.pmrodrigues.ellasa.annotations.Before;
 import com.pmrodrigues.ellasa.annotations.Insert;
 import com.pmrodrigues.ellasa.annotations.Update;
-import com.pmrodrigues.ellasa.controllers.IndexController;
 import com.pmrodrigues.ellasa.exceptions.UniqueException;
 import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import org.apache.log4j.Logger;
 
-import java.io.Serializable;
+import javax.persistence.Entity;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -80,46 +79,39 @@ public abstract class AbstractCRUDController<E> {
 
     private boolean doUpdate(final E object) {
         try {
-            List<Method> metodos = Arrays.asList(this.getClass().getMethods());
-            for( final Method metodo : metodos ){
-                if( metodo.isAnnotationPresent(Update.class)) {
-                    logging.debug(format("Delegado a execução para o método da classe filha %s",metodo));
-                    metodo.invoke(this,object);
-                    return true;
-                }
-            }
+            return invoke(Update.class,object);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 
     private boolean doInsert(final E object) {
         try {
-            List<Method> metodos = Arrays.asList(this.getClass().getMethods());
-            for( final Method metodo : metodos ){
-                if( metodo.isAnnotationPresent(Insert.class)) {
-                    logging.debug(format("Delegado a execução para o método da classe filha %s",metodo));
-                    metodo.invoke(this,object);
-                    return true;
-                }
-            }
+           return invoke(Insert.class,object);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
-        return false;
+
+    }
+
+    private Method getByAnnotation(Class annotation) {
+
+        final List<Method> metodos = Arrays.asList(this.getClass().getMethods());
+        for( final Method metodo : metodos ) {
+            if (metodo.isAnnotationPresent(annotation)) {
+                logging.debug(format("Delegado a execução para o método da classe filha %s", metodo));
+                return metodo;
+            }
+        }
+        return null;
+
     }
 
     private void postExecute(final E object) {
         try {
-            List<Method> metodos = Arrays.asList(this.getClass().getMethods());
-            for( final Method metodo : metodos ){
-                if( metodo.isAnnotationPresent(After.class)) {
-                    logging.debug(format("Delegado a execução para o método da classe filha %s",metodo));
-                    metodo.invoke(this,object);
-                    break;
-                }
-            }
+
+            invoke(After.class,object);
+
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -145,18 +137,20 @@ public abstract class AbstractCRUDController<E> {
     private void preExecute() {
 
         try {
-            List<Method> metodos = Arrays.asList(this.getClass().getMethods());
-            for( final Method metodo : metodos ){
-                if( metodo.isAnnotationPresent(Before.class)) {
-                    logging.debug(format("Delegado a execução para o método da classe filha %s",metodo));
-                    metodo.invoke(this);
-                    break;
-                }
-            }
+            invoke(Before.class);
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private boolean invoke(Class annotation,Object... params) throws IllegalAccessException, InvocationTargetException {
+        final Method metodo = this.getByAnnotation(annotation);
+        if( metodo != null ) {
+            metodo.invoke(this,params);
+            return true;
+        }
+        return false;
     }
 
     public void search(Integer page , final E object ) {
@@ -179,6 +173,16 @@ public abstract class AbstractCRUDController<E> {
         try {
             preExecute();
             final E e = this.persistentClass.newInstance();
+
+            List<Field> fields = Arrays.asList(e.getClass().getDeclaredFields());
+            for( Field field : fields ){
+                if( field.getType().isAnnotationPresent(Entity.class) ){
+                    field.setAccessible(true);
+                    Object value = field.getType().newInstance();
+                    field.set(e,value);
+                }
+            }
+
             result.include(Constante.OBJECT,e);
         } catch (InstantiationException | IllegalAccessException ex) {
             throw new RuntimeException(ex);

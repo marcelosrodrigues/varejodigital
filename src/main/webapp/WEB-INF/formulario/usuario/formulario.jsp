@@ -204,12 +204,12 @@
                 <div class="form-group" style="margin-left: 15px;">
                     <input type="hidden" id="object.bloqueado" name="object.bloqueado" value="${object.bloqueado}" />
                     <label class="checkbox-inline">
-                        <input type="checkbox" id="bloqueado" name="bloqueado" id="bloqueado"
+                        <input type="checkbox" id="bloqueado" name="bloqueado"
                                <c:if test="${object.bloqueado}">checked="checked"</c:if>/>Bloqueado
                     </label>
                 </div>
 
-                <button type="submit" value="salvar" class="btn btn-default btn-info" style="margin-left: 15px;">
+                <button type="submit" id="salvar" value="salvar" class="btn btn-default btn-info" style="margin-left: 15px;">
                     <fmt:message key="button.salvar" bundle="${labels}"/></button>
 
                 </form>

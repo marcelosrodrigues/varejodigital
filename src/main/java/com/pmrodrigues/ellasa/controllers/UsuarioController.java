@@ -10,15 +10,16 @@ import com.pmrodrigues.ellasa.exceptions.UniqueException;
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
-import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
 import com.pmrodrigues.ellasa.services.EmailService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,8 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
 
     private static final Logger logging = Logger.getLogger(UsuarioController.class);
 
-    protected UsuarioController(UsuarioRepository repository, EstadoRepository estadoRepository, EmailService email , Result result, Validator validator) {
+    public UsuarioController(final UsuarioRepository repository, final EstadoRepository estadoRepository,
+                             final EmailService email, final Result result, final Validator validator) {
         super(repository, result, validator);
         this.estadoRepository = estadoRepository;
         this.email = email;
@@ -49,31 +51,41 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
 
         logging.trace("carregando os estados para montagem da tela");
         final List<Estado> estados = estadoRepository.list();
-        super.getResult().include(Constante.LISTA_ESTADOS,estados);
+        super.getResult().include(Constante.LISTA_ESTADOS, estados);
     }
 
     @Update
     public void update(final Usuario object) {
 
-        logging.debug(format("alterando o usuario %s",object));
+        try {
 
-        final Usuario existed = this.getRepository().findById(object.getId());
-        existed.setNomeCompleto(object.getNomeCompleto());
-        existed.setBloqueado(object.isBloqueado());
-        existed.setCpf(object.getCpf());
-        existed.setDataNascimento(object.getDataNascimento());
-        existed.setEmail(object.getEmail());
-        existed.setResidencial(object.getResidencial());
-        existed.getEndereco().setBairro(object.getEndereco().getBairro());
-        existed.getEndereco().setCep(object.getEndereco().getCep());
-        existed.getEndereco().setCidade(object.getEndereco().getCidade());
-        existed.getEndereco().setComplemento(object.getEndereco().getComplemento());
-        existed.getEndereco().setEstado(object.getEndereco().getEstado());
-        existed.getEndereco().setLogradouro(object.getEndereco().getLogradouro());
-        existed.getEndereco().setNumero(object.getEndereco().getNumero());
-        this.getRepository().set(existed);
 
-        logging.debug(format("Usuario %s alterado com sucesso",object));
+            logging.debug(format("alterando o usuario %s", object));
+
+            final Usuario existed = this.getRepository().findById(object.getId());
+
+            update(object, existed);
+
+            logging.debug(format("Usuario %s alterado com sucesso", object));
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            logging.fatal("erro ao copiar os valores digitados para a entidade existente no banco de dados " +
+                    e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void update(final Usuario origem, final Usuario destino)
+            throws IllegalAccessException, InvocationTargetException {
+        BeanUtils.copyProperties(destino, origem);
+        BeanUtils.copyProperties(destino.getEndereco(), origem.getEndereco());
+        BeanUtils.copyProperties(destino.getCelular(), origem.getCelular());
+
+        if (origem.getResidencial() != null && GenericValidator.isBlankOrNull(origem.getResidencial().getDdd())
+                && GenericValidator.isBlankOrNull(origem.getResidencial().getNumero())) {
+            destino.setResidencial(null);
+        }
+
+        this.getRepository().set(destino);
     }
 
 
@@ -86,40 +98,31 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
 
         final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
         final User user = (User) userAuthenticated.getPrincipal();
-        final Usuario object = ((UsuarioRepository)this.getRepository()).findByEmail(user.getUsername());
+        final Usuario object = ((UsuarioRepository) this.getRepository()).findByEmail(user.getUsername());
 
-        this.getResult().include(Constante.OBJECT,object);
+        this.getResult().include(Constante.OBJECT, object);
     }
 
     @Tiles(definition = "usuario/meus-dados-template")
     @Path("/meus-dados.do")
     @Post
-    public void updateUserProfile(final Usuario object){
+    public void updateUserProfile(final Usuario object) {
 
         try {
 
             final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
             final User user = (User) userAuthenticated.getPrincipal();
-            final Usuario existed = ((UsuarioRepository)this.getRepository()).findByEmail(user.getUsername());
+            final Usuario existed = ((UsuarioRepository) this.getRepository()).findByEmail(user.getUsername());
 
-            existed.setNomeCompleto(object.getNomeCompleto());
-            existed.setCpf(object.getCpf());
-            existed.setDataNascimento(object.getDataNascimento());
-            existed.setEmail(object.getEmail());
-            existed.setResidencial(object.getResidencial());
-            existed.getEndereco().setBairro(object.getEndereco().getBairro());
-            existed.getEndereco().setCep(object.getEndereco().getCep());
-            existed.getEndereco().setCidade(object.getEndereco().getCidade());
-            existed.getEndereco().setComplemento(object.getEndereco().getComplemento());
-            existed.getEndereco().setEstado(object.getEndereco().getEstado());
-            existed.getEndereco().setLogradouro(object.getEndereco().getLogradouro());
-            existed.getEndereco().setNumero(object.getEndereco().getNumero());
-            this.getRepository().set(existed);
+            update(object, existed);
 
             this.getResult().include(Constante.SUCESSO, "Seus dados foram alterados com sucesso");
         } catch (UniqueException e) {
-            super.getValidator().add(new ValidationMessage(e.getMessage(),e.getMessage()));
+            super.getValidator().add(new ValidationMessage(e.getMessage(), e.getMessage()));
             super.getValidator().onErrorForwardTo(this.getClass()).openUserProfile();
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            logging.fatal("erro ao copiar os valores digitados para a entidade existente no banco de dados " + e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -127,7 +130,7 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
     public void enviarEmailComSenha(final Usuario usuario) {
 
         final Map<String, Object> parameters = new HashMap<>();
-        parameters.put("usuario",usuario);
+        parameters.put("usuario", usuario);
 
         email.from("sac@catalogodigitalellasa.com.br")
                 .to(usuario.getEmail())

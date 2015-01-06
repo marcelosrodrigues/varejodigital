@@ -1,13 +1,11 @@
 package test.com.pmrodrigues.ellasa.integration;
 
 import org.joda.time.DateTime;
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.AbstractPageObject;
 import test.com.pmrodrigues.ellasa.integration.pageobjects.DashboardPage;
 import test.com.pmrodrigues.ellasa.integration.pageobjects.LoginPage;
 
@@ -15,17 +13,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Marceloo on 26/12/2014.
+ * Created by Marceloo on 05/01/2015.
  */
-@ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
-public class ITestLoginPage extends
+public class AbstractPageTest extends
         AbstractTransactionalJUnit4SpringContextTests {
 
-    private LoginPage login;
+    private DashboardPage index;
 
     @Before
     @Transactional
-    public void setup() {
+    public void setup() throws Exception {
 
         prepare();
         final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
@@ -39,11 +36,17 @@ public class ITestLoginPage extends
                 "070.323.277-02",
                 DateTime.now().toDate(),
                 "Pechincha",
+                "22743-310",
                 "RIO DE JANEIRO",
-                "RJ", "APTO 206", "ESTRADA CAMPO DA AREA", "84", "MARCELO DA SILVA RODRIGUES", estado
+                "APTO 206", "ESTRADA CAMPO DA AREA", "84", "MARCELO DA SILVA RODRIGUES", estado
         );
 
         this.jdbcTemplate.update("commit");
+
+        this.index = (DashboardPage) new LoginPage("http://localhost:8080")
+                .email("marsilvarodrigues@gmail.com")
+                .password("12345678")
+                .submit();
 
     }
 
@@ -57,8 +60,8 @@ public class ITestLoginPage extends
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                ITestLoginPage.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                ITestLoginPage.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                AbstractPageTest.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
+                AbstractPageTest.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
 
                 return null;
             };
@@ -66,18 +69,12 @@ public class ITestLoginPage extends
 
     }
 
-    @After
     public void after() {
+        this.index.close();
         prepare();
     }
 
-    @Test
-    public void autenticar() throws Exception {
-
-        login = new LoginPage("http://localhost:8080");
-        DashboardPage dashboard = (DashboardPage) login.email("marsilvarodrigues@gmail.com")
-                                                       .password("12345678")
-                                                       .submit();
-        dashboard.close();
+    public AbstractPageObject index() {
+        return this.index;
     }
 }

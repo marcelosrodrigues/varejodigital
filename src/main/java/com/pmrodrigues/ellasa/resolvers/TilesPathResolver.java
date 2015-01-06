@@ -4,12 +4,8 @@ import br.com.caelum.vraptor.http.FormatResolver;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.view.DefaultPathResolver;
-
 import com.pmrodrigues.ellasa.annotations.CRUD;
 import com.pmrodrigues.ellasa.annotations.Tiles;
-import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
-
-import java.lang.reflect.ParameterizedType;
 
 import static java.lang.String.format;
 
@@ -26,7 +22,6 @@ public class TilesPathResolver extends DefaultPathResolver {
 		if (method.getMethod().isAnnotationPresent(Tiles.class)) {
             return method.getMethod().getAnnotation(Tiles.class).definition();
         } else if ( method.getResource().getType().isAnnotationPresent(CRUD.class) ){
-
             return format("%s-template",method.getMethod().getName().toLowerCase());
 		} else {
 			return super.pathFor(method);

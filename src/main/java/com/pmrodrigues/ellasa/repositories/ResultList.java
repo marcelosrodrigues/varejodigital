@@ -59,4 +59,8 @@ public class ResultList<E> {
                             .setMaxResults( ( page * Constante.TAMANHO_PAGINA ) + Constante.TAMANHO_PAGINA )
                             .list();
     }
+
+    public Long getRecordCount() {
+        return recordCount;
+    }
 }

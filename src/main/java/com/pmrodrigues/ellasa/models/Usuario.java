@@ -43,10 +43,10 @@ public class Usuario implements Serializable {
 	private boolean bloqueado = true;
 
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	private Telefone celular = new Telefone();
+	private Telefone celular;
 
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	private Telefone residencial = new Telefone();
+	private Telefone residencial;
 
     @Embedded
     private final Endereco endereco = new Endereco();
@@ -166,4 +166,5 @@ public class Usuario implements Serializable {
 		}
 
 	}
+
 }

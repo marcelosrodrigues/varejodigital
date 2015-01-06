@@ -1,27 +1,20 @@
 package com.pmrodrigues.ellasa.repositories.impl;
 
-import static java.lang.String.format;
-
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
-import java.util.List;
-
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-
+import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.pmrodrigues.ellasa.repositories.Repository;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+
+import static java.lang.String.format;
 
 @Transactional(propagation = Propagation.REQUIRED)
 public abstract class AbstractRepository<E> implements Repository<E> {
@@ -57,6 +50,7 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	public void set(final E entity) {
 		LOGGER.debug(format("Atualizando o valor %s no banco de dados", entity));
         this.getSession().update(entity);
+        this.getSession().flush();
 		LOGGER.debug(format("%s salvo com sucesso", entity));
 
 	}

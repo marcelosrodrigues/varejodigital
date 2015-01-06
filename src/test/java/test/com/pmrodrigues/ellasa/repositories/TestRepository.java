@@ -2,6 +2,7 @@ package test.com.pmrodrigues.ellasa.repositories;
 
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -9,8 +10,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestRepository
@@ -21,6 +21,11 @@ public class TestRepository
 	private EstadoRepository repository;
 
 	private Estado estado;
+
+    @Before
+    public void before() {
+        jdbcTemplate.update("delete from estado where uf = 'TT'");
+    }
 
 
     @Test
@@ -41,6 +46,48 @@ public class TestRepository
 
         assertEquals(count,new Long(estadoList.size()));
 
+    }
+
+    @Test
+    public void testAdd() {
+
+        final Estado estado = new Estado();
+        estado.setUf("TT");
+        estado.setNome("TESTE");
+        estado.setId(10000L);
+        repository.add(estado);
+
+        long quantidade = jdbcTemplate.queryForObject("select count(id) from estado where uf = 'TT'",Long.class);
+
+        assertNotEquals(1L,quantidade);
+
+    }
+
+    @Test
+    public void testSet() {
+
+        jdbcTemplate.update("insert into estado (id , uf , nome) values ( 10000 , 'TT' , 'TESTE')");
+        final Estado estado = repository.findById(10000L);
+        estado.setNome("TESTE 2");
+        repository.set(estado);
+
+        long quantidade = jdbcTemplate.queryForObject("select count(id) from estado where nome = 'TESTE 2'",Long.class);
+
+        assertEquals(1L, quantidade);
+
+    }
+
+    @Test
+    public void testRemove() {
+
+        jdbcTemplate.update("insert into estado (id , uf , nome) values ( 10000 , 'TT' , 'TESTE')");
+        final Estado estado = repository.findById(10000L);
+
+        repository.remove(estado);
+
+        long quantidade = jdbcTemplate.queryForObject("select count(id) from estado where uf = 'TT'",Long.class);
+
+        assertNotEquals(0L,quantidade);
     }
 
 
