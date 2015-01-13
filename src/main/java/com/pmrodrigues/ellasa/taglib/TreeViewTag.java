@@ -30,18 +30,14 @@ public class TreeViewTag extends SimpleTagSupport {
 
     private String id;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public TreeViewTag() {
         super();
     }
 
-    public void doTag() throws JspException, IOException{
+    public void doTag() throws JspException, IOException {
 
         final JspWriter writer = getJspContext().getOut();
-        writer.println(format("<div id=\"%s\" class=\"css-treeview\"><ul>",this.id));
+        writer.println(format("<div id=\"%s\" class=\"css-treeview\"><ul>", this.id));
 
         try {
             createTreeView(list);
@@ -56,33 +52,33 @@ public class TreeViewTag extends SimpleTagSupport {
 
     private void createTreeView(final Collection list) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
 
-        final JspWriter writer =  getJspContext().getOut();
-        for( final Object entity : list ){
-            if( !GenericValidator.isBlankOrNull(url) && !GenericValidator.isBlankOrNull(value) ){
+        final JspWriter writer = getJspContext().getOut();
+        for (final Object entity : list) {
+            if (!GenericValidator.isBlankOrNull(url) && !GenericValidator.isBlankOrNull(value)) {
 
                 Collection sublist = null;
-                if( !GenericValidator.isBlankOrNull(this.subList)  ) {
+                if (!GenericValidator.isBlankOrNull(this.subList)) {
                     sublist = (Collection) PropertyUtils.getProperty(entity, this.subList);
                 }
 
                 writer.println("<li>");
-                if( sublist != null && !sublist.isEmpty()){
+                if (sublist != null && !sublist.isEmpty()) {
 
                     writer.println(format("<input type=\"checkbox\" id=\"item-%s\" /><label for=\"item-%s\"><a href=\"%s\">%s</a></label>",
-                            getProperty(entity,value),
-                            getProperty(entity,value),
-                            format("%s?id=%s",url,getProperty(entity,value)),
-                            getProperty(entity,label)));
+                            getProperty(entity, value),
+                            getProperty(entity, value),
+                            format("%s?id=%s", url, getProperty(entity, value)),
+                            getProperty(entity, label)));
 
-                            writer.println("<ul>");
-                            createTreeView(sublist);
-                            writer.append("</ul>");
+                    writer.println("<ul>");
+                    createTreeView(sublist);
+                    writer.append("</ul>");
 
                 } else {
 
                     writer.println(format("<a href=\"%s\">%s</a>",
-                            format("%s?id=%s",url,getProperty(entity,value)),
-                            getProperty(entity,label)));
+                            format("%s?id=%s", url, getProperty(entity, value)),
+                            getProperty(entity, label)));
                 }
 
                 writer.println("</li>");
@@ -107,7 +103,11 @@ public class TreeViewTag extends SimpleTagSupport {
         this.url = url;
     }
 
-    public void setSubList(String subList) {
+    public void setSubList(final String subList) {
         this.subList = subList;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
     }
 }

@@ -15,11 +15,11 @@ public class NovaSecaoPage extends AbstractPageObject {
     @ById("object.nome")
     private String nome;
 
-    @ById("object.pai.id")
+    @ById("object.pai")
     private String pai;
 
 
-    public NovaSecaoPage(WebDriver driver){
+    public NovaSecaoPage(WebDriver driver) {
         super(driver);
     }
 

@@ -55,4 +55,32 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>textfield</name>
+        <tag-class>com.pmrodrigues.ellasa.taglib.InputTextTag</tag-class>
+        <body-content>empty</body-content>
+
+        <attribute>
+            <name>label</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+    </tag>
+
 </taglib>

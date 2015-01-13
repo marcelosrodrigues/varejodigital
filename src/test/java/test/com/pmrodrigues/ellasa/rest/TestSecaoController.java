@@ -18,21 +18,20 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestSecaoController
-		extends
-			AbstractTransactionalJUnit4SpringContextTests {
-	
-	private SecaoController service;
+        extends
+        AbstractTransactionalJUnit4SpringContextTests {
 
-	@Autowired
-	private SecaoRepository repository;
-	
-	@Before
-	public void  setup() {
-		service = new SecaoController(repository, new MockResult());
+    private SecaoController service;
+
+    @Autowired
+    private SecaoRepository repository;
+
+    @Before
+    public void setup() {
+        service = new SecaoController(repository, new MockResult());
         jdbcTemplate.query("select secao_id from areas_vendas a inner join secao on id = secao_id where secao = 'teste'", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -43,7 +42,7 @@ public class TestSecaoController
             }
         });
         jdbcTemplate.update("insert into secao ( secao ) values ( 'teste' )");
-	}
+    }
 
     @After
     public void after() {
@@ -56,14 +55,6 @@ public class TestSecaoController
             }
         });
     }
-	
-	@Test
-	public void deveListarTodasAsSecoes() {
-		
-		final List<Secao> secoes = service.secoes();
-		assertFalse( secoes.isEmpty());
-		
-	}
 
     @Test
     public void deveListarTodasAsSecoesPorLoja() {
