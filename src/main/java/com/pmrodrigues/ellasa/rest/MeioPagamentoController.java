@@ -1,11 +1,13 @@
 package com.pmrodrigues.ellasa.rest;
 
-import br.com.caelum.vraptor.*;
+import br.com.caelum.vraptor.Get;
+import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Resource;
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class MeioPagamentoController {
 
     private final Result result;
 
-    public MeioPagamentoController(final MeioPagamentoRepository repository , final Result result ){
+    public MeioPagamentoController(final MeioPagamentoRepository repository, final Result result) {
         this.repository = repository;
         this.result = result;
     }
@@ -33,8 +35,8 @@ public class MeioPagamentoController {
         final List<MeioPagamento> meiospagamento = repository.list();
 
         result.use(Results.json())
-               .from(meiospagamento)
-               .serialize();
+                .from(meiospagamento)
+                .serialize();
 
         return meiospagamento;
     }

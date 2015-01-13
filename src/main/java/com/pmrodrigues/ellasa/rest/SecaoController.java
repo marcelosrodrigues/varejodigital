@@ -1,14 +1,16 @@
 package com.pmrodrigues.ellasa.rest;
 
-import java.util.List;
-
-import br.com.caelum.vraptor.*;
-import org.apache.log4j.Logger;
-
+import br.com.caelum.vraptor.Get;
+import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Resource;
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
-
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
+import org.apache.log4j.Logger;
+
+import java.util.List;
 
 @Resource
 public class SecaoController {
@@ -26,18 +28,19 @@ public class SecaoController {
 		this.result = result;
 	}
 
-	@Get
-    @Path("/secoes.json")
-    public List<Secao> secoes() {
+    @Get
+    @Path("/{loja}/secoes.json")
+    public List<Secao> secoes(final Loja loja) {
 
-		logging.debug("carregando a listagem de secoes");
-		final List<Secao> secoes = repository.list();
-		logging.debug("lista carregada");
-		
-		result.use(Results.json()).from(secoes).include("pai").serialize();
-		
-		return secoes;
+        logging.debug("carregando todas as seções da loja " + loja);
+        final List<Secao> secoes = repository.findByLoja(loja);
+        logging.debug("lista carregada");
 
-	}
+        result.use(Results.json())
+                .from(secoes)
+                .include("pai")
+                .serialize();
 
+        return secoes;
+    }
 }

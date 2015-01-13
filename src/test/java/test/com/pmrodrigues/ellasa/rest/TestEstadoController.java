@@ -1,46 +1,44 @@
 package test.com.pmrodrigues.ellasa.rest;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
+import br.com.caelum.vraptor.util.test.MockResult;
+import com.pmrodrigues.ellasa.models.Estado;
+import com.pmrodrigues.ellasa.repositories.EstadoRepository;
+import com.pmrodrigues.ellasa.rest.EstadoController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import br.com.caelum.vraptor.util.test.MockResult;
+import java.util.List;
 
-import com.pmrodrigues.ellasa.models.Estado;
-import com.pmrodrigues.ellasa.repositories.EstadoRepository;
-import com.pmrodrigues.ellasa.rest.EstadoController;
+import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestEstadoController
-		extends
-			AbstractTransactionalJUnit4SpringContextTests {
-	
-	private EstadoController service;
+        extends
+        AbstractTransactionalJUnit4SpringContextTests {
 
-	@Autowired
-	private EstadoRepository repository;
-	
-	@Before
-	public void  setup() {
-		service = new EstadoController(repository, new MockResult());
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Test
-	public void deveListarTodasAsSecoes() {
-		final Long count = this.jdbcTemplate
-				.queryForLong("select count(1) from estado");
+    private EstadoController service;
 
-		final List<Estado> estados = service.estados();
-		assertEquals( count , Long.valueOf(estados.size()));
-		
-		
-	}
+    @Autowired
+    private EstadoRepository repository;
+
+    @Before
+    public void setup() {
+        service = new EstadoController(repository, new MockResult());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Test
+    public void deveListarTodasAsSecoes() {
+        final Long count = this.jdbcTemplate
+                .queryForLong("select count(1) from estado");
+
+        final List<Estado> estados = service.estados();
+        assertEquals(count, Long.valueOf(estados.size()));
+
+
+    }
 
 }

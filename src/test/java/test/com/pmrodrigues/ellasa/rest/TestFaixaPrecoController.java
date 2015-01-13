@@ -1,47 +1,45 @@
 package test.com.pmrodrigues.ellasa.rest;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
+import br.com.caelum.vraptor.util.test.MockResult;
+import com.pmrodrigues.ellasa.models.FaixaPreco;
+import com.pmrodrigues.ellasa.repositories.FaixaRepository;
+import com.pmrodrigues.ellasa.rest.FaixaPrecoController;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
-import br.com.caelum.vraptor.util.test.MockResult;
+import java.util.List;
 
-import com.pmrodrigues.ellasa.models.FaixaPreco;
-import com.pmrodrigues.ellasa.repositories.FaixaRepository;
-import com.pmrodrigues.ellasa.rest.FaixaPrecoController;
+import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestFaixaPrecoController
-		extends
-			AbstractTransactionalJUnit4SpringContextTests {
-	
-	private FaixaPrecoController service;
+        extends
+        AbstractTransactionalJUnit4SpringContextTests {
 
-	@Autowired
-	private FaixaRepository repository;
-	
-	@Before
-	public void  setup() {
-		service = new FaixaPrecoController(repository, new MockResult());
-	}
-	
-	@Test
-	public void deveListarTodasAsSecoes() {
-		
-		@SuppressWarnings("deprecation")
-		final Long count = this.jdbcTemplate
-				.queryForLong("select count(1) from faixa_preco");
+    private FaixaPrecoController service;
 
-		final List<FaixaPreco> faixas = service.faixas();
-		assertEquals( count , Long.valueOf(faixas.size()));
-		
-		
-	}
+    @Autowired
+    private FaixaRepository repository;
+
+    @Before
+    public void setup() {
+        service = new FaixaPrecoController(repository, new MockResult());
+    }
+
+    @Test
+    public void deveListarTodasAsSecoes() {
+
+        @SuppressWarnings("deprecation")
+        final Long count = this.jdbcTemplate
+                .queryForLong("select count(1) from faixa_preco");
+
+        final List<FaixaPreco> faixas = service.faixas();
+        assertEquals(count, Long.valueOf(faixas.size()));
+
+
+    }
 
 }

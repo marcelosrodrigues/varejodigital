@@ -1,101 +1,99 @@
 package com.pmrodrigues.ellasa.services;
 
-import static java.lang.String.format;
-
-import java.util.Map;
+import com.pmrodrigues.ellasa.exceptions.EnderecoEmailInvalidoException;
+import com.pmrodrigues.ellasa.exceptions.ErrorProcessamentoDeTemplateException;
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import javax.annotation.Resource;
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.Map;
 
-import org.apache.velocity.app.VelocityEngine;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.velocity.VelocityEngineUtils;
-
-import com.pmrodrigues.ellasa.exceptions.EnderecoEmailInvalidoException;
-import com.pmrodrigues.ellasa.exceptions.ErrorProcessamentoDeTemplateException;
+import static java.lang.String.format;
 
 @Service
 public class EmailService {
 
-	@Resource(name = "mailSender")
-	private JavaMailSender sender;
+    @Resource(name = "mailSender")
+    private JavaMailSender sender;
 
-	private MimeMessage message;
+    private MimeMessage message;
 
-	@Resource(name = "velocityEngine")
-	private VelocityEngine velocityEngine;
+    @Resource(name = "velocityEngine")
+    private VelocityEngine velocityEngine;
 
-	public EmailService from(final String email) {
-		
-		try {
-			createMimeMessage();
-			message.setFrom(new InternetAddress(email));
-			return this;
-		} catch (MessagingException e) {
-			throw new EnderecoEmailInvalidoException(format(
-					"O endereço %s é inválido", email));
-		}
-	}
+    public EmailService from(final String email) {
 
-	public EmailService to(final String email) {
-		try {
-			createMimeMessage();
-			message.setRecipient(RecipientType.TO, new InternetAddress(email));
-			return this;
-		} catch (MessagingException e) {
-			throw new EnderecoEmailInvalidoException(format(
-					"O endereço %s é inválido", email));
-		}
-	}
+        try {
+            createMimeMessage();
+            message.setFrom(new InternetAddress(email));
+            return this;
+        } catch (MessagingException e) {
+            throw new EnderecoEmailInvalidoException(format(
+                    "O endereço %s é inválido", email));
+        }
+    }
 
-	public EmailService cc(final String email) {
-		try {
-			createMimeMessage();
-			message.setRecipient(RecipientType.CC, new InternetAddress(email));
-			return this;
-		} catch (MessagingException e) {
-			throw new EnderecoEmailInvalidoException(format(
-					"O endereço %s é inválido", email));
-		}
-	}
+    public EmailService to(final String email) {
+        try {
+            createMimeMessage();
+            message.setRecipient(RecipientType.TO, new InternetAddress(email));
+            return this;
+        } catch (MessagingException e) {
+            throw new EnderecoEmailInvalidoException(format(
+                    "O endereço %s é inválido", email));
+        }
+    }
 
-	public EmailService subject(final String subject) {
-		try {
-			createMimeMessage();
-			message.setSubject(subject);
-			return this;
-		} catch (Exception e) {
-			return this;
-		}
-	}
+    public EmailService cc(final String email) {
+        try {
+            createMimeMessage();
+            message.setRecipient(RecipientType.CC, new InternetAddress(email));
+            return this;
+        } catch (MessagingException e) {
+            throw new EnderecoEmailInvalidoException(format(
+                    "O endereço %s é inválido", email));
+        }
+    }
 
-	public EmailService template(final String template,
-			Map<String, Object> parameters) {
+    public EmailService subject(final String subject) {
+        try {
+            createMimeMessage();
+            message.setSubject(subject);
+            return this;
+        } catch (Exception e) {
+            return this;
+        }
+    }
 
-		try {
-			createMimeMessage();
-			final String text = VelocityEngineUtils.mergeTemplateIntoString(
-					velocityEngine, template, "UTF-8", parameters);
+    public EmailService template(final String template,
+                                 Map<String, Object> parameters) {
 
-			message.setContent(text, "text/html; charset=utf-8");
+        try {
+            createMimeMessage();
+            final String text = VelocityEngineUtils.mergeTemplateIntoString(
+                    velocityEngine, template, "UTF-8", parameters);
 
-			return this;
-		} catch (MessagingException e) {
-			throw new ErrorProcessamentoDeTemplateException(e.getMessage(), e);
-		}
-	}
+            message.setContent(text, "text/html; charset=utf-8");
 
-	public void send() {
-		this.sender.send(this.message);
-	}
+            return this;
+        } catch (MessagingException e) {
+            throw new ErrorProcessamentoDeTemplateException(e.getMessage(), e);
+        }
+    }
 
-	private void createMimeMessage() {
-		if (message == null) {
-			message = sender.createMimeMessage();
-		}
-	}
+    public void send() {
+        this.sender.send(this.message);
+    }
+
+    private void createMimeMessage() {
+        if (message == null) {
+            message = sender.createMimeMessage();
+        }
+    }
 }

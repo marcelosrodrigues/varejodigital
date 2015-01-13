@@ -1,6 +1,7 @@
 package test.com.pmrodrigues.ellasa.repositories;
 
 
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
@@ -34,5 +35,18 @@ public class TestSecaoRepository extends
         final List<Secao> secoes = repository.listAll();
         assertEquals(count, secoes.size());
 
+    }
+
+
+    @Test
+    public void listarTodasAsSecoesPorLoja() {
+
+        final Long id = this.jdbcTemplate.queryForObject("select id from loja where nome = 'PROJETANDOO'", Long.class);
+        final Loja loja = new Loja();
+        loja.setId(id);
+
+        final List<Secao> secoes = repository.findByLoja(loja);
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? and pai_id is null", Long.class, id);
+        assertEquals(count, Long.valueOf(secoes.size()));
     }
 }

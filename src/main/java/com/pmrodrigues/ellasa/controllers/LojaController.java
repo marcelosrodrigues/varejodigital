@@ -6,7 +6,6 @@ import br.com.caelum.vraptor.ioc.Component;
 import com.pmrodrigues.ellasa.annotations.CRUD;
 import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
 import com.pmrodrigues.ellasa.models.Loja;
-import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
 
 /**
