@@ -16,7 +16,7 @@ import static org.testng.Assert.assertEquals;
  * Created by Marceloo on 05/01/2015.
  */
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
-public class ITestUsuarioPage extends AbstractPageTest {
+public class ITestUsuarioPage extends AbstractPage {
 
 
     @Test

@@ -17,6 +17,7 @@
     <title>Portal Ella S/A</title>
 
 
+    <link href="<c:url value='/css/treeview.css' />" rel="stylesheet">
     <link href="<c:url value='/css/bootstrap.min.css' />" rel="stylesheet">
     <link href="<c:url value='/css/plugins/metisMenu/metisMenu.min.css' />" rel="stylesheet">
     <link href="<c:url value='/css/plugins/timeline.css' />" rel="stylesheet">
@@ -24,7 +25,6 @@
     <link href="<c:url value='/css/plugins/morris.css' />" rel="stylesheet">
     <link href="<c:url value='/font-awesome-4.1.0/css/font-awesome.min.css' />" rel="stylesheet" type="text/css">
     <link href='<c:url value="/css/jquery-ui-1.10.4.custom.min.css" />' rel="stylesheet" >
-
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -39,7 +39,7 @@
 <div id="wrapper">
 
 <!-- Navigation -->
-    <jsp:include page="includes/menu.jsp" />
+    <jsp:include page="../WEB-INF/template/sistema/includes/menu.jsp" />
 
     <div id="page-wrapper" style="min-height: 593px;margin-top: 50px;">
         <div class="container-fluid">

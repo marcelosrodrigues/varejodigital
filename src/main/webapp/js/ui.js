@@ -28,3 +28,5 @@ $( document ).tooltip();
 $("#bloqueado").click( function() {
     $("input[id='object.bloqueado']").val($("#bloqueado").is(':checked'));
 });
+
+

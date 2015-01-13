@@ -62,15 +62,14 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4" style="margin-left: 20px;>
-                                <div class=" form-group
-                            ">
-                            <label for="object.cpf"><fmt:message key="usuario.cpf" bundle="${labels}"/></label>
-                            <input type="text" value="${object.cpf}" id="object.cpf" name="object.cpf"
-                                   class="form-control"
-                                   placeholder="<fmt:message key='usuario.cpf' bundle='${labels}'/>"/>
-                        </div>
-                </div>
+                            <div class="col-sm-4" style="margin-left: 20px;">
+                                <div class="form-group">
+                                    <label for="object.cpf"><fmt:message key="usuario.cpf" bundle="${labels}"/></label>
+                                    <input type="text" value="${object.cpf}" id="object.cpf" name="object.cpf"
+                                            class="form-control"
+                                            placeholder="<fmt:message key='usuario.cpf' bundle='${labels}'/>"/>
+                                </div>
+                            </div>
 
             </div>
 

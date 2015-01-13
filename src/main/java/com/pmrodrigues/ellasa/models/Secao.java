@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "secao")
-@NamedQueries({@NamedQuery(name = "Secao.All", query = "SELECT s FROM Secao s left join fetch s.pai")})
+@NamedQueries({@NamedQuery(name = "Secao.All", query = "SELECT s FROM Secao s left join fetch s.pai left join fetch s.subsecoes WHERE s.pai is null ORDER BY s.id")})
 public class Secao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -23,8 +23,35 @@ public class Secao implements Serializable {
 	@JoinColumn(name = "pai_id")
 	private Secao pai;
 
-	@OneToMany
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Secao getPai() {
+        return pai;
+    }
+
+    public void setPai(Secao pai) {
+        this.pai = pai;
+    }
+
+    @OneToMany
 	@JoinColumn(name = "pai_id")
 	private final Set<Secao> subsecoes = new HashSet<>();
 
+    public Set<Secao> getSubsecoes() {
+        return subsecoes;
+    }
 }

@@ -42,6 +42,9 @@
                         <a href="<c:url value='/usuario/index.do' />">Usuários</a>
                     </li>
                     <li>
+                        <a href="<c:url value='/secao/index.do' />">Departamentos</a>
+                    </li>
+                    <li>
                         <a href="morris.html">Morris.js Charts</a>
                     </li>
                 </ul>

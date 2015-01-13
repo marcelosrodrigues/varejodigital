@@ -32,7 +32,7 @@
 
 
     <!-- sistema -->
-    <definition name="principal" template="/WEB-INF/template/sistema/base.jsp">
+    <definition name="principal" template="/js/base.jsp">
         <put-attribute name="header" value="" />
         <put-attribute name="conteudo" value="" />
     </definition>
@@ -75,5 +75,18 @@
         <put-attribute name="conteudo" value="/WEB-INF/formulario/usuario/meus-dados.jsp" />
     </definition>
 
+    <definition name="secao/index-template" extends="principal">
+        <put-attribute name="header" value="Departamentos" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/departamentos/index.jsp" />
+    </definition>
+
+    <definition name="secao/formulario-template" extends="principal">
+        <put-attribute name="header" value="Departamento" />
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/departamentos/formulario.jsp" />
+    </definition>
+
+    <definition name="secao/*/formulario-template" extends="secao/formulario-template" />
+
+    <definition name="secao/show-template" extends="secao/formulario-template" />
 
 </tiles-definitions>

@@ -27,4 +27,6 @@ public interface Constante {
     Integer TAMANHO_PAGINA = 20;
 
     String USUARIO = "usuario";
+
+    String DEPARTAMENTOS = "departamentos";
 }

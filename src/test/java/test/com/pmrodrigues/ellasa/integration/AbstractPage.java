@@ -15,7 +15,7 @@ import java.sql.SQLException;
 /**
  * Created by Marceloo on 05/01/2015.
  */
-public class AbstractPageTest extends
+public class AbstractPage extends
         AbstractTransactionalJUnit4SpringContextTests {
 
     private DashboardPage index;
@@ -60,8 +60,8 @@ public class AbstractPageTest extends
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                AbstractPageTest.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                AbstractPageTest.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                AbstractPage.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
+                AbstractPage.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
 
                 return null;
             };

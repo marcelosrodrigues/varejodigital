@@ -69,7 +69,14 @@ public abstract class AbstractPageObject {
                                         .newInstance(this.driver);
         page.url(toPage.getAnnotation(URL.class).url());
 
-        final List<Field> atributos = getDeclaredFields(toPage);
+        populate( page);
+
+        return page;
+    }
+
+    protected void populate(AbstractPageObject page) throws IllegalAccessException {
+
+        final List<Field> atributos = getDeclaredFields(page.getClass());
 
         for(final Field atributo : atributos ){
 
@@ -90,8 +97,6 @@ public abstract class AbstractPageObject {
             }
 
         }
-
-        return page;
     }
 
     private List<Field> getDeclaredFields(Class<? extends AbstractPageObject> toPage) {
@@ -129,5 +134,9 @@ public abstract class AbstractPageObject {
             }
         }
 
+    }
+
+    protected WebDriver getDriver() {
+        return driver;
     }
 }
