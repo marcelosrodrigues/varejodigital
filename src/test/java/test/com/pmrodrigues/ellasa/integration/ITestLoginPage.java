@@ -28,7 +28,7 @@ public class ITestLoginPage extends
     public void setup() {
 
         prepare();
-        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
+        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
 
         this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, " +
                         "                              cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
@@ -36,7 +36,7 @@ public class ITestLoginPage extends
                 false,
                 "marsilvarodrigues@gmail.com",
                 "12345678",
-                "070.323.277-02",
+                "456.718.757-14",
                 DateTime.now().toDate(),
                 "Pechincha",
                 "RIO DE JANEIRO",
@@ -49,7 +49,7 @@ public class ITestLoginPage extends
 
     private void prepare() {
 
-        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
+        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -57,11 +57,13 @@ public class ITestLoginPage extends
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                ITestLoginPage.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                ITestLoginPage.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                ITestLoginPage.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
+                ITestLoginPage.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
-            };
+            }
+
+            ;
         });
 
     }
@@ -76,8 +78,8 @@ public class ITestLoginPage extends
 
         login = new LoginPage("http://localhost:8080");
         DashboardPage dashboard = (DashboardPage) login.email("marsilvarodrigues@gmail.com")
-                                                       .password("12345678")
-                                                       .submit();
+                .password("12345678")
+                .submit();
         dashboard.close();
     }
 }

@@ -42,23 +42,23 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
     }
 
 
-    protected HttpHeaders createHeaders( final String username, final String password ){
-        return new HttpHeaders(){
+    protected HttpHeaders createHeaders(final String username, final String password) {
+        return new HttpHeaders() {
             {
                 String auth = username + ":" + password;
                 byte[] encodedAuth = Base64.encodeBase64(
                         auth.getBytes(Charset.forName("US-ASCII")));
-                String authHeader = "Basic " + new String( encodedAuth );
+                String authHeader = "Basic " + new String(encodedAuth);
                 set("Authorization", authHeader);
             }
         };
     }
 
-    protected List<E> list(final String url  ) throws JSONException {
-        return this.list(url,"marsilvarodrigues@gmail.com","12345678");
+    protected List<E> list(final String url) throws JSONException {
+        return this.list(url, "marsilvarodrigues@gmail.com", "12345678");
     }
 
-    protected List<E> list(final String url , final String username, final String password ) throws JSONException {
+    protected List<E> list(final String url, final String username, final String password) throws JSONException {
 
         final ResponseEntity<String> json = new RestTemplate().exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders(username, password)), String.class);
         final JSONObject object = new JSONObject(json.getBody());
@@ -88,7 +88,7 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
     public void setup() {
 
         prepare();
-        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
+        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
 
         this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, " +
                         "                              cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
@@ -96,7 +96,7 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
                 false,
                 "marsilvarodrigues@gmail.com",
                 "12345678",
-                "070.323.277-02",
+                "456.718.757-14",
                 DateTime.now().toDate(),
                 "Pechincha",
                 "RIO DE JANEIRO",
@@ -109,7 +109,7 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
 
     private void prepare() {
 
-        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
+        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -117,11 +117,13 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                AbstractTestRest.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                AbstractTestRest.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                AbstractTestRest.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
+                AbstractTestRest.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
-            };
+            }
+
+            ;
         });
 
     }

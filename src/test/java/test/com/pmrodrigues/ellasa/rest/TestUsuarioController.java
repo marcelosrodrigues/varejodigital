@@ -25,40 +25,40 @@ import static org.junit.Assert.assertNotNull;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestUsuarioController
-		extends
-			AbstractTransactionalJUnit4SpringContextTests {
-	
-	private UsuarioController service;
+        extends
+        AbstractTransactionalJUnit4SpringContextTests {
 
-	@Autowired
-	private UsuarioRepository repository;
-	
-	@Resource(name = "org.springframework.security.authenticationManager")
-	private AuthenticationManager authenticationManager;
-	
-	@Before
-	public void  before() {
+    private UsuarioController service;
+
+    @Autowired
+    private UsuarioRepository repository;
+
+    @Resource(name = "org.springframework.security.authenticationManager")
+    private AuthenticationManager authenticationManager;
+
+    @Before
+    public void before() {
 
         prepare();
-        Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
+        Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
 
         this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
                         "   value (?, ?, md5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 true,
                 "marsilvarodrigues@gmail.com",
                 "12345678",
-                "070.323.277-02",
+                "456.718.757-14",
                 DateTime.now().toDate(),
                 "pechincha",
                 "RIO DE JANEIRO",
                 "RJ", "APTO 206", "ESTRADA CAMPO DA AREA", "84", "MARCELO DA SILVA RODRIGUES", estado
         );
 
-	}
+    }
 
     private void prepare() {
 
-        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
+        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -66,34 +66,36 @@ public class TestUsuarioController
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                TestUsuarioController.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                TestUsuarioController.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                TestUsuarioController.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
+                TestUsuarioController.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
-            };
+            }
+
+            ;
         });
 
     }
 
-	@After
-	public void after() {
+    @After
+    public void after() {
         prepare();
         SecurityContextHolder.getContext().setAuthentication(null);
-	}
+    }
 
-	@Test
-	public void recuperarMeusDados() {
+    @Test
+    public void recuperarMeusDados() {
 
 
         service = new UsuarioController(repository, new MockResult());
-        final Authentication user = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("marsilvarodrigues@gmail.com","12345678"));
+        final Authentication user = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("marsilvarodrigues@gmail.com", "12345678"));
         SecurityContextHolder.getContext().setAuthentication(user);
 
 
-		final Usuario usuario = service.meusDados();
-		assertNotNull(usuario);
-		
-		
-	}
+        final Usuario usuario = service.meusDados();
+        assertNotNull(usuario);
+
+
+    }
 
 }

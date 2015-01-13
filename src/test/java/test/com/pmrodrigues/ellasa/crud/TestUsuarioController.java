@@ -40,7 +40,7 @@ import static org.junit.Assert.assertNotNull;
  * Created by Marceloo on 02/01/2015.
  */
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
-public class TestUsuarioController  extends
+public class TestUsuarioController extends
         AbstractTransactionalJUnit4SpringContextTests {
 
     private final Mockery context = new Mockery() {
@@ -68,11 +68,11 @@ public class TestUsuarioController  extends
 
     @Before
     public void before() {
-        controller = new UsuarioController(userRepository,estadoRepository,email,result,validator);
+        controller = new UsuarioController(userRepository, estadoRepository, email, result, validator);
 
 
         prepare();
-        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
+        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
 
         this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, " +
                         "                              cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
@@ -80,19 +80,19 @@ public class TestUsuarioController  extends
                 false,
                 "marsilvarodrigues@gmail.com",
                 "12345678",
-                "070.323.277-02",
+                "456.718.757-14",
                 DateTime.now().toDate(),
                 "Pechincha",
                 "RIO DE JANEIRO",
                 "RJ", "APTO 206", "ESTRADA CAMPO DA AREA", "84", "MARCELO DA SILVA RODRIGUES", estado
         );
 
-        this.userId = this.jdbcTemplate.queryForObject("select id from usuario where email = 'marsilvarodrigues@gmail.com'",Long.class);
+        this.userId = this.jdbcTemplate.queryForObject("select id from usuario where email = 'marsilvarodrigues@gmail.com'", Long.class);
     }
 
     private void prepare() {
 
-        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email in ( 'marsilvarodrigues@gmail.com' , 'lessarj@hotmail.com' )" , new RowMapper<Object>() {
+        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email in ( 'marsilvarodrigues@gmail.com' , 'lessarj@hotmail.com' )", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -100,11 +100,13 @@ public class TestUsuarioController  extends
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                TestUsuarioController.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                TestUsuarioController.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                TestUsuarioController.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
+                TestUsuarioController.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
-        };
+            }
+
+            ;
         });
 
     }
@@ -130,7 +132,7 @@ public class TestUsuarioController  extends
 
         final Usuario usuario = createUsuario();
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             oneOf(email).from(with(aNonNull(String.class)));
             will(returnValue(email));
 
@@ -140,7 +142,7 @@ public class TestUsuarioController  extends
             oneOf(email).subject(with(aNonNull(String.class)));
             will(returnValue(email));
 
-            oneOf(email).template(with(aNonNull(String.class)),with(aNonNull(Map.class)));
+            oneOf(email).template(with(aNonNull(String.class)), with(aNonNull(Map.class)));
             will(returnValue(email));
 
             oneOf(email).send();
@@ -159,8 +161,8 @@ public class TestUsuarioController  extends
 
         controller.update(usuario);
 
-        Long count = jdbcTemplate.queryForObject("select count(id) from usuario where email = ?" ,Long.class , usuario.getEmail());
-        assertNotEquals(Long.valueOf(0L), count );
+        Long count = jdbcTemplate.queryForObject("select count(id) from usuario where email = ?", Long.class, usuario.getEmail());
+        assertNotEquals(Long.valueOf(0L), count);
     }
 
 
@@ -192,7 +194,7 @@ public class TestUsuarioController  extends
 
     @Test
     public void carregarMeusDados() {
-        final Authentication user = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("marsilvarodrigues@gmail.com","12345678"));
+        final Authentication user = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("marsilvarodrigues@gmail.com", "12345678"));
         SecurityContextHolder.getContext().setAuthentication(user);
 
         controller.openUserProfile();
@@ -203,7 +205,7 @@ public class TestUsuarioController  extends
     @Test
     public void alterarOsPropriosDados() {
 
-        final Authentication user = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("marsilvarodrigues@gmail.com","12345678"));
+        final Authentication user = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken("marsilvarodrigues@gmail.com", "12345678"));
         SecurityContextHolder.getContext().setAuthentication(user);
 
         final Usuario usuario = createUsuario();
@@ -211,8 +213,8 @@ public class TestUsuarioController  extends
 
         controller.updateUserProfile(usuario);
 
-        Long count = jdbcTemplate.queryForObject("select count(id) from usuario where email = ?" ,Long.class , usuario.getEmail());
-        assertNotEquals(Long.valueOf(0L), count );
+        Long count = jdbcTemplate.queryForObject("select count(id) from usuario where email = ?", Long.class, usuario.getEmail());
+        assertNotEquals(Long.valueOf(0L), count);
     }
 
 

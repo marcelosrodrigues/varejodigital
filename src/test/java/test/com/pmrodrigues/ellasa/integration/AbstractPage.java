@@ -25,7 +25,7 @@ public class AbstractPage extends
     public void setup() throws Exception {
 
         prepare();
-        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
+        final Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
 
         this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, " +
                         "                              cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
@@ -33,7 +33,7 @@ public class AbstractPage extends
                 false,
                 "marsilvarodrigues@gmail.com",
                 "12345678",
-                "070.323.277-02",
+                "456.718.757-14",
                 DateTime.now().toDate(),
                 "Pechincha",
                 "22743-310",
@@ -52,7 +52,7 @@ public class AbstractPage extends
 
     private void prepare() {
 
-        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
+        jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -60,11 +60,13 @@ public class AbstractPage extends
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                AbstractPage.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                AbstractPage.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                AbstractPage.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
+                AbstractPage.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
-            };
+            }
+
+            ;
         });
 
     }

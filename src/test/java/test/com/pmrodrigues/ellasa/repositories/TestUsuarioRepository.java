@@ -17,15 +17,15 @@ import java.sql.SQLException;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestUsuarioRepository
-		extends
-			AbstractTransactionalJUnit4SpringContextTests {
+        extends
+        AbstractTransactionalJUnit4SpringContextTests {
 
-	@Autowired
-	private UsuarioRepository repository;
+    @Autowired
+    private UsuarioRepository repository;
 
-	private void prepare() {
+    private void prepare() {
 
-        this.jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'" , new RowMapper<Object>() {
+        this.jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -33,43 +33,45 @@ public class TestUsuarioRepository
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from usuario where id = ?" , userId);
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from telefone where id in (?,?)" , celularId , residencialId);
+                TestUsuarioRepository.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
+                TestUsuarioRepository.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
-            };
+            }
+
+            ;
         });
 
-	}
+    }
 
-	@Before
-	public void before() {
+    @Before
+    public void before() {
 
-		prepare();
-        Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'",Long.class);
+        prepare();
+        Long estado = this.jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
 
         this.jdbcTemplate.update("insert into usuario (bloqueado, email, password, cpf, dataNascimento, bairro, cep, cidade, complemento, logradouro, numero, nomeCompleto, estado_id) " +
                         "   value (?, ?, md5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 true,
                 "marsilvarodrigues@gmail.com",
                 "123456",
-                "070.323.277-02",
+                "456.718.757-14",
                 DateTime.now().toDate(),
                 "pechincha",
                 "RIO DE JANEIRO",
                 "RJ", "APTO 206", "ESTRADA CAMPO DA AREA", "84", "MARCELO DA SILVA RODRIGUES", estado
         );
-	}
+    }
 
-	@After
-	public void after() {
-		prepare();
-	}
+    @After
+    public void after() {
+        prepare();
+    }
 
-	@Test
-	public void buscarUsuarioPorEmail() {
-		final Usuario usuario = repository.findByEmail("marsilvarodrigues@gmail.com");
-		Assert.assertNotNull(usuario);
-	}
+    @Test
+    public void buscarUsuarioPorEmail() {
+        final Usuario usuario = repository.findByEmail("marsilvarodrigues@gmail.com");
+        Assert.assertNotNull(usuario);
+    }
 
 }
