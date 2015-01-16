@@ -1,6 +1,7 @@
 package test.com.pmrodrigues.ellasa.rest;
 
 import br.com.caelum.vraptor.util.test.MockResult;
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Produto;
 import com.pmrodrigues.ellasa.repositories.ProdutoRepository;
 import com.pmrodrigues.ellasa.rest.ProdutoController;
@@ -29,16 +30,16 @@ public class TestProdutoController
         service = new ProdutoController(repository, new MockResult());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
-    public void deveListarTodasAsSecoes() {
+    public void deveListarTodasOsProdutosDeUmaDeterminadaLoja() {
+
         final Long count = this.jdbcTemplate
-                .queryForLong("select count(1) from produto");
+                .queryForObject("select count(1) from produto where loja_id = ?", Long.class, 1L);
 
-        final List<Produto> produtos = service.produtos();
+        Loja loja = new Loja();
+        loja.setId(1L);
+        final List<Produto> produtos = service.produtos(loja);
         assertEquals(count, Long.valueOf(produtos.size()));
-
-
     }
 
 }

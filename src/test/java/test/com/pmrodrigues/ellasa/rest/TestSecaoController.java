@@ -62,7 +62,7 @@ public class TestSecaoController
         final Loja loja = new Loja();
         loja.setId(id);
 
-        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? and pai_id is null", Long.class, id);
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ?", Long.class, id);
 
         List<Secao> secoes = service.secoes(loja);
         assertEquals(count, Long.valueOf(secoes.size()));

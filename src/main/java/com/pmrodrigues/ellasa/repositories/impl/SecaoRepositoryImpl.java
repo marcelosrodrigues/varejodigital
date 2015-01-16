@@ -14,33 +14,32 @@ import java.util.List;
 
 @Repository
 public class SecaoRepositoryImpl extends AbstractRepository<Secao>
-		implements
-			SecaoRepository {
+        implements
+        SecaoRepository {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Override
     public ResultList<Secao> search(final Secao secao) {
         return new ResultList<>(this.getSession()
-                                         .createCriteria(Secao.class, "s")
-                                         .add(Restrictions.isNull("s.pai"))
-                                         .addOrder(Order.asc("s.nome")));
+                .createCriteria(Secao.class, "s")
+                .add(Restrictions.isNull("s.pai"))
+                .addOrder(Order.asc("s.nome")));
     }
 
     @Override
     public List<Secao> listAll() {
-        return this.getSession().createCriteria(Secao.class,"s")
-                                .addOrder(Order.asc("s.nome"))
-                                .list();
+        return this.getSession().createCriteria(Secao.class, "s")
+                .addOrder(Order.asc("s.nome"))
+                .list();
     }
 
     @Override
     public List<Secao> findByLoja(final Loja loja) {
         return this.getSession().createCriteria(Secao.class, "s")
-                .createCriteria("s.subsecoes", "subsecoes", JoinType.INNER_JOIN)
+                .createCriteria("s.pai", "pai", JoinType.LEFT_OUTER_JOIN)
                 .createCriteria("s.lojas", "loja", JoinType.INNER_JOIN)
                 .add(Restrictions.eq("loja.id", loja.getId()))
-                .add(Restrictions.isNull("s.pai"))
                 .addOrder(Order.asc("s.id"))
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                 .list();

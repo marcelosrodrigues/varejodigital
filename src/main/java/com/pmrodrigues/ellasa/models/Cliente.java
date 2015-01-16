@@ -31,8 +31,8 @@ public class Cliente implements Serializable{
 	@Column
 	private Date dataNascimento;
 
-	@OneToOne(mappedBy="cliente" , cascade = CascadeType.ALL , fetch = FetchType.EAGER)
-	@JoinColumn(name="cliente_id")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="cliente_id")
 	private EnderecoCliente endereco;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -109,6 +109,18 @@ public class Cliente implements Serializable{
     }
 
     public boolean isNovo() {
-        return this.id != null && 0L != this.id;
+        return this.id == null || 0L == this.id;
+    }
+
+    public Genero getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Genero sexo) {
+        this.sexo = sexo;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

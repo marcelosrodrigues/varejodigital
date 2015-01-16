@@ -1,16 +1,13 @@
 package com.pmrodrigues.ellasa.services;
 
 import com.pmrodrigues.ellasa.enumarations.StatusPagamento;
-import com.pmrodrigues.ellasa.models.Cliente;
-import com.pmrodrigues.ellasa.models.Pedido;
+import com.pmrodrigues.ellasa.models.*;
 import com.pmrodrigues.ellasa.repositories.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
 
 import static java.lang.String.format;
 
@@ -22,23 +19,25 @@ public class PedidoService {
 
     private static final Logger logging = Logger.getLogger(PedidoService.class);
 
-    @Resource(name = "ClienteRepository")
+    @Autowired
     private ClienteRepository clienteRepository;
 
-    @Resource(name = "TaxaRepository")
+    @Autowired
     private TaxaRepository taxaRepository;
 
-    @Resource(name = "PedidoRepository")
+    @Autowired
     private PedidoRepository pedidoRepository;
 
     @Autowired
     private PagamentoFactory pagamentoService;
 
-    @Resource(name = "ShoppingRepository")
-    private ShoppingRepository lojaRepository;
-
-    @Resource(name = "ProdutoRepository")
+    @Autowired
     private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private EstadoRepository estadoRepository;
+
+
 
     @Transactional
     public void pagar(final Pedido pedido) {
@@ -47,9 +46,19 @@ public class PedidoService {
 
         final String CODIGO_TRANSACAO = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
         final Cliente cliente = pedido.getCliente();
+        final EnderecoCliente endereco = cliente.getEndereco();
+        final Estado estado = endereco.getEstado();
+
+        endereco.setEstado(estadoRepository.findById(estado.getId()));
+        endereco.setCliente(cliente);
 
         if (!cliente.isNovo()) {
             updateCliente(pedido, cliente);
+        }
+
+        for (final ItemPedido item : pedido.getItens()) {
+            final Produto produto = item.getProduto();
+            item.setProduto(produtoRepository.findById(produto.getId()));
         }
 
         pedido.setCodigoTransacao(CODIGO_TRANSACAO);
@@ -69,7 +78,7 @@ public class PedidoService {
 
     }
 
-    protected void updateCliente(final Pedido pedido,final Cliente cliente) {
+    private void updateCliente(final Pedido pedido, final Cliente cliente) {
         final Cliente existed = clienteRepository.findById(cliente.getId());
         if( existed != null ) {
             existed.setPrimeiroNome(cliente.getPrimeiroNome());

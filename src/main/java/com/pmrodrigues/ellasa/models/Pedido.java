@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table
-public class Pedido implements Serializable{
+public class Pedido implements Serializable {
 
     @Transient
     @XStreamAlias("pagamento")
@@ -26,7 +26,7 @@ public class Pedido implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(optional = false , cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Cliente.class)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
@@ -34,7 +34,7 @@ public class Pedido implements Serializable{
     @JoinColumn(name = "enderecoentrega_id")
     private EnderecoCliente enderecoEntrega;
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pedido_id", nullable = false)
     private Collection<ItemPedido> itens = new HashSet<>();
 
@@ -65,7 +65,7 @@ public class Pedido implements Serializable{
     @Column
     private Date dataAlteracao;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "vendedor_id")
     private Usuario vendedor;
 
@@ -82,10 +82,6 @@ public class Pedido implements Serializable{
 
     public OrdemPagamento getDadosPagamento() {
         return dadosPagamento;
-    }
-
-    public void setDadosPagamento(final OrdemPagamentoCartaoCredito dadosPagamento) {
-        this.dadosPagamento = dadosPagamento;
     }
 
     public void setCliente(final Cliente cliente) {
@@ -118,16 +114,15 @@ public class Pedido implements Serializable{
 
     public void calcula(final List<Taxa> taxas) {
 
-        for(final ItemPedido item : this.itens ){
-            for(Taxa taxa : taxas) {
+        for (final ItemPedido item : this.itens) {
+            for (Taxa taxa : taxas) {
                 item.geraComissao(taxa);
             }
         }
-
     }
 
     public void adicionar(final Produto produto) {
-        this.itens.add(new ItemPedido(produto,1L));
+        this.itens.add(new ItemPedido(produto, 1L));
     }
 
     public void setStatus(StatusPagamento status) {

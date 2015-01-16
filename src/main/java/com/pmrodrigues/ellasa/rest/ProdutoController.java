@@ -5,6 +5,7 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Produto;
 import com.pmrodrigues.ellasa.repositories.ProdutoRepository;
 import org.apache.log4j.Logger;
@@ -26,10 +27,11 @@ public class ProdutoController {
     }
 
     @Get
-    @Path("/produtos.json")
-    public List<Produto> produtos() {
+    @Path("/{loja}/produtos.json")
+    public List<Produto> produtos(final Loja loja) {
+
         logging.debug("iniciando a leitura dos produtos cadastrados no prestashop");
-        final List<Produto> produtos = repository.list();
+        final List<Produto> produtos = repository.listByLoja(loja);
         logging.debug("lista encontrada");
 
         result.use(Results.json())
@@ -40,6 +42,4 @@ public class ProdutoController {
 
         return produtos;
     }
-
-
 }

@@ -2,6 +2,7 @@ package com.pmrodrigues.ellasa.rest;
 
 import br.com.caelum.vraptor.*;
 import br.com.caelum.vraptor.view.Results;
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Pedido;
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
@@ -34,9 +35,9 @@ public class PagamentoController {
     }
 
     @Post
-    @Path("/carrinho-de-compras/checkout.json")
+    @Path("/{loja}/carrinho-de-compras/checkout.json")
     @Consumes("application/json")
-    public Pedido pagar(final Pedido pedido) {
+    public Pedido pagar(Loja loja, final Pedido pedido) {
 
         final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
         final UserDetails user = (UserDetails) userAuthenticated.getPrincipal();
@@ -45,6 +46,7 @@ public class PagamentoController {
 
         final Usuario usuario = repository.findByEmail(user.getUsername());
 
+        pedido.setLoja(loja);
         pedido.associar(usuario);
         service.pagar(pedido);
         result.use(Results.json())

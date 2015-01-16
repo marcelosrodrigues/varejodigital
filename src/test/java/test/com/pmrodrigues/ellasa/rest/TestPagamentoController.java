@@ -2,6 +2,7 @@ package test.com.pmrodrigues.ellasa.rest;
 
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.util.test.MockResult;
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Pedido;
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
@@ -40,13 +41,14 @@ public class TestPagamentoController {
 
         final Usuario usuario = new Usuario();
         final Pedido pedido = new Pedido();
+        final Loja loja = new Loja();
 
         final Authentication user = context.mock(Authentication.class);
         SecurityContextHolder.getContext().setAuthentication(user);
 
         final UserDetails details = context.mock(UserDetails.class);
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
 
             oneOf(user).getPrincipal();
             will(returnValue(details));
@@ -62,7 +64,7 @@ public class TestPagamentoController {
         }});
 
         controller = new PagamentoController(service, repository, result);
-        controller.pagar(pedido);
+        controller.pagar(loja, pedido);
 
 
     }

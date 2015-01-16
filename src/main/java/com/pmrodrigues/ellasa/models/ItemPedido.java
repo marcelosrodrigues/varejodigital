@@ -15,9 +15,9 @@ import static java.lang.String.format;
  * Created by Marceloo on 13/10/2014.
  */
 @Entity
-@Table(name="item_pedido")
+@Table(name = "item_pedido")
 @XStreamAlias("item")
-public class ItemPedido implements Serializable{
+public class ItemPedido implements Serializable {
 
     private static final java.math.BigDecimal CEM = new BigDecimal("100");
 
@@ -39,12 +39,18 @@ public class ItemPedido implements Serializable{
     private Long quantidade;
 
     @ElementCollection
-    @CollectionTable(name = "comissao", joinColumns = @JoinColumn(name = "item_id") )
+    @CollectionTable(name = "comissao", joinColumns = @JoinColumn(name = "item_id"))
     private Set<Comissao> comissoes = new HashSet<>();
 
     @Column
     private BigDecimal preco;
 
+    @PrePersist
+    public void preInsert() {
+        if (preco == null) {
+            preco = produto.getPreco();
+        }
+    }
 
     public ItemPedido(final Produto produto, final Long quantidade) {
         this();
@@ -53,7 +59,8 @@ public class ItemPedido implements Serializable{
         this.preco = produto.getPreco();
     }
 
-    public ItemPedido() {}
+    public ItemPedido() {
+    }
 
     public Produto getProduto() {
         return produto;
@@ -65,10 +72,10 @@ public class ItemPedido implements Serializable{
 
     public void geraComissao(final Taxa taxa) {
 
-        if( logging.isDebugEnabled() ){
+        if (logging.isDebugEnabled()) {
 
-            logging.debug(format("Calculando as comissões para o produto %s",this.produto));
-            logging.debug(format("comissao %s valor %s",taxa.getNome() , this.preco.divide(taxa.getValor().divide(CEM),BigDecimal.ROUND_UP).subtract(preco),this.quantidade));
+            logging.debug(format("Calculando as comissões para o produto %s", this.produto));
+            logging.debug(format("comissao %s valor %s", taxa.getNome(), this.preco.divide(taxa.getValor().divide(CEM), BigDecimal.ROUND_UP).subtract(preco), this.quantidade));
 
         }
 

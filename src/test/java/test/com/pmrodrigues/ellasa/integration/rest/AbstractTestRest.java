@@ -9,10 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +47,8 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
                         auth.getBytes(Charset.forName("US-ASCII")));
                 String authHeader = "Basic " + new String(encodedAuth);
                 set("Authorization", authHeader);
+                setContentType(MediaType.APPLICATION_JSON);
+                set("Accept", "application/json");
             }
         };
     }
@@ -63,7 +62,13 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
         final ResponseEntity<String> json = new RestTemplate().exchange(url, HttpMethod.GET, new HttpEntity<String>(createHeaders(username, password)), String.class);
         final JSONObject object = new JSONObject(json.getBody());
         return toList(object.get("list"));
+    }
 
+    protected E post(final String url, final String username, final String password, final String value) throws JSONException {
+
+        final HttpEntity<String> entity = new HttpEntity<>(value, createHeaders(username, password));
+
+        return new RestTemplate().postForObject(url, entity, persistentClass);
     }
 
     protected List<E> toList(final Gson gson, final Object json) {

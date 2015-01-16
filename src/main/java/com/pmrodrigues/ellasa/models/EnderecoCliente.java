@@ -9,35 +9,35 @@ import java.util.Date;
 @Table(name = "endereco")
 public class EnderecoCliente {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne(optional = false)
-	@JoinColumn(name="cliente_id")
-	private Cliente cliente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column
-	private String logradouro;
-	
-	@Column
-	private String bairro;
-	
-	@Column
-	private String cep;
-	
-	@Column
-	private String cidade;
-	
-	@Column
-	private String telefone;
-	
-	@Column
-	private String celular;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Cliente.class)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name="estado_id")
-	private Estado estado;
+    @Column
+    private String logradouro;
+
+    @Column
+    private String bairro;
+
+    @Column
+    private String cep;
+
+    @Column
+    private String cidade;
+
+    @Column
+    private String telefone;
+
+    @Column
+    private String celular;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
