@@ -3,6 +3,7 @@ package com.pmrodrigues.ellasa.serialization;
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.serialization.ProxyInitializer;
+import br.com.caelum.vraptor.serialization.Serializer;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilder;
 import br.com.caelum.vraptor.serialization.xstream.XStreamJSONSerialization;
 import com.thoughtworks.xstream.XStream;
@@ -36,5 +37,9 @@ public class CustomJSONSerialization extends XStreamJSONSerialization {
         return stream;
     }
 
-
+    @Override
+    public <T> Serializer from(T object) {
+        response.setContentType("application/json; charset=UTF-8");
+        return getSerializer().from(object);
+    }
 }

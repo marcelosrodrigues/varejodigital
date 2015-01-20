@@ -46,7 +46,7 @@ public class TestSecaoRepository extends
         loja.setId(id);
 
         final List<Secao> secoes = repository.findByLoja(loja);
-        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? and pai_id is null", Long.class, id);
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? ", Long.class, id);
         assertEquals(count, Long.valueOf(secoes.size()));
     }
 }
