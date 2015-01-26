@@ -1,5 +1,6 @@
 package test.com.pmrodrigues.ellasa.taglib;
 
+import br.com.caelum.vraptor.validator.ValidationMessage;
 import com.pmrodrigues.ellasa.taglib.InputTextTag;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -8,8 +9,10 @@ import org.junit.Test;
 import org.springframework.mock.web.MockJspWriter;
 
 import javax.servlet.jsp.JspContext;
+import javax.servlet.jsp.PageContext;
 import java.io.StringWriter;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -31,14 +34,14 @@ public class TestInputTextTag {
             allowing(jspContext).getOut();
             will(returnValue(new MockJspWriter(writer)));
 
-            allowing(jspContext).getAttribute("errors");
+            allowing(jspContext).getAttribute("errors", PageContext.REQUEST_SCOPE);
             will(returnValue(null));
         }});
 
 
         final InputTextTag textview = new InputTextTag();
         textview.setJspContext(jspContext);
-        String EXPECTED = "<div class=\"form-group \"><label for=\"object.nome\">Nome</label><input type=\"text\" value=\"\" id=\"object.nome\" name=\"object.nome\" class=\"form-control\" placeholder=\"Nome\" /></div>";
+        String EXPECTED = "<div class=\"form-group \"><label for=\"object.nome\" class=\"control-label\">Nome</label><input type=\"text\" value=\"\" id=\"object.nome\" name=\"object.nome\" class=\"form-control\" placeholder=\"Nome\" /></div>";
 
         textview.setId("object.nome");
         textview.setLabel("departamento.nome");
@@ -52,32 +55,30 @@ public class TestInputTextTag {
     @Test
     public void doTagWithError() throws Exception {
 
-        final Map<String, String> errors = context.mock(Map.class);
+        final ValidationMessage error = context.mock(ValidationMessage.class);
+        final List<ValidationMessage> errors = new ArrayList<>();
+        errors.add(error);
 
         context.checking(new Expectations() {{
             allowing(jspContext).getOut();
             will(returnValue(new MockJspWriter(writer)));
 
-            allowing(jspContext).getAttribute("errors");
+            allowing(jspContext).getAttribute("errors", PageContext.REQUEST_SCOPE);
             will(returnValue(errors));
 
-            allowing(errors).size();
-            will(returnValue(1));
+            oneOf(error).getCategory();
+            will(returnValue("nome"));
 
-            allowing(errors).isEmpty();
-            will(returnValue(Boolean.FALSE));
-
-            allowing(errors).containsKey(with(aNonNull(String.class)));
-            will(returnValue(Boolean.TRUE));
         }});
 
 
         final InputTextTag textview = new InputTextTag();
         textview.setJspContext(jspContext);
-        String EXPECTED = "<div class=\"form-group has-error\"><label for=\"object.nome\">Nome</label><input type=\"text\" value=\"\" id=\"object.nome\" name=\"object.nome\" class=\"form-control\" placeholder=\"Nome\" /></div>";
+        String EXPECTED = "<div class=\"form-group has-error\"><label for=\"object.nome\" class=\"control-label\">Nome</label><input type=\"text\" value=\"\" id=\"object.nome\" name=\"object.nome\" class=\"form-control\" placeholder=\"Nome\" /></div>";
 
         textview.setId("object.nome");
         textview.setLabel("departamento.nome");
+        textview.setErrorField("nome");
 
         textview.doTag();
 

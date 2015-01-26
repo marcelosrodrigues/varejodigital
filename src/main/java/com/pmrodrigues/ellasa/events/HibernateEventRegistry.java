@@ -29,12 +29,16 @@ public class HibernateEventRegistry implements Integrator {
     @Override
     public void integrate(Configuration configuration, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         final EventListenerRegistry eventRegistry = serviceRegistry.getService(EventListenerRegistry.class);
+        appendListeners(eventRegistry);
+    }
 
-        eventRegistry.appendListeners(EventType.PRE_INSERT , new PreInsertEventListener() {
+    private void appendListeners(EventListenerRegistry eventRegistry) {
+
+        eventRegistry.appendListeners(EventType.PRE_INSERT, new PreInsertEventListener() {
             @Override
             public boolean onPreInsert(PreInsertEvent event) {
                 Object entity = event.getEntity();
-                invoke(entity , PrePersist.class);
+                invoke(entity, PrePersist.class);
                 return false;
             }
 
@@ -44,17 +48,17 @@ public class HibernateEventRegistry implements Integrator {
             @Override
             public boolean onPreUpdate(PreUpdateEvent event) {
                 Object entity = event.getEntity();
-                invoke(entity , PreUpdate.class);
+                invoke(entity, PreUpdate.class);
                 return false;
             }
         });
     }
 
-    private void invoke(Object entity , Class eventType) {
+    private void invoke(Object entity, Class eventType) {
         for (final Method method : entity.getClass().getMethods()) { //NOPMD
             if (method.isAnnotationPresent(eventType)) {
                 try {
-                    logging.debug(format("executando o metodo %s da classe %s" , method.getName() , entity.getClass().getName()));
+                    logging.debug(format("executando o metodo %s da classe %s", method.getName(), entity.getClass().getName()));
                     method.invoke(entity);
                 } catch (IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException e) {
@@ -66,30 +70,12 @@ public class HibernateEventRegistry implements Integrator {
 
     @Override
     public void integrate(MetadataImplementor metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+
         final EventListenerRegistry eventRegistry = serviceRegistry.getService(EventListenerRegistry.class);
-
-        eventRegistry.appendListeners(EventType.PRE_INSERT , new PreInsertEventListener() {
-            @Override
-            public boolean onPreInsert(PreInsertEvent event) {
-                Object entity = event.getEntity();
-                invoke(entity , PrePersist.class);
-                return false;
-            }
-
-        });
-
-        eventRegistry.appendListeners(EventType.PRE_UPDATE, new PreUpdateEventListener() {
-            @Override
-            public boolean onPreUpdate(PreUpdateEvent event) {
-                Object entity = event.getEntity();
-                invoke(entity , PreUpdate.class);
-                return false;
-            }
-        });
+        appendListeners(eventRegistry);
     }
 
     @Override
     public void disintegrate(SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
-
     }
 }

@@ -1,84 +1,78 @@
+/* CSS - Treeviewer */
 .css-treeview ul,
-.css-treeview li
-{
+.css-treeview li {
     padding: 0;
-    margin: 0;
+    margin: 5px;
     list-style: none;
 }
 
-.css-treeview input
-{
+.css-treeview input {
     position: absolute;
     opacity: 0;
 }
 
-.css-treeview
-{
+.css-treeview {
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
 }
 
-.css-treeview a
-{
+.css-treeview a {
     text-decoration: none;
 }
 
-.css-treeview a:hover
-{
+.css-treeview a:hover {
     text-decoration: underline;
 }
 
-.css-treeview input + label + ul
-{
-    margin: 0 0 0 22px;
+.css-treeview input + label + ul {
+    margin: 0 0 0 25px;
 }
 
-.css-treeview input ~ ul
-{
+.css-treeview input ~ ul {
     display: none;
 }
 
 .css-treeview label,
-.css-treeview label::before
-{
+.css-treeview label::before {
     cursor: pointer;
 }
 
-.css-treeview input:disabled + label
-{
+.css-treeview input:disabled + label {
     cursor: default;
     opacity: .6;
 }
 
-.css-treeview input:checked:not(:disabled) ~ ul
-{
+.css-treeview input:checked:not(:disabled) ~ ul {
     display: block;
 }
 
 .css-treeview label,
-.css-treeview label::before
-{
-    background: url("../images/icons.png") no-repeat;
+.css-treeview label::before,
+.css-treeview a,
+.css-treeview a::before {
+    background: url("/images/icons.png") no-repeat;
 }
 
 .css-treeview label,
 .css-treeview a,
-.css-treeview label::before
-{
+.css-treeview label::before {
     display: inline-block;
-    height: 16px;
-    line-height: 16px;
+    height: 18px;
+    line-height: 18px;
     vertical-align: middle;
 }
 
-.css-treeview label
-{
+.css-treeview a {
+    background-position: 0 -50px;
+    padding: 0 0 5px 20px;
+}
+
+.css-treeview label {
     background-position: 18px 0;
 }
 
-.css-treeview label::before
-{
+.css-treeview label::before {
     content: "";
     width: 16px;
     margin: 0 22px 0 0;
@@ -86,27 +80,21 @@
     background-position: 0 -32px;
 }
 
-.css-treeview input:checked + label::before
-{
+.css-treeview input:checked + label::before {
     background-position: 0 -16px;
 }
 
 /* webkit adjacent element selector bugfix */
-@media screen and (-webkit-min-device-pixel-ratio:0)
-{
-    .css-treeview
-    {
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .css-treeview {
         -webkit-animation: webkit-adjacent-element-selector-bugfix infinite 1s;
     }
 
-    @-webkit-keyframes webkit-adjacent-element-selector-bugfix
-    {
-        from
-        {
+    @-webkit-keyframes webkit-adjacent-element-selector-bugfix {
+        from {
             padding: 0;
         }
-        to
-        {
+        to {
             padding: 0;
         }
     }

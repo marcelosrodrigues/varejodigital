@@ -1,10 +1,12 @@
 package com.pmrodrigues.ellasa.models;
 
+import com.pmrodrigues.ellasa.enumarations.Tipo;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Date;
 
+@SuppressWarnings("FieldCanBeLocal")
 @Entity
 @Table(name = "endereco")
 public class EnderecoCliente {
@@ -46,6 +48,9 @@ public class EnderecoCliente {
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date dataAlteracao = DateTime.now().toDate();
+
+    @Enumerated
+    private Tipo tipo = Tipo.RESIDENCIAL;
 
 
     @PrePersist

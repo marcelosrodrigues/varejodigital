@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+         pageEncoding="ISO-8859-1" %>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -24,7 +24,7 @@
     <link href="<c:url value='/css/sb-admin-2.css' />" rel="stylesheet">
     <link href="<c:url value='/css/plugins/morris.css' />" rel="stylesheet">
     <link href="<c:url value='/font-awesome-4.1.0/css/font-awesome.min.css' />" rel="stylesheet" type="text/css">
-    <link href='<c:url value="/css/jquery-ui-1.10.4.custom.min.css" />' rel="stylesheet" >
+    <link href='<c:url value="/css/jquery-ui-1.10.4.custom.min.css" />' rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -38,26 +38,26 @@
 
 <div id="wrapper">
 
-<!-- Navigation -->
-    <jsp:include page="../WEB-INF/template/sistema/includes/menu.jsp" />
+    <!-- Navigation -->
+    <jsp:include page="includes/menu.jsp"/>
 
     <div id="page-wrapper" style="min-height: 593px;margin-top: 50px;">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header"><tiles:getAsString name="header" /></h1>
+                    <h1 class="page-header"><tiles:getAsString name="header"/></h1>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-                    <tiles:insertAttribute name="conteudo" />
+                    <tiles:insertAttribute name="conteudo"/>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- /#page-wrapper -->
+    <!-- /#page-wrapper -->
 
 </div>
 <!-- /#wrapper -->
@@ -69,10 +69,10 @@
 <script src="<c:url value='/js/sb-admin-2.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery.color.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery.maskMoney.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/js/jquery-maskinput.js' />" ></script>
-<script type="text/javascript" src="<c:url value='/js/jquery-ui.js' />" ></script>
-<script type="text/javascript" src="<c:url value='/js/jquery-ui-datepicker-pt.js' />" ></script>
-<script type="text/javascript" src="<c:url value='/js/ui.js' />" ></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-maskinput.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery-ui-datepicker-pt.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/ui.js' />"></script>
 
 </body>
 

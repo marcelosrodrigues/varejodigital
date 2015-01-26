@@ -10,12 +10,13 @@ import java.math.BigDecimal;
 /**
  * Created by Marceloo on 14/10/2014.
  */
+@SuppressWarnings("FieldCanBeLocal")
 @Embeddable
-public class Comissao implements Serializable{
+public class Comissao implements Serializable {
 
 
     @ManyToOne(optional = false)
-    @JoinColumn( name = "taxa_id")
+    @JoinColumn(name = "taxa_id")
     private Taxa taxa;
 
     @Column
@@ -31,7 +32,8 @@ public class Comissao implements Serializable{
         this.valorTotal = valorUnitario.multiply(new BigDecimal(quantidade));
     }
 
-    public Comissao() {}
+    public Comissao() {
+    }
 
     public BigDecimal getValorTotal() {
         return valorTotal;

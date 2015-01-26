@@ -15,18 +15,32 @@ $('input[id="object.endereco.cep"]').mask("99999-999");
 $('input[id="object.cnpj"]').mask("99.999.999/9999-99");
 
 
-$( "#dataNascimento" ).datepicker({
-	dateFormat: "dd-mm-yyyy"
-	});
+$("#dataNascimento").datepicker({
+    dateFormat: "dd-mm-yyyy"
+});
 
-$( "#dataExpiracao" ).datepicker({   
-	dateFormat: "mm-yyyy"
-	});
+$("#dataExpiracao").datepicker({
+    dateFormat: "mm-yyyy"
+});
 
-$( document ).tooltip();
+$(document).tooltip();
 
-$("#bloqueado").click( function() {
+$("#bloqueado").click(function () {
     $("input[id='object.bloqueado']").val($("#bloqueado").is(':checked'));
+});
+
+$(document).ready(function () {
+    $('.tree li').each(function () {
+        if ($(this).children('ul').length > 0) {
+            $(this).addClass('parent');
+        }
+    });
+
+    $('.tree  li.parent > a').click(function () {
+        $(this).parent().toggleClass('active');
+        $(this).parent().children('ul').slideToggle('fast');
+    });
+
 });
 
 

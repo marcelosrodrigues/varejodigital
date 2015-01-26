@@ -6,29 +6,35 @@
 
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-	<bean id="userService" class="com.pmrodrigues.ellasa.services.UserService" />
+    <bean id="userService" class="com.pmrodrigues.ellasa.services.UserService"/>
 
-    <security:http pattern="/**.json" use-expressions="true" once-per-request="true" >
-        <security:intercept-url pattern="/**.json"
-                                access="isAuthenticated()" />
-        <security:http-basic />
+    <security:http pattern="/**/*.json" use-expressions="true" once-per-request="true" create-session="never"
+                   disable-url-rewriting="true">
+        <security:anonymous enabled="false"/>
+        <security:session-management session-fixation-protection="none"/>
+        <security:intercept-url pattern="/**/*.json"
+                                access="isFullyAuthenticated()"/>
+
+        <security:http-basic/>
     </security:http>
 
-    <security:http pattern="/**" use-expressions="true" once-per-request="true" create-session="never" auto-config="true">
-        <security:intercept-url pattern="/**/*.do" access="isAuthenticated()" />
-        <security:intercept-url pattern="/**.js" access="permitAll()" />
-        <security:intercept-url pattern="/**.css" access="permitAll()" />
-        <security:form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check" authentication-failure-url="/login.jsp?error=true" default-target-url="/index.do"/>
-        <security:logout invalidate-session="true" delete-cookies="false" logout-success-url="/index.jsp" />
+    <security:http pattern="/**" use-expressions="true" once-per-request="true" create-session="never"
+                   auto-config="true">
+        <security:intercept-url pattern="/**/*.do" access="isFullyAuthenticated()"/>
+        <security:intercept-url pattern="/**.js" access="permitAll()"/>
+        <security:intercept-url pattern="/**.css" access="permitAll()"/>
+        <security:form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check"
+                             authentication-failure-url="/login.jsp?error=true" default-target-url="/index.do"/>
+        <security:logout invalidate-session="true" delete-cookies="false" logout-success-url="/index.jsp"/>
     </security:http>
 
-	<security:authentication-manager alias="authenticationManager" erase-credentials="true">
-	    <security:authentication-provider>
-			<security:jdbc-user-service data-source-ref="dataSource"
-				users-by-username-query="select email 'username' , password , 1 'enabled' , case bloqueado when 0 then 1 else 0 end 'accountNonLocked' from usuario where email = ?"
-				authorities-by-username-query="select email 'username' , 'USUARIO' as 'rolename' from usuario where email = ?" />
-			<security:password-encoder hash="md5" />
-		</security:authentication-provider>
-	</security:authentication-manager>
+    <security:authentication-manager alias="authenticationManager" erase-credentials="true">
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                                        users-by-username-query="select email 'username' , password , 1 'enabled' , case bloqueado when 0 then 1 else 0 end 'accountNonLocked' from usuario where email = ?"
+                                        authorities-by-username-query="select email 'username' , 'USUARIO' as 'rolename' from usuario where email = ?"/>
+            <security:password-encoder hash="md5"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
 
 </beans>

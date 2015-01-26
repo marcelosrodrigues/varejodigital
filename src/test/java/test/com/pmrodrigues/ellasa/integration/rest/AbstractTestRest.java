@@ -3,6 +3,7 @@ package test.com.pmrodrigues.ellasa.integration.rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.validator.GenericValidator;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,11 +43,13 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
     protected HttpHeaders createHeaders(final String username, final String password) {
         return new HttpHeaders() {
             {
-                String auth = username + ":" + password;
-                byte[] encodedAuth = Base64.encodeBase64(
-                        auth.getBytes(Charset.forName("US-ASCII")));
-                String authHeader = "Basic " + new String(encodedAuth);
-                set("Authorization", authHeader);
+                if (!GenericValidator.isBlankOrNull(username) && !GenericValidator.isBlankOrNull(password)) {
+                    String auth = username + ":" + password;
+                    byte[] encodedAuth = Base64.encodeBase64(
+                            auth.getBytes(Charset.forName("US-ASCII")));
+                    String authHeader = "Basic " + new String(encodedAuth);
+                    set("Authorization", authHeader);
+                }
                 setContentType(MediaType.APPLICATION_JSON);
                 set("Accept", "application/json");
             }
@@ -138,4 +141,9 @@ public abstract class AbstractTestRest<E> extends AbstractTransactionalJUnit4Spr
         prepare();
     }
 
+    public E post(String url, String value) {
+
+        final HttpEntity<String> entity = new HttpEntity<>(value, createHeaders(null, null));
+        return new RestTemplate().postForObject(url, entity, persistentClass);
+    }
 }

@@ -52,7 +52,7 @@ public class PagamentoController {
         result.use(Results.json())
                 .from(pedido)
                 .include("dadosPagamento")
-                .exclude("transportadora", "idioma", "carrinho", "moeda", "pagamento", "dataCompra", "dataEntrega", "dataCriacaco", "dataAlteracao", "valorPedido", "valorBruto", "valorLiquido", "totalPedido")
+                .exclude("vendedor", "dataCompra", "dataEntrega", "dataCriacaco", "dataAlteracao", "cliente", "itens")
                 .serialize();
 
 

@@ -24,8 +24,8 @@ public class Loja implements Serializable {
     private String nome;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "areas_vendas" , joinColumns = @JoinColumn(name = "produto_id") ,
-               inverseJoinColumns = @JoinColumn(name="secao_id"))
+    @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "secao_id"))
     private Set<Secao> secoes = new HashSet<>();
 
     public Long getId() {
@@ -42,5 +42,13 @@ public class Loja implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Set<Secao> getSecoes() {
+        return secoes;
+    }
+
+    public void setSecoes(Set<Secao> secoes) {
+        this.secoes = secoes;
     }
 }

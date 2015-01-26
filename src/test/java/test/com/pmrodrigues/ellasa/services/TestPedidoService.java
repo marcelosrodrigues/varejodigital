@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Created by Marceloo on 13/10/2014.
  */
-public class TestPedidoService{
+public class TestPedidoService {
 
     private final Mockery context = new Mockery() {
         {
@@ -38,16 +38,16 @@ public class TestPedidoService{
     private Cliente cliente = new Cliente();
     private Cliente existed = new Cliente();
     private Estado estado = new Estado();
-    private List<Taxa> taxas = context.mock(List.class,"taxas");
+    private List<Taxa> taxas = context.mock(List.class, "taxas");
     private OrdemPagamento pagamento = context.mock(OrdemPagamento.class);
 
     @Before
     public void before() throws Exception {
-       this.setField("clienteRepository",clienteRepository);
-       this.setField("taxaRepository",taxaRepository);
-       this.setField("pedidoRepository",pedidoRepository);
-       this.setField("pagamentoService",pagamentoService);
-       this.setField("produtoRepository",produtoRepository);
+        this.setField("clienteRepository", clienteRepository);
+        this.setField("taxaRepository", taxaRepository);
+        this.setField("pedidoRepository", pedidoRepository);
+        this.setField("pagamentoService", pagamentoService);
+        this.setField("produtoRepository", produtoRepository);
         this.setField("estadoRepository", estadoRepository);
 
         estado.setId(1L);
@@ -58,7 +58,7 @@ public class TestPedidoService{
 
     }
 
-    private void setField(String name , Object value ) throws Exception {
+    private void setField(String name, Object value) throws Exception {
 
         Field atributo = service.getClass().getDeclaredField(name);
         atributo.setAccessible(true);
@@ -72,16 +72,28 @@ public class TestPedidoService{
 
 
         final Collection<ItemPedido> itens = new ArrayList<>();
+        ItemPedido item = new ItemPedido();
+        final Produto produto = new Produto();
+        produto.setId(1L);
+        item.setProduto(produto);
+        itens.add(item);
+        cliente.setEmail("");
 
         context.checking(new Expectations() {{
             allowing(pedido).getCliente();
             will(returnValue(cliente));
+
+            allowing(clienteRepository).findByEmail(with(aNonNull(String.class)));
+            will(returnValue(null));
 
             oneOf(estadoRepository).findById(with(aNonNull(Long.class)));
             will(returnValue(new Estado()));
 
             oneOf(pedido).getItens();
             will(returnValue(itens));
+
+            oneOf(produtoRepository).findById(with(aNonNull(Long.class)));
+            will(returnValue(produto));
 
             allowing(pedido).setCodigoTransacao(with(aNonNull(String.class)));
 
@@ -115,11 +127,21 @@ public class TestPedidoService{
     public void efetuarPedidoAtualizandoCliente() {
 
         cliente.setId(1L);
+
         final Collection<ItemPedido> itens = new ArrayList<>();
+        ItemPedido item = new ItemPedido();
+        final Produto produto = new Produto();
+        produto.setId(1L);
+        item.setProduto(produto);
+        itens.add(item);
+        cliente.setEmail("");
 
         context.checking(new Expectations() {{
             allowing(pedido).getCliente();
             will(returnValue(cliente));
+
+            allowing(clienteRepository).findByEmail(with(aNonNull(String.class)));
+            will(returnValue(existed));
 
             oneOf(estadoRepository).findById(with(aNonNull(Long.class)));
             will(returnValue(new Estado()));
@@ -127,8 +149,8 @@ public class TestPedidoService{
             oneOf(pedido).getItens();
             will(returnValue(itens));
 
-            oneOf(clienteRepository).findById(with(aNonNull(Long.class)));
-            will(returnValue(existed));
+            oneOf(produtoRepository).findById(with(aNonNull(Long.class)));
+            will(returnValue(produto));
 
             allowing(pedido).setCliente(existed);
 

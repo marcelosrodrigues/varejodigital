@@ -6,6 +6,7 @@ import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.LojaController;
 import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.repositories.ResultList;
+import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -30,14 +31,15 @@ public class TestAbstractCRUDController {
     private MockResult result = new MockResult();
     private MockValidator validation = new MockValidator();
     private ShoppingRepository repository = context.mock(ShoppingRepository.class);
+    private SecaoRepository secaoRepository = context.mock(SecaoRepository.class);
 
     @Test
     public void doInsert() {
-        final LojaController controller = new LojaController(repository,result,validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         final Loja loja = new Loja();
         loja.setNome("TESTE");
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             oneOf(repository).add(with(aNonNull(Loja.class)));
         }});
 
@@ -49,11 +51,11 @@ public class TestAbstractCRUDController {
     @Test
     public void doUpdate() {
 
-        final LojaController controller = new LojaController(repository,result,validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         final Loja loja = new Loja();
         loja.setNome("TESTE");
         loja.setId(1L);
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             oneOf(repository).set(with(aNonNull(Loja.class)));
         }});
 
@@ -65,10 +67,13 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doSearch() {
-        final LojaController controller = new LojaController(repository,result,validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         final ResultList<Loja> resultlist = context.mock(ResultList.class);
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
+
+            oneOf(secaoRepository).list();
+
             oneOf(repository).search(null);
             will(returnValue(resultlist));
         }});
@@ -80,22 +85,31 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doSearchWithParameters() {
-        final LojaController controller = new LojaController(repository,result,validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         final ResultList<Loja> resultlist = context.mock(ResultList.class);
 
-        context.checking(new Expectations(){{
-            oneOf(repository).search(with(aNonNull(Loja.class)),with(aNonNull(Integer.class)));
+        context.checking(new Expectations() {{
+
+            oneOf(secaoRepository).list();
+
+            oneOf(repository).search(with(aNonNull(Loja.class)), with(aNonNull(Integer.class)));
             will(returnValue(resultlist));
         }});
 
-        controller.search(0,new Loja());
+        controller.search(0, new Loja());
 
         assertNotNull(result.included(Constante.RESULT_LIST));
     }
 
     @Test
     public void doFormulario() {
-        final LojaController controller = new LojaController(repository,result,validation);
+
+        context.checking(new Expectations() {{
+            oneOf(secaoRepository).list();
+        }});
+
+
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         controller.formulario();
 
         assertNotNull(result.included(Constante.OBJECT));
@@ -103,10 +117,13 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doOpen() {
-        final LojaController controller = new LojaController(repository,result,validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         final Loja loja = new Loja();
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
+
+            oneOf(secaoRepository).list();
+
             oneOf(repository).findById(with(aNonNull(Serializable.class)));
             will(returnValue(loja));
         }});
@@ -115,11 +132,13 @@ public class TestAbstractCRUDController {
 
         assertNotNull(result.included(Constante.OBJECT));
     }
-;
+
+    ;
+
     @Test
     public void doPreExecute() {
 
-        final MockCrudController controller = new MockCrudController(repository,result,validation);
+        final MockCrudController controller = new MockCrudController(repository, result, validation);
 
         context.checking(new Expectations() {{
             allowing(repository);
@@ -134,12 +153,12 @@ public class TestAbstractCRUDController {
     @Test
     public void doPostExecute() {
 
-        final MockCrudController controller = new MockCrudController(repository,result,validation);
+        final MockCrudController controller = new MockCrudController(repository, result, validation);
 
         final Loja loja = new Loja();
         loja.setNome("TESTE");
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             allowing(repository);
         }});
 
@@ -151,12 +170,12 @@ public class TestAbstractCRUDController {
     @Test
     public void delegateInsert() {
 
-        final MockCrudController controller = new MockCrudController(repository,result,validation);
+        final MockCrudController controller = new MockCrudController(repository, result, validation);
 
         final Loja loja = new Loja();
         loja.setNome("TESTE");
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             allowing(repository);
         }});
 
@@ -168,13 +187,13 @@ public class TestAbstractCRUDController {
     @Test
     public void delegateUpdate() {
 
-        final MockCrudController controller = new MockCrudController(repository,result,validation);
+        final MockCrudController controller = new MockCrudController(repository, result, validation);
 
         final Loja loja = new Loja();
         loja.setNome("TESTE");
         loja.setId(1L);
 
-        context.checking(new Expectations(){{
+        context.checking(new Expectations() {{
             allowing(repository);
         }});
 

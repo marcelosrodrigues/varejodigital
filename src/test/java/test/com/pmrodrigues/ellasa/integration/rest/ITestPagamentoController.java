@@ -60,7 +60,7 @@ public class ITestPagamentoController extends AbstractTestRest<Pedido> {
     }
 
     @Test
-    public void listarProdutosPorLoja() throws JSONException {
+    public void efetuarPagamento() throws JSONException {
 
         final Long id = this.jdbcTemplate.queryForObject("select id from loja where nome = 'PROJETANDOO'", Long.class);
         final String toPay = "{ \"pedido\" : { \"itens\" :[ { \"item\": { \"produto\" : { \"id\": 132 },\"quantidade\": 1}}],\"pagamento\" : {\"numero\" : \"4012001038443335\",\"codigosegura\" : \"123\",\"dataExpiracao\" : \"2018-06-01  01:10:10.0 UTC\",\"portador\" : \"MARCELO DA SILVA RODRIGUES\",\"cpf\" : \"070.323.277-02\",\"telefone\" : \"2133926222\",\"meioPagamento\" : { \"id\" : 2 }},\"cliente\" : {\"primeiroNome\": \"MARCELO\" ,\"ultimoNome\": \"RODRIGUES\" ,\"email\": \"marcelosrodrigues@globo.com\" ,\"dataNascimento\": \"1977-08-17 01:10:10.0 UTC\" ,\"endereco\": {\"logradouro\": \"ESTRADA CAMPO DA AREIA, 84 APTO 206\",\"bairro\": \"PECHINCHA\" ,\"cep\": \"22743310\" ,\"cidade\": \"RIO DE JANEIRO\",\"telefone\": \"2133926222\" ,\"celular\": \"21981363699\" ,\"estado\": {\"id\": 330}}}}}";
@@ -70,4 +70,15 @@ public class ITestPagamentoController extends AbstractTestRest<Pedido> {
 
 
     }
+
+    @Test
+    public void efetuarPagamentoSemAutenticacao() throws JSONException {
+        final Long id = this.jdbcTemplate.queryForObject("select id from loja where nome = 'PROJETANDOO'", Long.class);
+        final String toPay = "{ \"pedido\" : { \"itens\" :[ { \"item\": { \"produto\" : { \"id\": 132 },\"quantidade\": 1}}],\"pagamento\" : {\"numero\" : \"4012001038443335\",\"codigosegura\" : \"123\",\"dataExpiracao\" : \"2018-06-01  01:10:10.0 UTC\",\"portador\" : \"MARCELO DA SILVA RODRIGUES\",\"cpf\" : \"070.323.277-02\",\"telefone\" : \"2133926222\",\"meioPagamento\" : { \"id\" : 2 }},\"cliente\" : {\"primeiroNome\": \"MARCELO\" ,\"ultimoNome\": \"RODRIGUES\" ,\"email\": \"marcelosrodrigues@globo.com\" ,\"dataNascimento\": \"1977-08-17 01:10:10.0 UTC\" ,\"endereco\": {\"logradouro\": \"ESTRADA CAMPO DA AREIA, 84 APTO 206\",\"bairro\": \"PECHINCHA\" ,\"cep\": \"22743310\" ,\"cidade\": \"RIO DE JANEIRO\",\"telefone\": \"2133926222\" ,\"celular\": \"21981363699\" ,\"estado\": {\"id\": 330}}}}}";
+
+        final Pedido pedido = this.post(format("http://localhost:8080/%s/carrinho-de-compras/checkout.json", id), toPay);
+        Long count = this.jdbcTemplate.queryForObject("select count(1) from pedido where loja_id = ?", Long.class, id);
+    }
+
+
 }

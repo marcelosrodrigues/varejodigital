@@ -1,5 +1,6 @@
 package com.pmrodrigues.ellasa.models;
 
+import com.google.gson.annotations.SerializedName;
 import com.pmrodrigues.ellasa.enumarations.StatusPagamento;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.joda.time.DateTime;
@@ -16,11 +17,12 @@ import java.util.List;
  */
 @Entity
 @Table
+@XStreamAlias("pedido")
 public class Pedido implements Serializable {
 
     @Transient
-    @XStreamAlias("pagamento")
-    private OrdemPagamento dadosPagamento;
+    @SerializedName("pagamento")
+    private OrdemPagamentoCartaoCredito dadosPagamento;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -4,64 +4,58 @@ import br.com.caelum.vraptor.deserialization.JsonDeserializer;
 import br.com.caelum.vraptor.http.ParameterNameProvider;
 import br.com.caelum.vraptor.interceptor.TypeNameExtractor;
 import br.com.caelum.vraptor.ioc.Component;
+import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilder;
-import com.pmrodrigues.ellasa.models.OrdemPagamento;
-import com.pmrodrigues.ellasa.models.OrdemPagamentoCartaoCredito;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.collections.CollectionConverter;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.google.gson.*;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.io.*;
 
 /**
  * Created by Marceloo on 18/11/2014.
  */
 @Component
-public class CustomJSONDeserialization extends JsonDeserializer
-{
+public class CustomJSONDeserialization extends JsonDeserializer {
+    private final ParameterNameProvider paramNameProvider;
+
     public CustomJSONDeserialization(ParameterNameProvider provider, TypeNameExtractor extractor, XStreamBuilder builder) {
         super(provider, extractor, builder);
+        this.paramNameProvider = provider;
     }
 
     @Override
-    protected XStream getXStream() {
-        final XStream stream = super.getXStream();
-        stream.registerConverter(new CollectionConverter(stream.getMapper()) {
-            @Override
-            public boolean canConvert(Class type) {
-                return ( Collection.class.isAssignableFrom(type) );
+    public Object[] deserialize(InputStream inputStream, ResourceMethod method) {
+
+        Class<?>[] types = method.getMethod().getParameterTypes();
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
+            String line = null;
+            StringBuffer buffer = new StringBuffer();
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line);
             }
 
-            @Override
-            public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-                Collection collection = new HashSet();
-                populateCollection(reader, context, collection);
-                return collection;
-            }
-        });
-        stream.registerConverter(new Converter() {
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            JsonParser parser = new JsonParser();
+            JsonObject root = (JsonObject) parser.parse(buffer.toString());
+            Object[] params = new Object[types.length];
+            String[] parameterNames = paramNameProvider.parameterNamesFor(method.getMethod());
 
-            @Override
-            public void marshal(Object source, HierarchicalStreamWriter writer, MarshallingContext context) {
+            for (int i = 0; i < types.length; i++) {
+                String name = parameterNames[i];
+                JsonElement node = root.get(name);
+                if (node != null) {
+                    params[i] = gson.fromJson(node, types[i]);
+                }
 
-            }
-
-            @Override
-            public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
-                return context.convertAnother(context.currentObject(), OrdemPagamentoCartaoCredito.class);
             }
 
-            @Override
-            public boolean canConvert(Class type) {
-                return type.isAssignableFrom(OrdemPagamento.class);
-            }
-        });
+            return params;
 
-        return stream;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
     }
 }

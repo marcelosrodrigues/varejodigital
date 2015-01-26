@@ -92,4 +92,8 @@ public class ItemPedido implements Serializable {
         this.produto = produto;
         this.preco = produto.getPreco();
     }
+
+    public void setQuantidade(Long quantidade) {
+        this.quantidade = quantidade;
+    }
 }

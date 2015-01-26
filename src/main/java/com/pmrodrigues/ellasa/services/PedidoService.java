@@ -38,7 +38,6 @@ public class PedidoService {
     private EstadoRepository estadoRepository;
 
 
-
     @Transactional
     public void pagar(final Pedido pedido) {
 
@@ -46,14 +45,15 @@ public class PedidoService {
 
         final String CODIGO_TRANSACAO = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
         final Cliente cliente = pedido.getCliente();
+        final Cliente existente = clienteRepository.findByEmail(cliente.getEmail());
         final EnderecoCliente endereco = cliente.getEndereco();
         final Estado estado = endereco.getEstado();
 
         endereco.setEstado(estadoRepository.findById(estado.getId()));
         endereco.setCliente(cliente);
 
-        if (!cliente.isNovo()) {
-            updateCliente(pedido, cliente);
+        if (existente != null) {
+            updateCliente(pedido, existente);
         }
 
         for (final ItemPedido item : pedido.getItens()) {
@@ -70,7 +70,7 @@ public class PedidoService {
         pedido.getDadosPagamento().setPedido(pedido);
         pagamentoService.pagar(pedido.getDadosPagamento());
 
-        if( pedido.getDadosPagamento().isSucesso() ) {
+        if (pedido.getDadosPagamento().isSucesso()) {
             pedido.setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
         } else {
             pedido.setStatus(StatusPagamento.CANCELADO);
@@ -79,23 +79,22 @@ public class PedidoService {
     }
 
     private void updateCliente(final Pedido pedido, final Cliente cliente) {
-        final Cliente existed = clienteRepository.findById(cliente.getId());
-        if( existed != null ) {
-            existed.setPrimeiroNome(cliente.getPrimeiroNome());
-            existed.setUltimoNome(cliente.getUltimoNome());
-            existed.setEmail(cliente.getEmail());
-            existed.setDataNascimento(cliente.getDataNascimento());
 
-            existed.getEndereco().setEstado(cliente.getEndereco().getEstado());
-            existed.getEndereco().setLogradouro(cliente.getEndereco().getLogradouro());
-            existed.getEndereco().setBairro(cliente.getEndereco().getBairro());
-            existed.getEndereco().setCidade(cliente.getEndereco().getCidade());
-            existed.getEndereco().setCep(cliente.getEndereco().getCep());
-            existed.getEndereco().setTelefone(cliente.getEndereco().getTelefone());
-            existed.getEndereco().setCelular(cliente.getEndereco().getCelular());
+        cliente.setPrimeiroNome(pedido.getCliente().getPrimeiroNome());
+        cliente.setUltimoNome(pedido.getCliente().getUltimoNome());
+        cliente.setEmail(pedido.getCliente().getEmail());
+        cliente.setDataNascimento(pedido.getCliente().getDataNascimento());
 
-            pedido.setCliente(existed);
-        }
+        cliente.getEndereco().setEstado(pedido.getCliente().getEndereco().getEstado());
+        cliente.getEndereco().setLogradouro(pedido.getCliente().getEndereco().getLogradouro());
+        cliente.getEndereco().setBairro(pedido.getCliente().getEndereco().getBairro());
+        cliente.getEndereco().setCidade(pedido.getCliente().getEndereco().getCidade());
+        cliente.getEndereco().setCep(pedido.getCliente().getEndereco().getCep());
+        cliente.getEndereco().setTelefone(pedido.getCliente().getEndereco().getTelefone());
+        cliente.getEndereco().setCelular(pedido.getCliente().getEndereco().getCelular());
+
+        pedido.setCliente(cliente);
+
     }
 
 }

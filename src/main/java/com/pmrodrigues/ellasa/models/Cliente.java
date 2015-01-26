@@ -1,6 +1,7 @@
 package com.pmrodrigues.ellasa.models;
 
 import com.pmrodrigues.ellasa.enumarations.Genero;
+import org.hibernate.annotations.Where;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -8,33 +9,34 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name="cliente")
+@Table(name = "cliente")
 @NamedQueries({@NamedQuery(name = "Cliente.All", query = "SELECT c FROM Cliente c inner join fetch c.endereco e inner join fetch e.estado ORDER BY c.id ASC")})
-public class Cliente implements Serializable{
+public class Cliente implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column
-	private String primeiroNome;
-	
-	@Column
-	private String ultimoNome;
-	
-	@Column
-	private String email;
-	
-	@Temporal(TemporalType.DATE)
-	@Column
-	private Date dataNascimento;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name="cliente_id")
-	private EnderecoCliente endereco;
+    @Column
+    private String primeiroNome;
 
+    @Column
+    private String ultimoNome;
+
+    @Column
+    private String email;
+
+    @Temporal(TemporalType.DATE)
+    @Column
+    private Date dataNascimento;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "cliente")
+    @Where(clause = "tipo = 0")
+    private EnderecoCliente endereco;
+
+    @SuppressWarnings("FieldCanBeLocal")
     @Temporal(TemporalType.TIMESTAMP)
     @Column
     private Date dataCriacaco = DateTime.now().toDate();
