@@ -43,4 +43,29 @@ $(document).ready(function () {
 
 });
 
+$(".checkbox-treeview input[type='checkbox']").each(function () {
+    $(this).click(function () {
+        var checked = $(this).is(":checked");
+        setChecked($(this).val(), checked);
+        var father = parseInt($(this).attr("father"));
+        if (father > 0 && checked) {
+            checarPai(father, checked);
+        }
+    });
+});
+
+function checarPai(pai, checked) {
+    $("input[type='checkbox'][value='" + pai + "']").each(function () {
+        $(this).prop('checked', checked);
+        checarPai(parseInt($(this).attr("father")), checked);
+    });
+}
+
+function setChecked(pai, checked) {
+    $("input[type='checkbox'][father='" + pai + "']").each(function () {
+        $(this).prop('checked', checked);
+        setChecked($(this).val(), checked);
+    });
+}
+
 

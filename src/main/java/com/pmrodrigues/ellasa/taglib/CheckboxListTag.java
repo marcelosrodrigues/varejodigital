@@ -63,7 +63,7 @@ public class CheckboxListTag extends AbstractTagLib {
                 Object value = PropertyUtils.getProperty(item, valueField);
                 Object label = PropertyUtils.getProperty(item, labelField);
 
-                out.write(format("<input type=\"checkbox\" name=\"%s\" id=\"%s\" value=\"%s\" checked=\"%s\">%s",
+                out.write(format("<input type=\"checkbox\" name=\"%s\" id=\"%s\" value=\"%s\" \"%s\">%s",
                         this.id, this.id, value, this.checked != null && this.checked.contains(item) ? "checked" : "", label));
                 out.write("</label>");
             }

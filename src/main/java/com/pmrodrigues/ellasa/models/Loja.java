@@ -4,8 +4,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Marceloo on 13/10/2014.
@@ -23,10 +23,10 @@ public class Loja implements Serializable {
     @Column(name = "nome")
     private String nome;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "produto_id"),
             inverseJoinColumns = @JoinColumn(name = "secao_id"))
-    private Set<Secao> secoes = new HashSet<>();
+    private List<Secao> secoes = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -44,11 +44,12 @@ public class Loja implements Serializable {
         this.nome = nome;
     }
 
-    public Set<Secao> getSecoes() {
+    public List<Secao> getSecoes() {
         return secoes;
     }
 
-    public void setSecoes(Set<Secao> secoes) {
-        this.secoes = secoes;
+    public void setSecoes(List<Secao> secoes) {
+        this.secoes.clear();
+        this.secoes.addAll(secoes);
     }
 }

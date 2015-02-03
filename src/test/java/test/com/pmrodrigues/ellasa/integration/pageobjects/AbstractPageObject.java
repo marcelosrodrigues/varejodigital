@@ -5,7 +5,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.annotations.ByClass;
 import test.com.pmrodrigues.ellasa.integration.pageobjects.annotations.ById;
+import test.com.pmrodrigues.ellasa.integration.pageobjects.annotations.ByXPath;
 import test.com.pmrodrigues.ellasa.integration.pageobjects.annotations.URL;
 import test.com.pmrodrigues.ellasa.integration.pageobjects.tags.Tag;
 import test.com.pmrodrigues.ellasa.integration.pageobjects.tags.TagFactory;
@@ -43,11 +45,6 @@ public abstract class AbstractPageObject {
 
 	public abstract AbstractPageObject submit() throws Exception;
 
-	public AbstractPageObject textById(final String id, final String value) {
-		driver.findElement(By.id(id)).sendKeys(value);
-		return this;
-	}
-
     public AbstractPageObject textByName(final String id, final String value){
         driver.findElement(By.name(id)).sendKeys(value);
         return this;
@@ -82,18 +79,28 @@ public abstract class AbstractPageObject {
 
             atributo.setAccessible(true);
 
-            if( !atributo.isAnnotationPresent(ById.class) ) continue;
+            Tag tag = null;
 
-            final ById byid = atributo.getAnnotation(ById.class);
+            if (atributo.isAnnotationPresent(ById.class)) {
 
-            final Tag tag = TagFactory.getInstance(driver).createById(byid.value());
+                final ById byid = atributo.getAnnotation(ById.class);
 
-            if( tag == null ) continue;
+                tag = TagFactory.getInstance(driver).createById(byid.value());
 
-            if( atributo.getType().equals(String.class) ) {
+            } else if (atributo.isAnnotationPresent(ByXPath.class)) {
+                final ByXPath byxpath = atributo.getAnnotation(ByXPath.class);
+                tag = TagFactory.getInstance(driver).createByXPath(byxpath.value());
+            } else if (atributo.isAnnotationPresent(ByClass.class)) {
+                final ByClass byxpath = atributo.getAnnotation(ByClass.class);
+                tag = TagFactory.getInstance(driver).createByClass(byxpath.value());
+            }
+
+            if (tag == null) continue;
+
+            if (atributo.getType().equals(String.class)) {
                 atributo.set(page, tag.getValue());
-            } else if( atributo.getType().equals(Boolean.class) ){
-                atributo.set(page,Boolean.valueOf(tag.getValue().toString()));
+            } else if (atributo.getType().equals(Boolean.class)) {
+                atributo.set(page, Boolean.valueOf(tag.getValue().toString()));
             }
 
         }
@@ -120,17 +127,27 @@ public abstract class AbstractPageObject {
         for(final Field atributo : atributos ){
 
             atributo.setAccessible(true);
-            final ById byid = atributo.getAnnotation(ById.class);
+
             final Object value = atributo.get(pageObject);
+            Tag tag = null;
 
-            if( byid != null && value != null ){
 
-                Tag tag = TagFactory.getInstance(driver).createById(byid.value());
+            if (atributo.isAnnotationPresent(ById.class)) {
 
-                if( tag == null ) continue;
+                final ById byid = atributo.getAnnotation(ById.class);
+                tag = TagFactory.getInstance(driver).createById(byid.value());
+            } else if (atributo.isAnnotationPresent(ByXPath.class)) {
+                final ByXPath byXPath = atributo.getAnnotation(ByXPath.class);
+                tag = TagFactory.getInstance(driver).createByXPath(byXPath.value());
+            } else if (atributo.isAnnotationPresent(ByClass.class)) {
+                final ByClass byXPath = atributo.getAnnotation(ByClass.class);
+                tag = TagFactory.getInstance(driver).createByClass(byXPath.value());
+            }
 
+            if (tag != null && value != null) {
                 tag.setValue(value);
-
+            } else {
+                continue;
             }
         }
 

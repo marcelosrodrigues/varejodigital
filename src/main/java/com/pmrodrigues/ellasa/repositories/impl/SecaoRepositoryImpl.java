@@ -5,6 +5,7 @@ import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -24,7 +25,8 @@ public class SecaoRepositoryImpl extends AbstractRepository<Secao>
         return new ResultList<>(this.getSession()
                 .createCriteria(Secao.class, "s")
                 .add(Restrictions.isNull("s.pai"))
-                .addOrder(Order.asc("s.nome")));
+                .addOrder(Order.asc("s.nome"))
+                .setFetchMode("subsecoes", FetchMode.JOIN));
     }
 
     @Override

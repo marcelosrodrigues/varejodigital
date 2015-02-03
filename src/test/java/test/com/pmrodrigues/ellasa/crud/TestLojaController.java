@@ -6,11 +6,16 @@ import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.LojaController;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -33,7 +38,22 @@ public class TestLojaController extends AbstractTransactionalJUnit4SpringContext
 
     @Before
     public void setup() {
+        this.after();
         controller = new LojaController(repository, secaoRepository, result, validator);
+    }
+
+    @After
+    public void after() {
+
+        jdbcTemplate.query("select id from loja where nome = 'TESTE'", new RowMapper<Object>() {
+            @Override
+            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+                jdbcTemplate.update("delete from areas_vendas where produto_id = ?", rs.getLong("id"));
+                return null;
+            }
+        });
+        jdbcTemplate.update("delete from loja where nome = 'TESTE'");
+
     }
 
     @Test
@@ -41,4 +61,5 @@ public class TestLojaController extends AbstractTransactionalJUnit4SpringContext
         controller.formulario();
         assertNotNull(result.included(Constante.DEPARTAMENTOS));
     }
+
 }

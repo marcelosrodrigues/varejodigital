@@ -26,6 +26,10 @@ public final class TagFactory {
     public Tag createById(final String id) {
 
         final WebElement element = driver.findElement(By.id(id));
+        return createTag(element);
+    }
+
+    protected Tag createTag(WebElement element) {
         final String tagname = element.getTagName();
         final String type = element.getAttribute("type");
 
@@ -41,5 +45,15 @@ public final class TagFactory {
             return new SelectTag(element);
         }
         return null;
+    }
+
+    public Tag createByXPath(String xpath) {
+        final WebElement element = driver.findElement(By.xpath(xpath));
+        return createTag(element);
+    }
+
+    public Tag createByClass(String css) {
+        final WebElement element = driver.findElement(By.cssSelector(css));
+        return createTag(element);
     }
 }

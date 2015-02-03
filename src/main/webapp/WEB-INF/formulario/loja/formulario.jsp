@@ -25,12 +25,14 @@
                         <pmrodrigues:textfield label="loja.nome" value="${object.nome}" id="object.nome"
                                                errorField="nome"/>
 
-                        <pmrodrigues:checkbox id="object.secoes"
-                                              label="Departamentos"
-                                              value="${departamentos}"
-                                              labelField="nome"
-                                              valueField="id"
-                                              checked="${object.secoes}"/>
+                        <pmrodrigues:checkbox-treeview id="object.secoes"
+                                                       label="nome"
+                                                       list="${departamentos}"
+                                                       checked="${object.secoes}"
+                                                       subList="subsecoes"
+                                                       value="id"
+                                                       title="Departamentos"
+                                                       father="pai.id"/>
 
                         <button type="submit" value="salvar" class="btn btn-default btn-info"><fmt:message
                                 key="button.salvar" bundle="${labels}"/></button>

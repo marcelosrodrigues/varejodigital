@@ -99,3 +99,7 @@
         }
     }
 }
+
+.checkbox-treeview ul li {
+    list-style: none;
+}

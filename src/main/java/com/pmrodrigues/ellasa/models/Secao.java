@@ -49,7 +49,8 @@ public class Secao implements Serializable {
 
     @OneToMany
 	@JoinColumn(name = "pai_id")
-	private final Set<Secao> subsecoes = new HashSet<>();
+    @OrderBy("id")
+    private final Set<Secao> subsecoes = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "secao_id"),
