@@ -60,4 +60,18 @@ public class Secao implements Serializable {
     public Set<Secao> getSubsecoes() {
         return subsecoes;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Secao) {
+            Secao other = (Secao) obj;
+            return other.id == this.id;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id.hashCode();
+    }
 }

@@ -62,7 +62,7 @@ public class TestCheckboxListTag {
         checkboxlist.doTag();
 
 
-        final String EXPECTED = "<div class=\"form-group \"><label for=\"teste\">teste </label>&nbsp;<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"teste\" id=\"teste\" value=\"1\" checked=\"\">TESTE</label></div>";
+        final String EXPECTED = "<div class=\"form-group \"><label for=\"teste\">teste </label>&nbsp;<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"teste\" id=\"teste\" value=\"1\" >TESTE</label></div>";
         assertEquals(EXPECTED, writer.toString());
 
     }
@@ -134,7 +134,7 @@ public class TestCheckboxListTag {
         checkboxlist.doTag();
 
 
-        final String EXPECTED = "<div class=\"form-group has-error\"><label for=\"teste\">teste </label>&nbsp;<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"teste\" id=\"teste\" value=\"1\" checked=\"\">TESTE</label></div>";
+        final String EXPECTED = "<div class=\"form-group has-error\"><label for=\"teste\">teste </label>&nbsp;<label class=\"checkbox-inline\"><input type=\"checkbox\" name=\"teste\" id=\"teste\" value=\"1\" >TESTE</label></div>";
         assertEquals(EXPECTED, writer.toString());
 
     }

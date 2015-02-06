@@ -3,14 +3,18 @@ package com.pmrodrigues.ellasa.repositories.impl;
 import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -101,7 +105,43 @@ public abstract class AbstractRepository<E> implements Repository<E> {
 	}
 
     public ResultList<E> search(E e, Integer page){
-        return null;
+
+        try {
+            if (e == null) {
+                e = persistentClass.newInstance();
+            }
+
+            nullifyStrings(e);
+            final Example example = Example.create(e)
+                    .ignoreCase()              //perform case insensitive string comparisons
+                    .enableLike()
+                    .excludeNone()
+                    .excludeZeroes();
+            Criteria criteria = this.getSession().createCriteria(persistentClass).add(example).addOrder(Order.asc("id"));
+            return new ResultList<>(criteria, page);
+
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOGGER.fatal(format("Ocorreu um erro no montagem da pesquisa de %s - %s", persistentClass, ex.getMessage()), ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void nullifyStrings(Object o) {
+
+        for (Field f : o.getClass().getDeclaredFields()) {
+            f.setAccessible(true);
+            try {
+                if (f.getType().equals(String.class)) {
+                    String value = (String) f.get(o);
+                    if (value != null && value.trim().isEmpty()) {
+                        f.set(o, null);
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
     }
 
     public ResultList<E> search(E e) {

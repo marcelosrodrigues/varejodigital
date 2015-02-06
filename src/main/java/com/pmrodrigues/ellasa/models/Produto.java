@@ -43,7 +43,7 @@ public class Produto implements Serializable {
     @Column(name = "peso")
     private BigDecimal peso;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "produto_id")
     private final Set<Imagem> imagens = new HashSet<>();
 
@@ -77,5 +77,49 @@ public class Produto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void adicionar(final Imagem imagem) {
+        this.imagens.add(imagem);
+    }
+
+    public Set<Imagem> getImagens() {
+        return imagens;
+    }
+
+    public Secao getSecao() {
+        return secao;
+    }
+
+    public void setSecao(Secao secao) {
+        this.secao = secao;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getDescricaoBreve() {
+        return descricaoBreve;
+    }
+
+    public void setDescricaoBreve(String descricaoBreve) {
+        this.descricaoBreve = descricaoBreve;
+    }
+
+    public void setPreco(BigDecimal preco) {
+        this.preco = preco;
+    }
+
+    public void setPeso(BigDecimal peso) {
+        this.peso = peso;
     }
 }

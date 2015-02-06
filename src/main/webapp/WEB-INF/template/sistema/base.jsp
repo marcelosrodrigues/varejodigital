@@ -13,6 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <title>Portal Ella S/A</title>
 
@@ -25,6 +28,10 @@
     <link href="<c:url value='/css/plugins/morris.css' />" rel="stylesheet">
     <link href="<c:url value='/font-awesome-4.1.0/css/font-awesome.min.css' />" rel="stylesheet" type="text/css">
     <link href='<c:url value="/css/jquery-ui-1.10.4.custom.min.css" />' rel="stylesheet">
+    <link href='<c:url value="/css/jquery.fileupload.css" />' rel="stylesheet">
+    <link href='<c:url value="/css/jquery.fileupload-ui.css" />' rel="stylesheet">
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -72,6 +79,10 @@
 <script type="text/javascript" src="<c:url value='/js/jquery-maskinput.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/jquery-ui-datepicker-pt.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.fileupload.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.fileupload-process.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.fileupload-ui.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/jquery.fileupload-validate.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/ui.js' />"></script>
 
 </body>

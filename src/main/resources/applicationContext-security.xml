@@ -8,6 +8,9 @@
 
     <bean id="userService" class="com.pmrodrigues.ellasa.services.UserService"/>
 
+    <security:http pattern="/**.js" security="none"/>
+    <security:http pattern="/**.css" security="none"/>
+
     <security:http pattern="/**/*.json" use-expressions="true" once-per-request="true" create-session="never"
                    disable-url-rewriting="true">
         <security:anonymous enabled="false"/>
@@ -20,9 +23,8 @@
 
     <security:http pattern="/**" use-expressions="true" once-per-request="true" create-session="never"
                    auto-config="true">
-        <security:intercept-url pattern="/**/*.do" access="isFullyAuthenticated()"/>
-        <security:intercept-url pattern="/**.js" access="permitAll()"/>
-        <security:intercept-url pattern="/**.css" access="permitAll()"/>
+
+    <security:intercept-url pattern="/**/*.do" access="isFullyAuthenticated()"/>
         <security:form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check"
                              authentication-failure-url="/login.jsp?error=true" default-target-url="/index.do"/>
         <security:logout invalidate-session="true" delete-cookies="false" logout-success-url="/index.jsp"/>
@@ -36,5 +38,6 @@
             <security:password-encoder hash="md5"/>
         </security:authentication-provider>
     </security:authentication-manager>
+
 
 </beans>

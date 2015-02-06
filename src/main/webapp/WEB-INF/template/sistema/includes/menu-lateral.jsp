@@ -45,7 +45,7 @@
                         <a href="<c:url value='/secao/index.do' />">Departamentos</a>
                     </li>
                     <li>
-                        <a href="morris.html">Morris.js Charts</a>
+                        <a href="<c:url value='/produto/index.do' />">Produtos</a>
                     </li>
                 </ul>
             </li>

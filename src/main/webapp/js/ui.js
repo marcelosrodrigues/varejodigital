@@ -14,6 +14,9 @@ $('input[id="object.cpf"]').mask("999.999.999-99");
 $('input[id="object.endereco.cep"]').mask("99999-999");
 $('input[id="object.cnpj"]').mask("99.999.999/9999-99");
 
+$('input[id="object.preco"]').maskMoney({decimal: ",", thousands: "."});
+$('input[id="object.peso"]').maskMoney({decimal: ",", thousands: "."});
+
 
 $("#dataNascimento").datepicker({
     dateFormat: "dd-mm-yyyy"
@@ -68,4 +71,26 @@ function setChecked(pai, checked) {
     });
 }
 
+$(function () {
 
+    $('#fileupload').fileupload({
+        url: '/imagem/upload',
+        dataType: 'json',
+        autoUpload: true,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 5000000, // 5 MB
+        disableImageResize: /Android(?!.*Chrome)|Opera/
+            .test(window.navigator.userAgent),
+        previewMaxWidth: 100,
+        previewMaxHeight: 100,
+        previewCrop: true
+    }).on('fileuploadadd', function (e, data) {
+        data.context = $('<div/>').appendTo('#files');
+        $.each(data.files, function (index, file) {
+            var node = $('<p/>')
+                .append($('<span/>').text(file.name));
+            node.appendTo(data.context).prepend('<br>')
+                .prepend(file.preview);
+        });
+    });
+});

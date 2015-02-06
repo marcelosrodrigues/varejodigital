@@ -1,5 +1,8 @@
 package com.pmrodrigues.ellasa;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public interface Constante {
 
     int QUANTIDADE_MAXIMA_DE_FRANQUEADOS = 5;
@@ -30,4 +33,11 @@ public interface Constante {
 
     String DEPARTAMENTOS = "departamentos";
 
+    String IMAGE_PATH = "image_path";
+
+    String LOJAS = "lojas";
+
+    String URL_IMAGENS = ResourceBundle.getBundle("configuracao").getString(IMAGE_PATH);
+
+    Locale PT_BR = new Locale("pt-BR");
 }

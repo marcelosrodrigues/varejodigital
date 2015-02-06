@@ -38,6 +38,10 @@ public class ResultList<E> {
 
     }
 
+    public boolean isPaginated() {
+        return pageCount > 1;
+    }
+
     public boolean isPrevious() {
         return page > 0L && page < pageCount;
     }

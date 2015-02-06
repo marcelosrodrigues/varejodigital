@@ -89,4 +89,22 @@
 
     <definition name="secao/show-template" extends="secao/formulario-template"/>
 
+    <definition name="secao/search-template" extends="secao/index-template"/>
+
+    <definition name="produto/formulario-template" extends="principal">
+        <put-attribute name="header" value="Produto"/>
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/produtos/formulario.jsp"/>
+    </definition>
+
+    <definition name="produto/index-template" extends="principal">
+        <put-attribute name="header" value="Produtos"/>
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/produtos/index.jsp"/>
+    </definition>
+
+    <definition name="produto/search-template" extends="produto/index-template"/>
+
+    <definition name="produto/show-template" extends="produto/formulario-template"/>
+
+    <definition name="produto/*/formulario-template" extends="produto/formulario-template"/>
+
 </tiles-definitions>
