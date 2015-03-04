@@ -369,4 +369,24 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>paginate</name>
+        <tag-class>com.pmrodrigues.ellasa.taglib.PaginateTagLib</tag-class>
+        <body-content>empty</body-content>
+
+        <attribute>
+            <name>url</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
+        <attribute>
+            <name>resultList</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>com.pmrodrigues.ellasa.repositories.ResultList</type>
+        </attribute>
+    </tag>
+
 </taglib>

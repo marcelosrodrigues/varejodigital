@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setBundle basename="labels" scope="application" var="labels"/>
+<%@ taglib prefix="pmrodrigues" uri="/WEB-INF/pmrodrigues.tld" %>
 <div class="col-lg-12">
 
 
@@ -63,37 +64,7 @@
         </c:forEach>
         </tbody>
     </table>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="dataTables_info" id="dataTables-example_info" role="alert" aria-live="polite" aria-relevant="all">Página ${resultlist.page + 1} de ${resultlist.pageCount}</div>
-        </div>
-        <c:if test="${resultilist.pageCount gt 1}">
-            <div class="col-sm-6" style="top: -30px;text-align:right;">
-                <div class="dataTables_paginate paging_simple_numbers">
-                    <ul class="pagination">
-                        <li class="paginate_button previous <c:if test='${not resultlist.previous}'>disabled</c:if>" aria-controls="dataTables-example" tabindex="0"
-                            id="dataTables-example_previous">
-                            <c:if test='${resultlist.previous}'>
-                                <a href="<c:url value='/usuario/pesquisar.do'/>?object.nome=${param['object.email']}&page=${resultlist.page - 1}">&lt;&lt;</a>
-                            </c:if>
-                        </li>
-
-                        <c:forEach begin="1" end="${resultlist.pageCount}" var="index">
-                            <li class="paginate_button" tabindex="${index - 1}">
-                                <a href="<c:url value='/loja/pesquisar.do'/>?object.nome=${param['object.nome']}&page=${index -1}">${index}</a>
-                            </li>
-                        </c:forEach>
-
-                        <li class="paginate_button next" aria-controls="dataTables-example" tabindex="0"
-                            id="dataTables-example_next <c:if test='${not resultlist.next}'>disabled</c:if>">
-                            <c:if test='${not resultlist.next}'>
-                                <a href="<c:url value='/usuario/pesquisar.do'/>?object.email=${param['object.email']}&page=${resultlist.page + 1}">&gt;&gt;</a>
-                            </c:if>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </c:if>
+    <pmrodrigues:paginate url="/usuario/pesquisar.do" resultList="${resultlist}"/>
     </div>
     <div class="row" style="margin-top: 10px;">
         <div class="col-sm-6">

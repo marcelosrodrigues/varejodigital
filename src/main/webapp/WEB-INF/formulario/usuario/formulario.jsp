@@ -208,7 +208,8 @@
                     </label>
                 </div>
 
-                <button type="submit" id="salvar" value="salvar" class="btn btn-default btn-info" style="margin-left: 15px;">
+                <button type="submit" id="salvar" value="salvar" class="btn btn-default btn-info"
+                        style="margin-left: 15px;">
                     <fmt:message key="button.salvar" bundle="${labels}"/></button>
 
                 </form>

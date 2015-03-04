@@ -7,7 +7,9 @@ import org.apache.commons.validator.GenericValidator;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -17,12 +19,13 @@ import java.util.ResourceBundle;
 @RequestScoped
 public class BigDecimalConverter implements Converter<BigDecimal> {
 
+    private static final DecimalFormat FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(new Locale("pt", "BR")));
+
     @Override
     public BigDecimal convert(String value, Class<? extends BigDecimal> type, ResourceBundle bundle) {
         try {
             if (!GenericValidator.isBlankOrNull(value)) {
-                DecimalFormat format = new DecimalFormat("#.##");
-                Number formatted = format.parse(value);
+                Number formatted = FORMAT.parse(value);
                 return new BigDecimal(formatted.doubleValue());
             }
             return null;

@@ -1,0 +1,10 @@
+div#files {
+    padding: 10px 10px;
+    clear: both;
+}
+
+div#files div {
+    display: inline-block;
+    margin-right: 10px;
+}
+

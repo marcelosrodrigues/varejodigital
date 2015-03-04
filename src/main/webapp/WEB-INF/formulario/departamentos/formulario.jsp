@@ -42,7 +42,8 @@
 
                         <pmrodrigues:textfield label="departamento.nome"
                                                value="${object.nome}"
-                                               id="object.nome"/>
+                                               id="object.nome"
+                                               errorField="nome"/>
 
 
                         <button id="salvar" type="submit" value="salvar" class="btn btn-default btn-info"><fmt:message

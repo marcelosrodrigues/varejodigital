@@ -85,12 +85,26 @@ $(function () {
         previewMaxHeight: 100,
         previewCrop: true
     }).on('fileuploadadd', function (e, data) {
-        data.context = $('<div/>').appendTo('#files');
+        data.context = $('<div />').appendTo('#files');
         $.each(data.files, function (index, file) {
-            var node = $('<p/>')
-                .append($('<span/>').text(file.name));
-            node.appendTo(data.context).prepend('<br>')
-                .prepend(file.preview);
+            var node = $('<span id="' + file.name + '"/>');
+            node.appendTo(data.context).append('<img src="' + URL.createObjectURL(file) + '" width="150px" height="150px"/>');
+            node.append($("<br/>")).append($('<label/>').text(file.name))
+                .click(function () {
+
+                    var image = $(this).text();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/imagem/" + image + "/delete",
+                        cache: false
+                    });
+
+                    $("div span[id='" + image + "']")
+                        .parent()
+                        .remove();
+
+                });
         });
     });
 });
