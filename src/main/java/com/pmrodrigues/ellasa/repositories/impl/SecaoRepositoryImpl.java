@@ -6,6 +6,7 @@ import com.pmrodrigues.ellasa.repositories.ResultList;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
@@ -44,6 +45,14 @@ public class SecaoRepositoryImpl extends AbstractRepository<Secao>
                 .add(Restrictions.eq("loja.id", loja.getId()))
                 .addOrder(Order.asc("s.id"))
                 .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+                .list();
+    }
+
+    @Override
+    public List<Secao> listByNome(final String nome) {
+        return this.getSession().createCriteria(Secao.class)
+                .add(Restrictions.like("nome", nome, MatchMode.START))
+                .addOrder(Order.asc("id"))
                 .list();
     }
 }

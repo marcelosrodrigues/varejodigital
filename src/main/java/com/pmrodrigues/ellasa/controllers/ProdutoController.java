@@ -7,6 +7,7 @@ import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.annotations.Before;
 import com.pmrodrigues.ellasa.annotations.CRUD;
 import com.pmrodrigues.ellasa.annotations.Insert;
+import com.pmrodrigues.ellasa.annotations.Update;
 import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
 import com.pmrodrigues.ellasa.models.Imagem;
 import com.pmrodrigues.ellasa.models.Produto;
@@ -54,6 +55,19 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
         }
 
         this.getRepository().add(produto);
+        this.imagens.apagar();
+        logging.debug(format("Produto %s salvo com sucesso", produto));
+    }
+
+    @Update
+    public void update(final Produto produto) {
+        logging.debug(format("Iniciando o salvamento do produto %s", produto));
+
+        for (String arquivo : this.imagens.getArquivos()) {
+            produto.adicionar(new Imagem(arquivo));
+        }
+
+        this.getRepository().set(produto);
         this.imagens.apagar();
         logging.debug(format("Produto %s salvo com sucesso", produto));
     }

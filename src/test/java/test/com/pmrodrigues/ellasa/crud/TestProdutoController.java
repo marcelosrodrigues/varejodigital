@@ -76,5 +76,29 @@ public class TestProdutoController {
         controller.salvar(produto);
         assertNotNull(result.included(Constante.SUCESSO));
         assertFalse(produto.getImagens().isEmpty());
+
+    }
+
+    @Test
+    public void alterarProduto() {
+        final Imagens imagens = context.mock(Imagens.class);
+        final Set<String> arquivos = new HashSet<>();
+        arquivos.addAll(Arrays.asList("arquivo.gif", "arquivo2.gif", "arquivo3.gif"));
+
+        context.checking(new Expectations() {{
+            oneOf(imagens).getArquivos();
+            will(returnValue(arquivos));
+
+            oneOf(repository).set(with(aNonNull(Produto.class)));
+
+            oneOf(imagens).apagar();
+        }});
+
+        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, imagens);
+        Produto produto = new Produto();
+        produto.setId(1L);
+        controller.salvar(produto);
+        assertNotNull(result.included(Constante.SUCESSO));
+        assertFalse(produto.getImagens().isEmpty());
     }
 }

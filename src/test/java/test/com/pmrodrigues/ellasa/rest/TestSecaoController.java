@@ -68,4 +68,12 @@ public class TestSecaoController
         assertEquals(count, Long.valueOf(secoes.size()));
     }
 
+    @Test
+    public void pesquisarSecaoPorNome() {
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao where secao like 'Vest%'", Long.class);
+        List<Secao> secoes = service.pesquisarPorNome("Vest");
+        assertEquals(count, Long.valueOf(secoes.size()));
+    }
+
+
 }

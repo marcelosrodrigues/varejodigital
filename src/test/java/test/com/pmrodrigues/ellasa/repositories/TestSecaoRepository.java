@@ -49,4 +49,12 @@ public class TestSecaoRepository extends
         final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? ", Long.class, id);
         assertEquals(count, Long.valueOf(secoes.size()));
     }
+
+    @Test
+    public void pesquisarSecoesPorNome() {
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao where secao like 'Vest%'", Long.class);
+
+        final List<Secao> secoes = repository.listByNome("Vest");
+        assertEquals(count, Long.valueOf(secoes.size()));
+    }
 }

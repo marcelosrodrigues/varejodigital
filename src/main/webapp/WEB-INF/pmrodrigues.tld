@@ -389,4 +389,17 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>imagem</name>
+        <tag-class>com.pmrodrigues.ellasa.taglib.ListagemImagensTag</tag-class>
+        <body-content>empty</body-content>
+
+        <attribute>
+            <name>imagens</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.List</type>
+        </attribute>
+    </tag>
+
 </taglib>

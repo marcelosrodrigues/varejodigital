@@ -74,7 +74,7 @@ function setChecked(pai, checked) {
 $(function () {
 
     $('#fileupload').fileupload({
-        url: '/imagem/upload',
+        url: '/imagem/upload.json',
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -88,23 +88,77 @@ $(function () {
         data.context = $('<div />').appendTo('#files');
         $.each(data.files, function (index, file) {
             var node = $('<span id="' + file.name + '"/>');
-            node.appendTo(data.context).append('<img src="' + URL.createObjectURL(file) + '" width="150px" height="150px"/>');
-            node.append($("<br/>")).append($('<label/>').text(file.name))
-                .click(function () {
+            node.appendTo(data.context)
+                .append('<img src="' + URL.createObjectURL(file) + '" width="150px" height="150px"/>');
 
+            node.append($("<br/>"))
+                .append($('<label/>')
+                    .text(file.name))
+                .click(function () {
                     var image = $(this).text();
 
                     $.ajax({
                         type: "POST",
-                        url: "/imagem/" + image + "/delete",
+                        url: "/imagem/" + image + "/delete.json",
                         cache: false
                     });
 
                     $("div span[id='" + image + "']")
                         .parent()
                         .remove();
-
                 });
         });
     });
 });
+
+function deletarImagem(image) {
+    $.ajax({
+        type: "POST",
+        url: "/imagem/" + image + "/remove.json",
+        cache: false
+    });
+
+    $("div span[id='" + image + "']")
+        .parent()
+        .remove();
+}
+
+
+function montatabeladepartamentos(data) {
+
+    $("#departamentos > table > tbody").find("tr").remove();
+
+    $.each(data.list, function (index, element) {
+
+        $("#departamentos > table > tbody").append("<tr><td>"
+        + element.id + "</td>"
+        + "<td>" + element.nome + "</td>"
+        + "<td align=\"center\"><button id=\"subsecoes\" onclick=\"javacript:listarSubSecoes(this)\" type=\"button\" class=\"btn btn-info btn-circle\" secao=\"" + element.id + "\" nome=\"" + element.nome + "\">"
+        + "<i class=\"fa fa-check\"></i></button></td></tr>");
+        $("#departamentos").show();
+
+    });
+}
+$("#pesquisar").click(function () {
+
+    $.getJSON(
+        "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
+
+});
+
+function listarSubSecoes(secao) {
+
+    $.getJSON("/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
+
+        if (data.list.length == 0) {
+            $("input[id='object.secao']").val($(secao).attr("secao"));
+            $("#departamento").val($(secao).attr("nome"));
+            $("#departamentos > table > tbody").find("tr").remove();
+            $("#departamentos").hide();
+        } else {
+            montatabeladepartamentos(data);
+        }
+
+    });
+
+}

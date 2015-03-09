@@ -10,7 +10,11 @@ import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
+import static java.lang.String.format;
 
 @Resource
 public class SecaoController {
@@ -39,6 +43,36 @@ public class SecaoController {
         result.use(Results.json())
                 .from(secoes)
                 .include("pai")
+                .serialize();
+
+        return secoes;
+    }
+
+    @Get
+    @Path("/secoes/{nome}/list.json")
+    public List<Secao> pesquisarPorNome(final String nome) {
+        logging.debug(format("pesquisando todas a secoes que comecem com %s", nome));
+        final List<Secao> secoes = repository.listByNome(nome);
+        logging.debug("lista carregada");
+
+        result.use(Results.json())
+                .from(secoes)
+                .exclude("pai", "subsecoes")
+                .serialize();
+
+        return secoes;
+    }
+
+    @Get
+    @Path("/secoes/{secao}/filhos/list.json")
+    public Collection<Secao> listSubSecoes(final Secao secao) {
+
+        final List<Secao> secoes = new ArrayList<>();
+        secoes.addAll(secao.getSubsecoes());
+
+        result.use(Results.json())
+                .from(secoes)
+                .exclude("pai", "subsecoes")
                 .serialize();
 
         return secoes;

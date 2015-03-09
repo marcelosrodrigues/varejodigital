@@ -37,14 +37,34 @@
                         <pmrodrigues:textfield label="produto.peso" value="${object.peso}" id="object.peso"
                                                errorField="peso"/>
 
-                        <pmrodrigues:radio-treeview id="object.secao"
-                                                    label="nome"
-                                                    list="${departamentos}"
-                                                    checked="${object.secao}"
-                                                    subList="subsecoes"
-                                                    value="id"
-                                                    title="Departamentos"
-                                                    father="pai.id"/>
+
+                        <input type="hidden" name="object.secao" id="object.secao" value="${object.secao.id}"/>
+
+                        <label for="departamento" class="control-label">Departamento</label>
+
+                        <div class="form-group input-group">
+                            <input id="departamento" type="text" class="form-control" placeholder="Departamento"
+                                   value="${object.secao.nome}">
+                            <span class="input-group-btn">
+                                <button id="pesquisar" class="btn btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+
+                        <div id="departamentos" style="display:none">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="width:10%">#</th>
+                                    <th>Departamento</th>
+                                    <th style="width:5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
                         <pmrodrigues:textarea label="produto.descricaoBreve" value="${object.descricaoBreve}"
                                               id="object.descricaoBreve" linhas="3" errorField="descricaoBreve"/>
@@ -56,7 +76,10 @@
                             <label>Imagens do produto</label>
                             <input type="file" name="arquivo" id="fileupload"/>
                         </div>
-                        <div id="files"></div>
+                        <div id="files">
+                            <pmrodrigues:imagem
+                                    imagens="${object.imagens}"/>
+                        </div>
 
                         <button type="submit" value="salvar" class="btn btn-default btn-info">
                             <fmt:message key="button.salvar" bundle="${labels}"/></button>
