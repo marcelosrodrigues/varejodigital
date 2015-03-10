@@ -9,11 +9,13 @@ import com.pmrodrigues.ellasa.annotations.CRUD;
 import com.pmrodrigues.ellasa.annotations.Insert;
 import com.pmrodrigues.ellasa.annotations.Update;
 import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
+import com.pmrodrigues.ellasa.models.Atributo;
 import com.pmrodrigues.ellasa.models.Imagem;
 import com.pmrodrigues.ellasa.models.Produto;
 import com.pmrodrigues.ellasa.repositories.ProdutoRepository;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
+import com.pmrodrigues.ellasa.sessionscope.Atributos;
 import com.pmrodrigues.ellasa.sessionscope.Imagens;
 import org.apache.log4j.Logger;
 
@@ -32,12 +34,14 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
     private final SecaoRepository secaoRepository;
 
     private static final Logger logging = Logger.getLogger(ProdutoController.class);
+    private final Atributos atributos;
 
-    public ProdutoController(ProdutoRepository repository, ShoppingRepository shoppingRepository, SecaoRepository secaoRepository, Result result, Validator validator, Imagens imagens) {
+    public ProdutoController(ProdutoRepository repository, ShoppingRepository shoppingRepository, SecaoRepository secaoRepository, Result result, Validator validator, Imagens imagens, Atributos atributos) {
         super(repository, result, validator);
         this.imagens = imagens;
         this.shoppingRepository = shoppingRepository;
         this.secaoRepository = secaoRepository;
+        this.atributos = atributos;
     }
 
     @Before
@@ -50,22 +54,28 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
     public void insert(final Produto produto) {
         logging.debug(format("Iniciando o salvamento do produto %s", produto));
 
-        for (String arquivo : this.imagens.getArquivos()) {
-            produto.adicionar(new Imagem(arquivo));
-        }
+        adicionarLista(produto);
 
         this.getRepository().add(produto);
         this.imagens.apagar();
         logging.debug(format("Produto %s salvo com sucesso", produto));
     }
 
+    public void adicionarLista(Produto produto) {
+        for (String arquivo : this.imagens.getArquivos()) {
+            produto.adicionar(new Imagem(arquivo));
+        }
+
+        for (Atributo atributo : this.atributos.getAtributos()) {
+            produto.adicionar(atributo);
+        }
+    }
+
     @Update
     public void update(final Produto produto) {
         logging.debug(format("Iniciando o salvamento do produto %s", produto));
 
-        for (String arquivo : this.imagens.getArquivos()) {
-            produto.adicionar(new Imagem(arquivo));
-        }
+        adicionarLista(produto);
 
         this.getRepository().set(produto);
         this.imagens.apagar();

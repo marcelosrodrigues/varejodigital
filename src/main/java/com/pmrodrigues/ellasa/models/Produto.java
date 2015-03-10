@@ -49,6 +49,7 @@ public class Produto implements Serializable {
 
     @OneToMany
     @JoinColumn(name = "produto_id")
+    @OrderBy("id asc")
     private final Set<Atributo> atributos = new HashSet<>();
 
     public Loja getLoja() {
@@ -121,5 +122,13 @@ public class Produto implements Serializable {
 
     public void setPeso(BigDecimal peso) {
         this.peso = peso;
+    }
+
+    public Set<Atributo> getAtributos() {
+        return atributos;
+    }
+
+    public void adicionar(final Atributo atributo) {
+        this.atributos.add(atributo);
     }
 }

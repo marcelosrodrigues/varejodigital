@@ -11,5 +11,7 @@ public interface SecaoRepository extends Repository<Secao> {
 
     List<Secao> findByLoja(final Loja loja);
 
-    List<Secao> listByNome(String nome);
+    List<Secao> listByNome(Loja loja, String nome);
+
+    List<Secao> listAllSubSecoesByLojaAndPai(Loja loja, Secao pai);
 }

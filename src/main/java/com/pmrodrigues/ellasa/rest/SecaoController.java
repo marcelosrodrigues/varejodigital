@@ -10,8 +10,6 @@ import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -49,10 +47,10 @@ public class SecaoController {
     }
 
     @Get
-    @Path("/secoes/{nome}/list.json")
-    public List<Secao> pesquisarPorNome(final String nome) {
+    @Path("/{loja}/secoes/{nome}/list.json")
+    public List<Secao> pesquisarPorNome(final Loja loja, final String nome) {
         logging.debug(format("pesquisando todas a secoes que comecem com %s", nome));
-        final List<Secao> secoes = repository.listByNome(nome);
+        final List<Secao> secoes = repository.listByNome(loja, nome);
         logging.debug("lista carregada");
 
         result.use(Results.json())
@@ -64,11 +62,10 @@ public class SecaoController {
     }
 
     @Get
-    @Path("/secoes/{secao}/filhos/list.json")
-    public Collection<Secao> listSubSecoes(final Secao secao) {
+    @Path("/{loja}/secoes/{secao}/filhos/list.json")
+    public List<Secao> listSubSecoes(final Loja loja, final Secao secao) {
 
-        final List<Secao> secoes = new ArrayList<>();
-        secoes.addAll(secao.getSubsecoes());
+        final List<Secao> secoes = repository.listAllSubSecoesByLojaAndPai(loja, secao);
 
         result.use(Results.json())
                 .from(secoes)

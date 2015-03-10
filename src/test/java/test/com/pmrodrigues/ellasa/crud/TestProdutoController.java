@@ -4,20 +4,19 @@ import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.ProdutoController;
+import com.pmrodrigues.ellasa.models.Atributo;
 import com.pmrodrigues.ellasa.models.Produto;
 import com.pmrodrigues.ellasa.repositories.ProdutoRepository;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
+import com.pmrodrigues.ellasa.sessionscope.Atributos;
 import com.pmrodrigues.ellasa.sessionscope.Imagens;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -47,7 +46,7 @@ public class TestProdutoController {
             will(returnValue(Collections.EMPTY_LIST));
         }});
 
-        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, new Imagens());
+        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, new Imagens(), null);
         controller.formulario();
 
         assertNotNull(result.included(Constante.DEPARTAMENTOS));
@@ -59,19 +58,26 @@ public class TestProdutoController {
     public void salvarProduto() {
 
         final Imagens imagens = context.mock(Imagens.class);
+        final Atributos atributos = context.mock(Atributos.class);
         final Set<String> arquivos = new HashSet<>();
+        final List<Atributo> tamanhos = new ArrayList<>();
         arquivos.addAll(Arrays.asList("arquivo.gif", "arquivo2.gif", "arquivo3.gif"));
+        tamanhos.addAll(Arrays.asList(new Atributo("teste")));
 
         context.checking(new Expectations() {{
             oneOf(imagens).getArquivos();
             will(returnValue(arquivos));
 
+            oneOf(atributos).getAtributos();
+            will(returnValue(tamanhos));
+
             oneOf(repository).add(with(aNonNull(Produto.class)));
 
             oneOf(imagens).apagar();
+            oneOf(atributos).apagar();
         }});
 
-        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, imagens);
+        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, imagens, atributos);
         Produto produto = new Produto();
         controller.salvar(produto);
         assertNotNull(result.included(Constante.SUCESSO));
@@ -82,19 +88,26 @@ public class TestProdutoController {
     @Test
     public void alterarProduto() {
         final Imagens imagens = context.mock(Imagens.class);
+        final Atributos atributos = context.mock(Atributos.class);
         final Set<String> arquivos = new HashSet<>();
+        final List<Atributo> tamanhos = new ArrayList<>();
         arquivos.addAll(Arrays.asList("arquivo.gif", "arquivo2.gif", "arquivo3.gif"));
+        tamanhos.addAll(Arrays.asList(new Atributo("teste")));
 
         context.checking(new Expectations() {{
             oneOf(imagens).getArquivos();
             will(returnValue(arquivos));
 
+            oneOf(atributos).getAtributos();
+            will(returnValue(tamanhos));
+
             oneOf(repository).set(with(aNonNull(Produto.class)));
 
             oneOf(imagens).apagar();
+            oneOf(atributos).apagar();
         }});
 
-        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, imagens);
+        final ProdutoController controller = new ProdutoController(repository, shoppingRepository, secaoRepository, result, validation, imagens, atributos);
         Produto produto = new Produto();
         produto.setId(1L);
         controller.salvar(produto);

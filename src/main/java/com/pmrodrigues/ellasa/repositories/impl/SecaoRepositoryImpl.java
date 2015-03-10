@@ -49,10 +49,24 @@ public class SecaoRepositoryImpl extends AbstractRepository<Secao>
     }
 
     @Override
-    public List<Secao> listByNome(final String nome) {
-        return this.getSession().createCriteria(Secao.class)
-                .add(Restrictions.like("nome", nome, MatchMode.START))
-                .addOrder(Order.asc("id"))
+    public List<Secao> listByNome(Loja loja, final String nome) {
+        return this.getSession().createCriteria(Secao.class, "s")
+                .createAlias("s.lojas", "loja", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("loja.id", loja.getId()))
+                .add(Restrictions.like("s.nome", nome, MatchMode.START))
+                .addOrder(Order.asc("s.id"))
                 .list();
+    }
+
+    @Override
+    public List<Secao> listAllSubSecoesByLojaAndPai(final Loja loja, final Secao pai) {
+        return this.getSession().createCriteria(Secao.class, "s")
+                .createAlias("s.lojas", "loja", JoinType.INNER_JOIN)
+                .add(Restrictions.eq("loja.id", loja.getId()))
+                .add(Restrictions.eq("s.pai", pai))
+                .addOrder(Order.asc("s.id"))
+                .list();
+
+
     }
 }

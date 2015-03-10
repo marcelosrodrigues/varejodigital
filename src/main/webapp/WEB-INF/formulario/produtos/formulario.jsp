@@ -72,6 +72,43 @@
                         <pmrodrigues:textarea label="produto.descricao" value="${object.descricao}"
                                               id="object.descricao" linhas="6" errorField="descricao"/>
 
+                        <label for="tamanho" class="control-label">Tamanho</label>
+
+                        <div class="form-group input-group">
+                            <input id="tamanho" type="text" class="form-control" placeholder="Tamanho"
+                                   value="${object.secao.nome}">
+                            <span class="input-group-btn">
+                                <button id="adicionar-tamanho" class="btn btn-default" type="button">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </span>
+                        </div>
+
+                        <div id="tamanhos">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Tamanho</th>
+                                    <th style="width:5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach items="${object.atributos}" var="atributo">
+                                    <tr>
+                                        <td>${atributo.descricao}</td>
+                                        <td align="center">
+                                            <button type="button" class="btn btn-danger btn-circle"
+                                                    tamanho="${atributo.id}" nome="${atributo.descricao}"
+                                                    onclick="javascript:removerTamanho(this);">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="form-group">
                             <label>Imagens do produto</label>
                             <input type="file" name="arquivo" id="fileupload"/>

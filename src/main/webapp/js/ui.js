@@ -141,14 +141,18 @@ function montatabeladepartamentos(data) {
 }
 $("#pesquisar").click(function () {
 
+    var loja = document.getElementById("object.loja");
+
     $.getJSON(
-        "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
+        "/" + $(loja).val() + "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
 
 });
 
 function listarSubSecoes(secao) {
 
-    $.getJSON("/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
+    var loja = document.getElementById("object.loja");
+
+    $.getJSON("/" + $(loja).val() + "/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
 
         if (data.list.length == 0) {
             $("input[id='object.secao']").val($(secao).attr("secao"));
@@ -160,5 +164,58 @@ function listarSubSecoes(secao) {
         }
 
     });
+}
+
+$("#adicionar-tamanho").click(function () {
+
+    $.ajax({
+        url: "/produto/tamanho/" + $("#tamanho").val() + "/adicionar.json",
+        type: "POST",
+        cache: false
+    }).done(montartabelatamanho);
+
+});
+
+
+function montartabelatamanho(data) {
+
+    $("#tamanhos > table > tbody").find("tr").remove();
+
+    $.each(data.list, function (index, element) {
+
+        $("#tamanhos > table > tbody").append("<tr>"
+        + "<td>" + element.descricao + "</td>"
+        + "<td align=\"center\">"
+        + "<button id=\"remover-tamanho\" type=\"button\" class=\"btn btn-danger btn-circle\" tamanho=\"" + element.id + "\" nome=\"" + element.descricao + "\">"
+        + "<i class=\"fa fa-times\"></i></button></td></tr>");
+
+    });
+
+    $("#remover-tamanho").each(function (index) {
+        $(this).click(function () {
+
+            $.ajax({
+                url: "/produto/tamanho/" + $(this).attr("nome") + "/remover.json",
+                type: "POST",
+                cache: false
+            }).done(montartabelatamanho);
+
+        });
+    });
+
+    $("#tamanhos").show();
+}
+
+function removerTamanho(tamanho) {
+    $.ajax({
+        url: "/produto/tamanho/" + $(tamanho).attr("nome") + "/" + $(tamanho).attr("tamanho") + "/remover.json",
+        type: "POST",
+        cache: false
+    }).done(function () {
+        $(tamanho).parent()
+            .parent()
+            .remove();
+    });
+
 
 }
