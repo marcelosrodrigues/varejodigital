@@ -71,6 +71,16 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "vendedor_id")
     private Usuario vendedor;
 
+    @Column(name = "akatus_transaction_code")
+    private String codigoReferencia;
+
+    @Column(name = "data_aprovacao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataAprovacao;
+
+    @Column(name = "motivo")
+    private String motivo;
+
     @PrePersist
     public void onInsert() {
         dataCriacaco = DateTime.now().toDate();
@@ -141,5 +151,33 @@ public class Pedido implements Serializable {
 
     public Loja getLoja() {
         return loja;
+    }
+
+    public void setCodigoReferencia(String codigoReferencia) {
+        this.codigoReferencia = codigoReferencia;
+    }
+
+    public String getCodigoReferencia() {
+        return codigoReferencia;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setDataAprovacao(Date dataAprovacao) {
+        this.dataAprovacao = dataAprovacao;
+    }
+
+    public Date getDataAprovacao() {
+        return dataAprovacao;
+    }
+
+    public String getCodigoTransacao() {
+        return codigoTransacao;
     }
 }

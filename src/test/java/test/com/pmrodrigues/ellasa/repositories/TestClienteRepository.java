@@ -33,9 +33,9 @@ public class TestClienteRepository
 
         Long estado_id = jdbcTemplate.queryForObject("select id from estado where uf = 'RJ'", Long.class);
         jdbcTemplate.update("insert into cliente ( dataAlteracao , dataCriacaco , email , primeiroNome , sexo , ultimoNome ) " +
-                " values ( current_timestamp , current_timestamp , 'marcelosrodrigues@globo.com','MARCELO',1,'RODRIGUES')");
+                " values ( current_timestamp , current_timestamp , 'marcelosrodrigues@hotmail.com','MARCELO',1,'RODRIGUES')");
 
-        Long cliente_id = jdbcTemplate.queryForObject("select id from cliente where email = 'marcelosrodrigues@globo.com'", Long.class);
+        Long cliente_id = jdbcTemplate.queryForObject("select id from cliente where email = 'marcelosrodrigues@hotmail.com'", Long.class);
 
         jdbcTemplate.update("insert into endereco ( bairro, celular, cep, cidade, dataAlteracao, dataCriacaco, logradouro, telefone, cliente_id, estado_id ) values " +
                 "( 'PECHINCHA', '21981363699','22743310','RIO DE JANEIRO' , current_timestamp , current_timestamp , 'ESTRADA CAMPO DA AREIA 84 APTO 206' , '2133926222' , ? , ? )", cliente_id, estado_id);
@@ -45,14 +45,14 @@ public class TestClienteRepository
     @After
     public void after() {
 
-        jdbcTemplate.query("select id from cliente where email = 'marcelosrodrigues@globo.com'", new RowMapper<Void>() {
+        jdbcTemplate.query("select id from cliente where email = 'marcelosrodrigues@hotmail.com'", new RowMapper<Void>() {
             @Override
             public Void mapRow(ResultSet rs, int rowNum) throws SQLException {
                 jdbcTemplate.update("delete from endereco where cliente_id = ?", rs.getLong("id"));
                 return null;
             }
         });
-        jdbcTemplate.update("delete from cliente where email = 'marcelosrodrigues@globo.com'");
+        jdbcTemplate.update("delete from cliente where email = 'marcelosrodrigues@hotmail.com'");
 
 
     }

@@ -72,8 +72,10 @@ public class PedidoService {
 
         if (pedido.getDadosPagamento().isSucesso()) {
             pedido.setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
+            pedido.setCodigoReferencia(pedido.getDadosPagamento().getCodigo());
         } else {
             pedido.setStatus(StatusPagamento.CANCELADO);
+            pedido.setMotivo(pedido.getDadosPagamento().getMotivo());
         }
 
     }

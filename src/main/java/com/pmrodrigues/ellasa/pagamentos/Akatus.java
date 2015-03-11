@@ -2,6 +2,7 @@ package com.pmrodrigues.ellasa.pagamentos;
 
 import com.pmrodrigues.ellasa.pagamentos.v1.cart.CartOperation;
 import com.pmrodrigues.ellasa.pagamentos.v1.paymentmethod.PaymentMethodsOperation;
+import com.pmrodrigues.ellasa.pagamentos.v1.status.StatusPagamentoOperation;
 
 /**
  * Wrapper de integração com a API da Akatus.
@@ -78,6 +79,10 @@ public class Akatus {
 	public CartOperation cart() {
 		return new CartOperation(this);
 	}
+
+    public StatusPagamentoOperation status(String referencia) {
+        return new StatusPagamentoOperation(this, referencia);
+    }
 
 	/**
 	 * @return {@link String} A chave da Api.

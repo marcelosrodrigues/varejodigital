@@ -117,6 +117,14 @@ public class TestPedidoService {
             will(returnValue(Boolean.TRUE));
 
             oneOf(pedido).setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
+
+            oneOf(pedido).getDadosPagamento();
+            will(returnValue(pagamento));
+
+            oneOf(pagamento).getCodigo();
+            will(returnValue(""));
+
+            oneOf(pedido).setCodigoReferencia(with(any(String.class)));
         }});
 
         service.pagar(pedido);
@@ -176,6 +184,15 @@ public class TestPedidoService {
             will(returnValue(Boolean.TRUE));
 
             oneOf(pedido).setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
+
+            oneOf(pedido).getDadosPagamento();
+            will(returnValue(pagamento));
+
+            oneOf(pagamento).getCodigo();
+            will(returnValue(""));
+
+            oneOf(pedido).setCodigoReferencia(with(any(String.class)));
+
         }});
 
 

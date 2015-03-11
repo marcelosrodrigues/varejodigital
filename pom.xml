@@ -146,10 +146,22 @@
                             <ignore>com.pmrodrigues.ellasa.exceptions.*</ignore>
                             <ignore>com.pmrodrigues.ellasa.pagamentos.v1.*</ignore>
                             <ignore>com.pmrodrigues.ellasa.pagamentos.entity.*</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.EstadoConverter</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.ImagemConverter</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.LojaConverter</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.MeioPagamentoConverter</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.PerfilConverter</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.SecaoConverter</ignore>
                         </ignores>
                         <excludes>
                             <exclude>com/pmrodrigues/ellasa/exceptions/**/*.class</exclude>
                             <exclude>com/pmrodrigues/ellasa/pagamentos/**/*.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/EstadoConverter.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/ImagemConverter.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/LojaConverter.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/MeioPagamentoConverter.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/PerfilConverter.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/SecaoConverter.class</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>
