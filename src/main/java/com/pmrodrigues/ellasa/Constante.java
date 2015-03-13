@@ -1,5 +1,8 @@
 package com.pmrodrigues.ellasa;
 
+import org.joda.time.DateTime;
+
+import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -40,4 +43,6 @@ public interface Constante {
     String URL_IMAGENS = ResourceBundle.getBundle("configuracao").getString(IMAGE_PATH);
 
     Locale PT_BR = new Locale("pt-BR");
+
+    Date DATA_INICIAL = new DateTime(1900, 1, 1, 0, 0).toDate();
 }

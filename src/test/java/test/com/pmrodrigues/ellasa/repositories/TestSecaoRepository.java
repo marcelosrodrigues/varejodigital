@@ -46,7 +46,7 @@ public class TestSecaoRepository extends
         loja.setId(id);
 
         final List<Secao> secoes = repository.findByLoja(loja);
-        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? ", Long.class, id);
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where loja_id = ? ", Long.class, id);
         assertEquals(count, Long.valueOf(secoes.size()));
     }
 
@@ -57,7 +57,7 @@ public class TestSecaoRepository extends
         final Loja loja = new Loja();
         loja.setId(id);
 
-        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? and secao like 'Vest%'", Long.class, id);
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where loja_id = ? and secao like 'Vest%'", Long.class, id);
 
         final List<Secao> secoes = repository.listByNome(loja, "Vest");
         assertEquals(count, Long.valueOf(secoes.size()));
@@ -73,7 +73,7 @@ public class TestSecaoRepository extends
         final Secao secao = new Secao();
         secao.setId(secaoId);
 
-        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where produto_id = ? and pai_id = ?", Long.class, id, secaoId);
+        final Long count = this.jdbcTemplate.queryForObject("select count(id) from secao inner join areas_vendas on id = secao_id where loja_id = ? and pai_id = ?", Long.class, id, secaoId);
 
         List<Secao> secoes = repository.listAllSubSecoesByLojaAndPai(loja, secao);
         assertEquals(count, Long.valueOf(secoes.size()));

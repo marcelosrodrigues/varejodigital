@@ -34,6 +34,22 @@ public class TestAbstractCRUDController {
     private SecaoRepository secaoRepository = context.mock(SecaoRepository.class);
 
     @Test
+    public void doDelete() {
+        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final Loja loja = new Loja();
+        loja.setNome("TESTE");
+
+        context.checking(new Expectations() {{
+            oneOf(repository).remove(with(aNonNull(Loja.class)));
+        }});
+
+        controller.delete(loja);
+
+        assertNotNull(result.included(Constante.SUCESSO));
+    }
+
+
+    @Test
     public void doInsert() {
         final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
         final Loja loja = new Loja();

@@ -207,4 +207,13 @@ public abstract class AbstractCRUDController<E> {
     public Validator getValidator() {
         return validator;
     }
+
+    public void delete(final E object) {
+        logging.debug(format("excluindo o valor %s do banco de dados", object));
+
+        repository.remove(object);
+
+        logging.debug(format("%s excluido com sucesso", object));
+        result.include(Constante.SUCESSO, format("%s excluído com sucesso", persistentClass.getSimpleName()));
+    }
 }

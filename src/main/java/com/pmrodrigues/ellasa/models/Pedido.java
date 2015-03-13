@@ -1,6 +1,7 @@
 package com.pmrodrigues.ellasa.models;
 
 import com.google.gson.annotations.SerializedName;
+import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.enumarations.StatusPagamento;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.joda.time.DateTime;
@@ -53,7 +54,7 @@ public class Pedido implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Date dataCompra = DateTime.now().toDate();
+    private Date dataCompra = Constante.DATA_INICIAL;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
@@ -85,6 +86,7 @@ public class Pedido implements Serializable {
     public void onInsert() {
         dataCriacaco = DateTime.now().toDate();
         dataAlteracao = DateTime.now().toDate();
+        dataCompra = DateTime.now().toDate();
     }
 
     @PreUpdate
@@ -179,5 +181,17 @@ public class Pedido implements Serializable {
 
     public String getCodigoTransacao() {
         return codigoTransacao;
+    }
+
+    public StatusPagamento getStatus() {
+        return status;
+    }
+
+    public void setDataCompra(Date dataCompra) {
+        this.dataCompra = dataCompra;
+    }
+
+    public Date getDataCompra() {
+        return dataCompra;
     }
 }

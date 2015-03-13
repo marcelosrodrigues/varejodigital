@@ -24,7 +24,7 @@ public class Loja implements Serializable {
     private String nome;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "produto_id"),
+    @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "loja_id"),
             inverseJoinColumns = @JoinColumn(name = "secao_id"))
     private List<Secao> secoes = new ArrayList<>();
 

@@ -1,0 +1,16 @@
+ALTER TABLE areas_vendas
+    DROP FOREIGN KEY FK_LOJA_AREA_VENDA,
+    DROP FOREIGN KEY FK_pety3uadqc8dfhask2t0fsh4o,
+    DROP FOREIGN KEY FK_SECAO_LOJA_ATENDIDA;
+
+
+ALTER TABLE areas_vendas
+    CHANGE COLUMN produto_id loja_id BIGINT(20) NOT NULL ;
+
+ALTER TABLE areas_vendas
+    ADD CONSTRAINT FK_LOJA_AREA_VENDA
+        FOREIGN KEY (loja_id)
+        REFERENCES loja (id),
+    ADD CONSTRAINT FK_SECAO_LOJA_ATENDIDA
+        FOREIGN KEY (secao_id)
+        REFERENCES secao (id);
