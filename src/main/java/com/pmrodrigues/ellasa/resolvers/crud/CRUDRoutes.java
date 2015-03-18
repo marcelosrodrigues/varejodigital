@@ -67,6 +67,10 @@ public class CRUDRoutes implements RoutesConfiguration {
                                   logging.debug(format("criando a chamada para url /%s/pesquisar.do executando a classe %s metodo %s",entityName,clazz,metodo));
                                   routeFor(format("/%s/pesquisar.do",entityName)).is(clazz, metodo);
                                   break;
+                              case "delete":
+                                  logging.debug(format("criando a chamada para url /%s/excluir.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                  routeFor(format("/%s/excluir.do", entityName)).with(HttpMethod.POST).is(clazz, metodo);
+                                  break;
                               default :
                                   logging.debug("criando url default para os métodos que anotados");
 

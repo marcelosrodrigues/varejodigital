@@ -33,7 +33,8 @@ public class ResultList<E> {
             pageCount++;
         }
 
-        criteria.setProjection(null);
+        criteria.setProjection(null)
+                .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         this.criteria = criteria;
 
     }

@@ -7,10 +7,10 @@ import com.pmrodrigues.ellasa.repositories.PedidoRepository;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import org.apache.commons.validator.GenericValidator;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
@@ -37,35 +37,34 @@ public class PedidoRepositoryImpl extends AbstractRepository<Pedido> implements 
 
     @Override
     public ResultList<Pedido> search(final Pedido pedido, final Integer page) {
-        final Criteria criteria = this.getSession().createCriteria(Pedido.class, "p")
-                .createAlias("p.loja", "loja", JoinType.INNER_JOIN)
-                .createAlias("p.cliente", "cliente", JoinType.INNER_JOIN)
-                .createAlias("p.vendedor", "vendedor", JoinType.INNER_JOIN)
-                .createAlias("cliente.endereco", "enderecoCliente", JoinType.INNER_JOIN)
-                .addOrder(Order.asc("p.dataCompra"));
+        final Criteria criteria = this.getSession().createCriteria(Pedido.class)
+                .createAlias("cliente", "cliente")
+                .setFetchMode("cliente", FetchMode.JOIN)
+                .setFetchMode("itens", FetchMode.JOIN)
+                .addOrder(Order.desc("dataCompra"));
 
-
-        if (pedido.getCliente() != null) {
-            if (!GenericValidator.isBlankOrNull(pedido.getCliente().getPrimeiroNome())) {
-                criteria.add(Restrictions.like("cliente.primeiroNome", pedido.getCliente().getPrimeiroNome(), MatchMode.START));
+        if (pedido != null) {
+            if (pedido.getCliente() != null) {
+                if (!GenericValidator.isBlankOrNull(pedido.getCliente().getPrimeiroNome())) {
+                    criteria.add(Restrictions.like("cliente.primeiroNome", pedido.getCliente().getPrimeiroNome(), MatchMode.START));
+                }
+                if (!GenericValidator.isBlankOrNull(pedido.getCliente().getUltimoNome())) {
+                    criteria.add(Restrictions.like("cliente.ultimoNome", pedido.getCliente().getUltimoNome(), MatchMode.START));
+                }
             }
-            if (!GenericValidator.isBlankOrNull(pedido.getCliente().getUltimoNome())) {
-                criteria.add(Restrictions.like("cliente.ultimoNome", pedido.getCliente().getUltimoNome(), MatchMode.START));
+            if (pedido.getStatus() != null) {
+                criteria.add(Restrictions.eq("status", pedido.getStatus()));
+            }
+
+            if (pedido.getDataCompra() != null && !pedido.getDataCompra().equals(Constante.DATA_INICIAL)) {
+                final Date dataTermino = new DateTime(pedido.getDataCompra().getTime())
+                        .plusDays(1)
+                        .toDate();
+                criteria.add(Restrictions.ge("dataCompra", pedido.getDataCompra()))
+                        .add(Restrictions.lt("dataCompra", dataTermino));
+
             }
         }
-        if (pedido.getStatus() != StatusPagamento.EM_ABERTO) {
-            criteria.add(Restrictions.eq("status", pedido.getStatus()));
-        }
-
-        if (!pedido.getDataCompra().equals(Constante.DATA_INICIAL)) {
-            final Date dataTermino = new DateTime(pedido.getDataCompra().getTime())
-                    .plusDays(1)
-                    .toDate();
-            criteria.add(Restrictions.ge("dataCompra", pedido.getDataCompra()))
-                    .add(Restrictions.lt("dataCompra", dataTermino));
-
-        }
-
 
         return new ResultList<>(criteria, page);
     }

@@ -41,6 +41,7 @@
             <th><fmt:message key="departamento.heading" bundle="${labels}"/></th>
             <th><fmt:message key="produto.preco" bundle="${labels}"/></th>
             <th><fmt:message key="produto.peso" bundle="${labels}"/></th>
+            <th style="width:5%"></th>
         </tr>
         </thead>
         <tbody>
@@ -51,6 +52,12 @@
                 <td>${object.secao.nome}</td>
                 <td><fmt:formatNumber value="${object.preco}" pattern="0.00" var="preco"/>${preco}</td>
                 <td><fmt:formatNumber value="${object.peso}" pattern="0.00" var="peso"/>${peso}</td>
+                <td align="center">
+                    <button type="button" class="btn btn-danger btn-circle"
+                            onclick="javascript:removerProduto(${object.id});">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </td>
             </tr>
         </c:forEach>
         </tbody>

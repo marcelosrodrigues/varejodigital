@@ -96,4 +96,12 @@ public class ItemPedido implements Serializable {
     public void setQuantidade(Long quantidade) {
         this.quantidade = quantidade;
     }
+
+    public Atributo getAtributo() {
+        return atributo;
+    }
+
+    public BigDecimal getPreco() {
+        return preco;
+    }
 }

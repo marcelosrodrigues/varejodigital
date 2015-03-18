@@ -216,6 +216,13 @@ function removerTamanho(tamanho) {
             .parent()
             .remove();
     });
+}
 
-
+function removerProduto(value) {
+    var remove = confirm("Confirma a exclus\00C3o do produto ?");
+    if (remove) {
+        $("form").attr("action", "/produto/excluir.do?object.id=" + value);
+        $("form").attr("method", "POST");
+        $("form").submit();
+    }
 }

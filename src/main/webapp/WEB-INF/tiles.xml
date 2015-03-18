@@ -107,4 +107,16 @@
 
     <definition name="produto/*/formulario-template" extends="produto/formulario-template"/>
 
+    <definition name="pedido/index-template" extends="principal">
+        <put-attribute name="header" value="Meus Pedidos"/>
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/pedidos/index.jsp"/>
+    </definition>
+
+    <definition name="pedido/search-template" extends="pedido/index-template"/>
+
+    <definition name="pedido/show-template" extends="principal">
+        <put-attribute name="header" value="Pedido"/>
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/pedidos/detalhar.jsp"/>
+    </definition>
+
 </tiles-definitions>

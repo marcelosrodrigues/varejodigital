@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -133,6 +134,15 @@ public class Pedido implements Serializable {
                 item.geraComissao(taxa);
             }
         }
+    }
+
+    public BigDecimal getTotal() {
+        BigDecimal valor = BigDecimal.ZERO;
+        for (ItemPedido item : itens) {
+            valor = valor.add(item.getValor());
+        }
+
+        return valor;
     }
 
     public void adicionar(final Produto produto) {

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestPedidoRepository extends AbstractTransactionalJUnit4SpringContextTests {
@@ -35,8 +36,10 @@ public class TestPedidoRepository extends AbstractTransactionalJUnit4SpringConte
     public void search() {
 
         final Long count = this.jdbcTemplate.queryForObject("select count(1) from pedido", Long.class);
-
-        final ResultList<Pedido> pedidos = repository.search(new Pedido());
+        Pedido pedido = new Pedido();
+        pedido.setStatus(null);
+        pedido.setDataCompra(null);
+        final ResultList<Pedido> pedidos = repository.search(pedido);
 
         assertEquals(count, pedidos.getRecordCount());
 
@@ -50,6 +53,7 @@ public class TestPedidoRepository extends AbstractTransactionalJUnit4SpringConte
         Cliente cliente = new Cliente();
         cliente.setPrimeiroNome("MARCELO");
         pedido.setCliente(cliente);
+        pedido.setStatus(null);
 
         final ResultList<Pedido> pedidos = repository.search(pedido);
 
@@ -63,6 +67,7 @@ public class TestPedidoRepository extends AbstractTransactionalJUnit4SpringConte
         Pedido pedido = new Pedido();
         Cliente cliente = new Cliente();
         cliente.setUltimoNome("Tavares");
+        pedido.setStatus(null);
         pedido.setCliente(cliente);
 
         final ResultList<Pedido> pedidos = repository.search(pedido);
@@ -76,7 +81,7 @@ public class TestPedidoRepository extends AbstractTransactionalJUnit4SpringConte
 
         Pedido pedido = new Pedido();
         pedido.setStatus(StatusPagamento.AGUARDANDO_PAGAMENTO);
-
+        pedido.setDataCompra(null);
         final ResultList<Pedido> pedidos = repository.search(pedido);
 
         assertEquals(count, pedidos.getRecordCount());
@@ -88,10 +93,28 @@ public class TestPedidoRepository extends AbstractTransactionalJUnit4SpringConte
         final Long count = this.jdbcTemplate.queryForObject("select count(1) from pedido where dataCompra >= '2015-01-25' and dataCompra < '2015-01-26'", Long.class);
         Pedido pedido = new Pedido();
         pedido.setDataCompra(DateTime.convertToDate(2015, 01, 25, 0, 0, 0, 0));
-
+        pedido.setStatus(null);
         final ResultList<Pedido> pedidos = repository.search(pedido);
 
         assertEquals(count, pedidos.getRecordCount());
+
+    }
+
+    @Test
+    public void testarPassandoValorNulo() {
+        final Long count = this.jdbcTemplate.queryForObject("select count(1) from pedido", Long.class);
+
+        final ResultList<Pedido> pedidos = repository.search(null);
+
+        assertEquals(count, pedidos.getRecordCount());
+    }
+
+    @Test
+    public void naoPodeRetornarUmArrayComoElementoDaLista() {
+
+        final ResultList<Pedido> pedidos = repository.search(null);
+
+        assertTrue(pedidos.getList().get(0) instanceof Pedido);
 
     }
 }
