@@ -111,10 +111,62 @@ $(function () {
     });
 });
 
+$(function () {
+
+    $('#icone').fileupload({
+        url: '/imagem/upload.json',
+        dataType: 'json',
+        autoUpload: true,
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 5000000, // 5 MB
+        disableImageResize: /Android(?!.*Chrome)|Opera/
+            .test(window.navigator.userAgent),
+        previewMaxWidth: 100,
+        previewMaxHeight: 100,
+        previewCrop: true
+    }).on('fileuploadadd', function (e, data) {
+        data.context = $('<div />').appendTo('#files');
+        $.each(data.files, function (index, file) {
+            var node = $('<span id="' + file.name + '"/>');
+            node.appendTo(data.context)
+                .append('<img src="' + URL.createObjectURL(file) + '" width="150px" height="150px"/>');
+
+            node.append($("<br/>"))
+                .append($('<label/>')
+                    .text(file.name))
+                .click(function () {
+                    var image = $(this).text();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/imagem/" + image + "/delete.json",
+                        cache: false
+                    });
+
+                    $("div span[id='" + image + "']")
+                        .parent()
+                        .remove();
+                });
+        });
+    });
+});
+
 function deletarImagem(image) {
     $.ajax({
         type: "POST",
         url: "/imagem/" + image + "/remove.json",
+        cache: false
+    });
+
+    $("div span[id='" + image + "']")
+        .parent()
+        .remove();
+}
+
+function deletarIcone(image) {
+    $.ajax({
+        type: "POST",
+        url: "/secao/" + image + "/remover/icone.json",
         cache: false
     });
 

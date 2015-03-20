@@ -28,7 +28,7 @@
 
             <div class="row">
                 <div class="col-lg-10">
-                    <form action="<c:url value='/secao/salvar.do' />" method="post" role="form">
+                    <form action="<c:url value='/secao/salvar.do' />" method="post" role="form" accept-charset="utf-8">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="object.id" value="${object.id}"/>
 
@@ -44,6 +44,23 @@
                                                value="${object.nome}"
                                                id="object.nome"
                                                errorField="nome"/>
+
+                        <div class="form-group">
+                            <label>Icone</label>
+                            <input type="file" name="arquivo" id="icone"/>
+                        </div>
+
+                        <div id="files">
+                            <c:if test="${object.icone != null}">
+                                <div>
+                                    <span id="${object.id}">
+                                        <img src="${object.icone}" width="150px" height="150px"/>
+                                        <br/>
+                                        <label onclick="javascript:deletarIcone(${object.id});">${object.icone}</label>
+                                    </span>
+                                </div>
+                            </c:if>
+                        </div>
 
 
                         <button id="salvar" type="submit" value="salvar" class="btn btn-default btn-info"><fmt:message

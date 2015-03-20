@@ -40,7 +40,7 @@ public class SecaoController {
 
         result.use(Results.json())
                 .from(secoes)
-                .include("pai")
+                .include("pai", "icone")
                 .serialize();
 
         return secoes;
@@ -55,7 +55,7 @@ public class SecaoController {
 
         result.use(Results.json())
                 .from(secoes)
-                .exclude("pai", "subsecoes")
+                .exclude("pai", "subsecoes", "icone")
                 .serialize();
 
         return secoes;
@@ -69,7 +69,7 @@ public class SecaoController {
 
         result.use(Results.json())
                 .from(secoes)
-                .exclude("pai", "subsecoes")
+                .exclude("pai", "subsecoes", "icone")
                 .serialize();
 
         return secoes;
