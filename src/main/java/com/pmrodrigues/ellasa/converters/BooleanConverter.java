@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 public class BooleanConverter implements Converter<Boolean> {
 
     @Override
-    public Boolean convert(String value, Class<? extends Boolean> type, ResourceBundle bundle) {
+    public Boolean convert(final String value, final Class<? extends Boolean> type, final ResourceBundle bundle) {
         if(GenericValidator.isBlankOrNull(value)){
             return false;
         } else {

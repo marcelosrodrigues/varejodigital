@@ -12,21 +12,21 @@ import static java.lang.String.format;
  */
 public class InputTextTag extends AbstractTagLib {
 
-    private ResourceBundle message = ResourceBundle.getBundle("labels");
+    private final ResourceBundle message = ResourceBundle.getBundle("labels");
 
     private String label;
     private String value;
     private String id;
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
-    public void setValue(String value) {
+    public void setValue(final String value) {
         this.value = value;
     }
 
@@ -34,7 +34,7 @@ public class InputTextTag extends AbstractTagLib {
     public void doTag() throws JspException, IOException {
         final JspWriter writer = getJspContext().getOut();
 
-        String errorCss = this.getError();
+        final String errorCss = this.getError();
 
         final String label = message.getString(this.label);
         writer.print(format("<div class=\"form-group %s\">", errorCss));

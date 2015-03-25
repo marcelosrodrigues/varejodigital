@@ -36,7 +36,7 @@ public class PedidoTask {
 
             logging.debug(format("buscando o status do pedido %s", pedido.getCodigoTransacao()));
 
-            StatusPagamentoResponse status = service.recuperarStatus(pedido.getCodigoReferencia());
+            final StatusPagamentoResponse status = service.recuperarStatus(pedido.getCodigoReferencia());
             pedido.setDataAprovacao(status.getAtualizacao());
             final String statusDoPedido = status.getStatus().replace(' ', '_').toUpperCase();
 

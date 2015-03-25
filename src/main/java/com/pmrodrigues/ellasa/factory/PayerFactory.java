@@ -10,15 +10,15 @@ import com.pmrodrigues.ellasa.pagamentos.entity.Phone;
 public abstract class PayerFactory {
 
     public static PayerFactory getInstance(final OrdemPagamento ordemPagamento ){
-        if( ordemPagamento.getContrato() != null ){
-            return new FranqueadoFactory(ordemPagamento);
-        } else {
+        if (ordemPagamento.getContrato() == null) {
             return new ClienteFactory(ordemPagamento);
+        } else {
+            return new FranqueadoFactory(ordemPagamento);
         }
     }
 
-    protected Phone getPhone(Phone.Type type , String number) {
-        Phone phone = new Phone();
+    protected Phone getPhone(final Phone.Type type, final String number) {
+        final Phone phone = new Phone();
         phone.setNumber(number);
         phone.setType(type);
         return phone;

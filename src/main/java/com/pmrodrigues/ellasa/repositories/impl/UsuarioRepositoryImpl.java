@@ -44,7 +44,7 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
     @Override
     public void add(final Usuario usuario) {
 
-        Long counted = (Long) this.getSession().createCriteria(Usuario.class)
+        final Long counted = (Long) this.getSession().createCriteria(Usuario.class)
                                 .add(Restrictions.or(Restrictions.eq("email", usuario.getEmail()),
                                                      Restrictions.eq("cpf", usuario.getCpf())))
                                 .setProjection(Projections.rowCount())
@@ -60,7 +60,7 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
     }
 
     public ResultList<Usuario> search(final Usuario usuario, final Integer page) {
-        Criteria criteria = this.getSession()
+        final Criteria criteria = this.getSession()
                                 .createCriteria(Usuario.class)
                                 .addOrder(Order.asc("id"));
 
@@ -73,6 +73,6 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
             }
         }
 
-        return new ResultList<Usuario>(criteria,page);
+        return new ResultList<>(criteria, page);
     }
 }

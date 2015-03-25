@@ -28,7 +28,7 @@ public class Telefone implements Serializable {
         return ddd;
     }
 
-    public void setDdd(String ddd) {
+    public void setDdd(final String ddd) {
         this.ddd = ddd;
     }
 

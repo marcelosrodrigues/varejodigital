@@ -41,7 +41,7 @@ public class TestImagemController {
     @Test
     public void subirArquivo() throws IOException {
         final Imagens imagens = new Imagens();
-        final ImagemController controller = new ImagemController(result, validation, imagens, null);
+        final ImagemController controller = new ImagemController(imagens, null);
         File image = new File(FILE_NAME);
         controller.upload(new DefaultUploadedFile(FileUtils.openInputStream(image), image.getName(), "image/gif", image.getUsableSpace()));
         assertTrue(imagem.exists());
@@ -51,7 +51,7 @@ public class TestImagemController {
     public void removerArquivo() throws IOException {
 
         final Imagens imagens = new Imagens();
-        final ImagemController controller = new ImagemController(result, validation, imagens, null);
+        final ImagemController controller = new ImagemController(imagens, null);
         File image = new File(FILE_NAME);
         controller.upload(new DefaultUploadedFile(FileUtils.openInputStream(image), image.getName(), "image/gif", image.getUsableSpace()));
         assertTrue(imagem.exists());
@@ -70,7 +70,7 @@ public class TestImagemController {
             oneOf(repository).remove(with(aNonNull(Imagem.class)));
         }});
 
-        final ImagemController controller = new ImagemController(result, validation, imagens, repository);
+        final ImagemController controller = new ImagemController(imagens, repository);
         controller.remover(new Imagem());
 
     }

@@ -15,7 +15,7 @@ import static org.apache.commons.beanutils.PropertyUtils.getProperty;
  */
 public class SelectTag extends AbstractTagLib {
 
-    private ResourceBundle message = ResourceBundle.getBundle("labels");
+    private final ResourceBundle message = ResourceBundle.getBundle("labels");
 
     private String label;
 
@@ -30,16 +30,16 @@ public class SelectTag extends AbstractTagLib {
 
         try {
             final String label = message.getString(this.label);
-            JspWriter out = getJspContext().getOut();
+            final JspWriter out = getJspContext().getOut();
 
-            String errorCss = this.getError();
+            final String errorCss = this.getError();
 
             out.write(format("<div class=\"form-group %s\">", errorCss));
             out.write(format("<label class=\"control-label\" for=\"%s\">%s</label>", this.id, label));
             out.write(format("<select name=\"%s\" id=\"%s\" class=\"form-control\">", this.id, this.id));
             out.write("<option></option>");
 
-            for (Object item : this.list) {
+            for (final Object item : this.list) {
                 out.write(format("<option value=\"%s\" %s>%s</option>",
                         getProperty(item, valueField),
                         (item.equals(value) ? "selected" : ""),
@@ -57,27 +57,27 @@ public class SelectTag extends AbstractTagLib {
         return label;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
-    public void setList(Collection list) {
+    public void setList(final Collection list) {
         this.list = list;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    public void setValueField(String valueField) {
+    public void setValueField(final String valueField) {
         this.valueField = valueField;
     }
 
-    public void setLabelField(String labelField) {
+    public void setLabelField(final String labelField) {
         this.labelField = labelField;
     }
 
-    public void setValue(Object value) {
+    public void setValue(final Object value) {
         this.value = value;
     }
 

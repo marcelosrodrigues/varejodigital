@@ -11,7 +11,7 @@ import com.pmrodrigues.ellasa.repositories.ImagemRepository;
 @Convert(Imagem.class)
 @RequestScoped
 public class ImagemConverter extends AbstractTypeConverter<Imagem> {
-    public ImagemConverter(ImagemRepository repository) {
+    public ImagemConverter(final ImagemRepository repository) {
         super(repository);
     }
 }

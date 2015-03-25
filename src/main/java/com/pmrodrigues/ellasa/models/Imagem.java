@@ -18,19 +18,20 @@ public class Imagem implements Serializable {
     @Column(name = "image")
     private String url;
 
-    public Imagem(String arquivo) {
+    public Imagem(final String arquivo) {
         this();
         this.url = Constante.URL_IMAGENS + arquivo;
     }
 
     public Imagem() {
+        //NOPMD
     }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(final String url) {
         this.url = url;
     }
 
@@ -38,7 +39,7 @@ public class Imagem implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 }

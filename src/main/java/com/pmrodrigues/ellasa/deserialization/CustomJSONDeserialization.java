@@ -7,6 +7,7 @@ import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilder;
 import com.google.gson.*;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 
@@ -16,34 +17,36 @@ import java.io.*;
 @Component
 public class CustomJSONDeserialization extends JsonDeserializer {
     private final ParameterNameProvider paramNameProvider;
+    private static final Logger logging = Logger.getLogger(CustomJSONDeserialization.class);
 
-    public CustomJSONDeserialization(ParameterNameProvider provider, TypeNameExtractor extractor, XStreamBuilder builder) {
+    public CustomJSONDeserialization(final ParameterNameProvider provider, final TypeNameExtractor extractor,
+                                     final XStreamBuilder builder) {
         super(provider, extractor, builder);
         this.paramNameProvider = provider;
     }
 
     @Override
-    public Object[] deserialize(InputStream inputStream, ResourceMethod method) {
+    public Object[] deserialize(final InputStream inputStream, final ResourceMethod method) {
 
-        Class<?>[] types = method.getMethod().getParameterTypes();
+        final Class<?>[] types = method.getMethod().getParameterTypes();
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(new BufferedInputStream(inputStream)));
             String line = null;
-            StringBuffer buffer = new StringBuffer();
+            final StringBuffer buffer = new StringBuffer();
             while ((line = reader.readLine()) != null) {
                 buffer.append(line);
             }
 
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-            JsonParser parser = new JsonParser();
-            JsonObject root = (JsonObject) parser.parse(buffer.toString());
-            Object[] params = new Object[types.length];
-            String[] parameterNames = paramNameProvider.parameterNamesFor(method.getMethod());
+            final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            final JsonParser parser = new JsonParser();
+            final JsonObject root = (JsonObject) parser.parse(buffer.toString());
+            final Object[] params = new Object[types.length];
+            final String[] parameterNames = paramNameProvider.parameterNamesFor(method.getMethod());
 
             for (int i = 0; i < types.length; i++) {
-                String name = parameterNames[i];
-                JsonElement node = root.get(name);
+                final String name = parameterNames[i];
+                final JsonElement node = root.get(name);
                 if (node != null) {
                     params[i] = gson.fromJson(node, types[i]);
                 }
@@ -53,7 +56,7 @@ public class CustomJSONDeserialization extends JsonDeserializer {
             return params;
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logging.fatal("erro ao deserializar a mensagem json " + e.getMessage(), e);
             throw new RuntimeException(e);
         }
 

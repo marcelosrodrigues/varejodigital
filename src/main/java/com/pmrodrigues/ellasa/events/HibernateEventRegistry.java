@@ -27,17 +27,18 @@ public class HibernateEventRegistry implements Integrator {
 
 
     @Override
-    public void integrate(Configuration configuration, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+    public void integrate(final Configuration configuration, final SessionFactoryImplementor sessionFactory,
+                          final SessionFactoryServiceRegistry serviceRegistry) {
         final EventListenerRegistry eventRegistry = serviceRegistry.getService(EventListenerRegistry.class);
         appendListeners(eventRegistry);
     }
 
-    private void appendListeners(EventListenerRegistry eventRegistry) {
+    private void appendListeners(final EventListenerRegistry eventRegistry) {
 
         eventRegistry.appendListeners(EventType.PRE_INSERT, new PreInsertEventListener() {
             @Override
-            public boolean onPreInsert(PreInsertEvent event) {
-                Object entity = event.getEntity();
+            public boolean onPreInsert(final PreInsertEvent event) {
+                final Object entity = event.getEntity();
                 invoke(entity, PrePersist.class);
                 return false;
             }
@@ -46,15 +47,15 @@ public class HibernateEventRegistry implements Integrator {
 
         eventRegistry.appendListeners(EventType.PRE_UPDATE, new PreUpdateEventListener() {
             @Override
-            public boolean onPreUpdate(PreUpdateEvent event) {
-                Object entity = event.getEntity();
+            public boolean onPreUpdate(final PreUpdateEvent event) {
+                final Object entity = event.getEntity();
                 invoke(entity, PreUpdate.class);
                 return false;
             }
         });
     }
 
-    private void invoke(Object entity, Class eventType) {
+    private void invoke(final Object entity, final Class eventType) {
         for (final Method method : entity.getClass().getMethods()) { //NOPMD
             if (method.isAnnotationPresent(eventType)) {
                 try {
@@ -69,13 +70,16 @@ public class HibernateEventRegistry implements Integrator {
     }
 
     @Override
-    public void integrate(MetadataImplementor metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+    public void integrate(final MetadataImplementor metadata, final SessionFactoryImplementor sessionFactory,
+                          final SessionFactoryServiceRegistry serviceRegistry) {
 
         final EventListenerRegistry eventRegistry = serviceRegistry.getService(EventListenerRegistry.class);
         appendListeners(eventRegistry);
     }
 
     @Override
-    public void disintegrate(SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+    public void disintegrate(final SessionFactoryImplementor sessionFactory,
+                             final SessionFactoryServiceRegistry serviceRegistry) {
+        //NOPMD
     }
 }

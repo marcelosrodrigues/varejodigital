@@ -19,7 +19,7 @@ import static java.lang.String.format;
 @XStreamAlias("item")
 public class ItemPedido implements Serializable {
 
-    private static final java.math.BigDecimal CEM = new BigDecimal("100");
+    private static final BigDecimal CEM = new BigDecimal("100");
 
     private static final Logger logging = Logger.getLogger(ItemPedido.class);
 
@@ -93,7 +93,7 @@ public class ItemPedido implements Serializable {
         this.preco = produto.getPreco();
     }
 
-    public void setQuantidade(Long quantidade) {
+    public void setQuantidade(final Long quantidade) {
         this.quantidade = quantidade;
     }
 

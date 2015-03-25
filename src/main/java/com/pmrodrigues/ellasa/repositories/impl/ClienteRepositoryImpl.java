@@ -13,7 +13,7 @@ public class ClienteRepositoryImpl extends AbstractRepository<Cliente> implement
     private static final long serialVersionUID = 1L;
 
     @Override
-    public Cliente findByEmail(String email) {
+    public Cliente findByEmail(final String email) {
         return (Cliente) this.getSession().createCriteria(Cliente.class)
                 .createAlias("endereco", "e", JoinType.INNER_JOIN)
                 .createAlias("e.estado", "ee", JoinType.INNER_JOIN)

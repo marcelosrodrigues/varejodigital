@@ -68,7 +68,7 @@ public class Cliente implements Serializable {
         return endereco;
     }
 
-    public void setEndereco(EnderecoCliente endereco) {
+    public void setEndereco(final EnderecoCliente endereco) {
         this.endereco = endereco;
         this.endereco.setCliente(this);
     }
@@ -118,11 +118,11 @@ public class Cliente implements Serializable {
         return sexo;
     }
 
-    public void setSexo(Genero sexo) {
+    public void setSexo(final Genero sexo) {
         this.sexo = sexo;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 }

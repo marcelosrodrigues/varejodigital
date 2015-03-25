@@ -72,7 +72,7 @@ public class EmailService {
     }
 
     public EmailService template(final String template,
-                                 Map<String, Object> parameters) {
+                                 final Map<String, Object> parameters) {
 
         try {
             createMimeMessage();

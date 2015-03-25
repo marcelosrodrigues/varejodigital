@@ -37,14 +37,14 @@ public class CRUDRoutes implements RoutesConfiguration {
         new Rules(router) {
             @Override
             public void routes() {
-              for(Class<? extends AbstractCRUDController> clazz : classes ){
+                for (final Class<? extends AbstractCRUDController> clazz : classes) {
 
                       final ParameterizedType type = (ParameterizedType) clazz.getGenericSuperclass();
-                      Class persistedType = (Class) type.getActualTypeArguments()[0];
+                    final Class persistedType = (Class) type.getActualTypeArguments()[0];
 
                       final String entityName = persistedType.getSimpleName().toLowerCase();
 
-                      for(Method metodo : clazz.getMethods() ){
+                    for (final Method metodo : clazz.getMethods()) {
 
                           switch (metodo.getName()){
                               case "index":

@@ -94,7 +94,7 @@ public abstract class AbstractCRUDController<E> {
 
     }
 
-    private Method getByAnnotation(Class annotation) {
+    private Method getByAnnotation(final Class annotation) {
 
         final List<Method> metodos = Arrays.asList(this.getClass().getMethods());
         for( final Method metodo : metodos ) {
@@ -119,7 +119,7 @@ public abstract class AbstractCRUDController<E> {
 
     private Long getId(final E object)  {
         try {
-            Field id = object.getClass().getDeclaredField("id");
+            final Field id = object.getClass().getDeclaredField("id");
             id.setAccessible(true);
             return (Long) id.get(object);
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -144,7 +144,8 @@ public abstract class AbstractCRUDController<E> {
 
     }
 
-    private boolean invoke(Class annotation,Object... params) throws IllegalAccessException, InvocationTargetException {
+    private boolean invoke(final Class annotation, final Object... params)
+            throws IllegalAccessException, InvocationTargetException {
         final Method metodo = this.getByAnnotation(annotation);
         if( metodo != null ) {
             metodo.invoke(this,params);
@@ -173,12 +174,11 @@ public abstract class AbstractCRUDController<E> {
         try {
             preExecute();
             final E e = this.persistentClass.newInstance();
-
-            List<Field> fields = Arrays.asList(e.getClass().getDeclaredFields());
-            for( Field field : fields ){
+            final List<Field> fields = Arrays.asList(e.getClass().getDeclaredFields());
+            for (final Field field : fields) {
                 if( field.getType().isAnnotationPresent(Entity.class) ){
                     field.setAccessible(true);
-                    Object value = field.getType().newInstance();
+                    final Object value = field.getType().newInstance();
                     field.set(e,value);
                 }
             }

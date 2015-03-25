@@ -12,7 +12,7 @@ import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 @RequestScoped
 public class EstadoConverter extends AbstractTypeConverter<Estado> {
 
-    public EstadoConverter(EstadoRepository repository) {
+    public EstadoConverter(final EstadoRepository repository) {
         super(repository);
     }
 }

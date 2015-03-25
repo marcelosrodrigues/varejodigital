@@ -29,9 +29,9 @@ public class Atributos {
     public void remover(final String valor) {
         final Collection<Atributo> toRemove = CollectionUtils.select(this.atributos, new Predicate() {
             @Override
-            public boolean evaluate(Object object) {
-                Atributo atributo = (Atributo) object;
-                return (valor.equalsIgnoreCase(atributo.getDescricao()));
+            public boolean evaluate(final Object object) {
+                final Atributo atributo = (Atributo) object;
+                return valor.equalsIgnoreCase(atributo.getDescricao());
             }
         });
 

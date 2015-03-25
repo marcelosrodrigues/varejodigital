@@ -37,16 +37,16 @@ public class Secao implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "secao_id"),
             inverseJoinColumns = @JoinColumn(name = "loja_id"))
-    private Set<Loja> lojas = new HashSet<>();
+    private final Set<Loja> lojas = new HashSet<>();
 
     public Set<Secao> getSubsecoes() {
         return subsecoes;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof Secao) {
-            Secao other = (Secao) obj;
+            final Secao other = (Secao) obj;
             return other.id == this.id;
         }
         return false;
@@ -54,10 +54,10 @@ public class Secao implements Serializable {
 
     @Override
     public int hashCode() {
-        if (this.id != null) {
-            return this.id.hashCode();
-        } else {
+        if (this.id == null) {
             return 0;
+        } else {
+            return this.id.hashCode();
         }
     }
 
@@ -81,7 +81,7 @@ public class Secao implements Serializable {
         return pai;
     }
 
-    public void setPai(Secao pai) {
+    public void setPai(final Secao pai) {
         this.pai = pai;
     }
 

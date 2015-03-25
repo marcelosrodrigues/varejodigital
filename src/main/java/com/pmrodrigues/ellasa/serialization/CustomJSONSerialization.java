@@ -17,7 +17,7 @@ public class CustomJSONSerialization extends XStreamJSONSerialization {
 
     public CustomJSONSerialization(final HttpServletResponse response,
                                    final TypeNameExtractor extractor,
-                                   final ProxyInitializer initializer, XStreamBuilder builder) {
+                                   final ProxyInitializer initializer, final XStreamBuilder builder) {
         super(response, extractor, initializer, builder);
     }
 
@@ -29,7 +29,7 @@ public class CustomJSONSerialization extends XStreamJSONSerialization {
         stream.addDefaultImplementation(java.sql.Date.class, java.util.Date.class);
         stream.registerConverter(new CollectionConverter(stream.getMapper()) {
             @Override
-            public boolean canConvert(Class type) {
+            public boolean canConvert(final Class type) {
                 return PersistentSet.class.isAssignableFrom(type);
             }
         });
@@ -38,7 +38,7 @@ public class CustomJSONSerialization extends XStreamJSONSerialization {
     }
 
     @Override
-    public <T> Serializer from(T object) {
+    public <T> Serializer from(final T object) {
         response.setContentType("application/json; charset=UTF-8");
         return getSerializer().from(object);
     }

@@ -7,7 +7,6 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.repositories.MeioPagamentoRepository;
-import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ import java.util.List;
  */
 @Resource
 public class MeioPagamentoController {
-
-    private static final Logger logging = Logger.getLogger(MeioPagamentoController.class);
 
     private final MeioPagamentoRepository repository;
 

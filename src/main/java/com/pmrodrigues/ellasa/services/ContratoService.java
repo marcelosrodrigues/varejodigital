@@ -60,7 +60,7 @@ public class ContratoService {
 
         userRepository.add(franqueado);
 
-        Map<String, Object> parameters = new HashMap<>();
+        final Map<String, Object> parameters = new HashMap<>();
         parameters.put("franqueado", franqueado);
 
         email.from("sac@catalogodigitalellasa.com.br")

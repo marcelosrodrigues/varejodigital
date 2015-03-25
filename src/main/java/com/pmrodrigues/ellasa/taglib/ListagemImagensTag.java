@@ -23,7 +23,7 @@ public class ListagemImagensTag extends SimpleTagSupport {
 
     @Override
     public void doTag() throws JspException, IOException {
-        JspWriter writer = this.getJspContext().getOut();
+        final JspWriter writer = this.getJspContext().getOut();
 
         for (final Imagem imagem : imagens) {
             final String arquivo = imagem.getUrl().substring(imagem.getUrl().lastIndexOf("/") + 1);

@@ -130,7 +130,7 @@ public class Pedido implements Serializable {
     public void calcula(final List<Taxa> taxas) {
 
         for (final ItemPedido item : this.itens) {
-            for (Taxa taxa : taxas) {
+            for (final Taxa taxa : taxas) {
                 item.geraComissao(taxa);
             }
         }
@@ -138,7 +138,7 @@ public class Pedido implements Serializable {
 
     public BigDecimal getTotal() {
         BigDecimal valor = BigDecimal.ZERO;
-        for (ItemPedido item : itens) {
+        for (final ItemPedido item : itens) {
             valor = valor.add(item.getValor());
         }
 
@@ -149,7 +149,7 @@ public class Pedido implements Serializable {
         this.itens.add(new ItemPedido(produto, 1L));
     }
 
-    public void setStatus(StatusPagamento status) {
+    public void setStatus(final StatusPagamento status) {
         this.status = status;
     }
 
@@ -165,7 +165,7 @@ public class Pedido implements Serializable {
         return loja;
     }
 
-    public void setCodigoReferencia(String codigoReferencia) {
+    public void setCodigoReferencia(final String codigoReferencia) {
         this.codigoReferencia = codigoReferencia;
     }
 
@@ -173,7 +173,7 @@ public class Pedido implements Serializable {
         return codigoReferencia;
     }
 
-    public void setMotivo(String motivo) {
+    public void setMotivo(final String motivo) {
         this.motivo = motivo;
     }
 
@@ -181,7 +181,7 @@ public class Pedido implements Serializable {
         return motivo;
     }
 
-    public void setDataAprovacao(Date dataAprovacao) {
+    public void setDataAprovacao(final Date dataAprovacao) {
         this.dataAprovacao = dataAprovacao;
     }
 
@@ -197,7 +197,7 @@ public class Pedido implements Serializable {
         return status;
     }
 
-    public void setDataCompra(Date dataCompra) {
+    public void setDataCompra(final Date dataCompra) {
         this.dataCompra = dataCompra;
     }
 

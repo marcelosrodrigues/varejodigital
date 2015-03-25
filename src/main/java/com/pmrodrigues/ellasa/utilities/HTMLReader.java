@@ -15,7 +15,7 @@ public class HTMLReader {
     public String getElement(final String id, final URL uri)
             throws IOException, ParserConfigurationException {
 
-        Document document = Jsoup.parse(this.getHTML(uri));
+        final Document document = Jsoup.parse(this.getHTML(uri));
         document.getElementsByAttributeValue("alt", "Ico_itau").attr("src",
                 "/ellasa/images/ico_itau.png");
         return document.getElementById(id).html();
@@ -23,7 +23,7 @@ public class HTMLReader {
     }
 
     private String getHTML(final URL uri) throws IOException {
-        StringBuffer html = new StringBuffer();
+        final StringBuffer html = new StringBuffer();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(
                 (InputStream) uri.getContent()))) {
 

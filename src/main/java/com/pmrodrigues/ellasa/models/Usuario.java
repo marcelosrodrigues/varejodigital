@@ -1,21 +1,22 @@
 package com.pmrodrigues.ellasa.models;
 
 import br.com.caelum.stella.bean.validation.CPF;
+import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.utilities.MD5;
 import org.apache.commons.lang.RandomStringUtils;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table
-@org.hibernate.annotations.Entity(dynamicUpdate = true)
+@DynamicUpdate(true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
 		@NamedQuery(name = "Usuario.All", query = "FROM Usuario"),
@@ -71,6 +72,10 @@ public class Usuario implements Serializable {
                                   uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","perfil_id"}))
     private Set<Perfil> perfis = new HashSet<>();
 
+    @Column
+    private Long tentativas = 0L;
+
+
     public void setNomeCompleto(final String nome) {
         this.nomeCompleto = nome;
     }
@@ -102,10 +107,6 @@ public class Usuario implements Serializable {
 	public boolean isBloqueado() {
 		return bloqueado;
 	}
-
-    public void setBloqueado( boolean bloqueado ){
-        this.bloqueado = bloqueado;
-    }
 
 	public void desbloquear() {
 		this.bloqueado = false;
@@ -157,14 +158,13 @@ public class Usuario implements Serializable {
 
 	@PrePersist
 	public void preInsert() {
-		try {
-			this.password = MD5.encrypt(this.cleanPassword);
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(
-					"Erro para encriptar a senha do usuario, não permitindo assim o salvamento",
-					e);
-		}
+        this.password = MD5.encrypt(this.cleanPassword);
+    }
 
-	}
-
+    public void incrementarTentativasFalhas() {
+        tentativas++;
+        if (tentativas == Constante.NUMERO_MAXIMO_TENTATIVAS_FALHAS) {
+            bloquear();
+        }
+    }
 }

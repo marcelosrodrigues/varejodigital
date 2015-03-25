@@ -37,11 +37,11 @@ public class StatusPagamentoIntegrationService {
 
         try {
             final Recebedor recebedor = this.getRecebedor();
-            Akatus akatus = new Akatus(Akatus.Environment.valueOf(enviroment),
+            final Akatus akatus = new Akatus(Akatus.Environment.valueOf(enviroment),
                     recebedor.getEmail(),
                     recebedor.getApiKey());
 
-            StatusPagamentoOperation status = akatus.status(referencia);
+            final StatusPagamentoOperation status = akatus.status(referencia);
             return (StatusPagamentoResponse) status.execute();
         } finally {
             logging.debug(format("execução da pesquisa de status da compra %s concluída com sucesso", referencia));

@@ -54,8 +54,7 @@ public class Contrato implements Serializable {
 		this.tipoContrato = tipo;
 	}
 
-	public Contrato() {
-
-	}
+    public Contrato() {
+    } //NOPMD
 
 }

@@ -49,7 +49,7 @@ public class SecaoRepositoryImpl extends AbstractRepository<Secao>
     }
 
     @Override
-    public List<Secao> listByNome(Loja loja, final String nome) {
+    public List<Secao> listByNome(final Loja loja, final String nome) {
         return this.getSession().createCriteria(Secao.class, "s")
                 .createAlias("s.lojas", "loja", JoinType.INNER_JOIN)
                 .add(Restrictions.eq("loja.id", loja.getId()))

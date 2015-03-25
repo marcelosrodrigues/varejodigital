@@ -22,9 +22,6 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private UsuarioRepository repository;
 
-    @Autowired
-    private EmailService email;
-	
 	private static final Logger logging = Logger.getLogger(UserService.class);
 	
 	@Override
@@ -35,11 +32,19 @@ public class UserService implements UserDetailsService {
 		
 		final Usuario usuario = repository.findByEmail(username);
 		if( usuario != null ) {
-			return new User(username,usuario.getPassword(),usuario.isBloqueado(),true,true,true,Collections.EMPTY_LIST);
-		}
+            return new User(username, usuario.getPassword(), true, true, true, !usuario.isBloqueado(), Collections.EMPTY_LIST);
+        }
 		
 		throw new UsernameNotFoundException(format("Usuario %s não encontrado ou senha invalida",username));
 	}
 
 
+    public void atualizarTentativasFalhas(final UserDetails user) {
+
+        final Usuario usuario = repository.findByEmail(user.getUsername());
+        usuario.incrementarTentativasFalhas();
+
+        repository.set(usuario);
+
+    }
 }

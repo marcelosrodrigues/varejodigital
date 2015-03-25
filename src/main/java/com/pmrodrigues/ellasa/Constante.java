@@ -45,4 +45,8 @@ public interface Constante {
     Locale PT_BR = new Locale("pt-BR");
 
     Date DATA_INICIAL = new DateTime(1900, 1, 1, 0, 0).toDate();
+
+    String NUMERO_MAXIMO_TENTATIVAS_FALHAS_FIELD = "numero_maximo_tentativas_falhas";
+
+    Long NUMERO_MAXIMO_TENTATIVAS_FALHAS = Long.parseLong(ResourceBundle.getBundle("configuracao").getString(NUMERO_MAXIMO_TENTATIVAS_FALHAS_FIELD));
 }

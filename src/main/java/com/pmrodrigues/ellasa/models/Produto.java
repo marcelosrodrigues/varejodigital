@@ -92,11 +92,11 @@ public class Produto implements Serializable {
         return secao;
     }
 
-    public void setSecao(Secao secao) {
+    public void setSecao(final Secao secao) {
         this.secao = secao;
     }
 
-    public void setNome(String nome) {
+    public void setNome(final String nome) {
         this.nome = nome;
     }
 
@@ -104,7 +104,7 @@ public class Produto implements Serializable {
         return descricao;
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao(final String descricao) {
         this.descricao = descricao;
     }
 
@@ -112,15 +112,15 @@ public class Produto implements Serializable {
         return descricaoBreve;
     }
 
-    public void setDescricaoBreve(String descricaoBreve) {
+    public void setDescricaoBreve(final String descricaoBreve) {
         this.descricaoBreve = descricaoBreve;
     }
 
-    public void setPreco(BigDecimal preco) {
+    public void setPreco(final BigDecimal preco) {
         this.preco = preco;
     }
 
-    public void setPeso(BigDecimal peso) {
+    public void setPeso(final BigDecimal peso) {
         this.peso = peso;
     }
 

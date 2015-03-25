@@ -58,8 +58,6 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
     public void update(final Usuario object) {
 
         try {
-
-
             logging.debug(format("alterando o usuario %s", object));
 
             final Usuario existed = this.getRepository().findById(object.getId());

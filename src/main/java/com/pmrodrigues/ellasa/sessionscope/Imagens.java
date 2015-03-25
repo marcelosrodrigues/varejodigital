@@ -47,14 +47,14 @@ public class Imagens {
     }
 
 
-    private void criar(File image) throws IOException {
+    private void criar(final File image) throws IOException {
         if (image.exists()) {
             image.delete();
         }
         image.createNewFile();
     }
 
-    public void remover(String imagem) {
+    public void remover(final String imagem) {
 
         final File image = new File(bundle.getString(Constante.IMAGE_PATH) + imagem);
         if (image.exists()) {

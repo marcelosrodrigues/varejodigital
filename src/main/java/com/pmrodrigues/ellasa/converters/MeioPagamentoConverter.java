@@ -11,7 +11,7 @@ public class MeioPagamentoConverter
         extends
         AbstractTypeConverter<MeioPagamento> {
 
-    public MeioPagamentoConverter(MeioPagamentoRepository repository) {
+    public MeioPagamentoConverter(final MeioPagamentoRepository repository) {
         super(repository);
 
     }

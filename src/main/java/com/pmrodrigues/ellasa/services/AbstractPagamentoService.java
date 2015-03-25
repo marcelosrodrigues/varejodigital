@@ -49,7 +49,7 @@ public abstract class AbstractPagamentoService implements PagamentoService {
             carrinho.addProduct(pagamento.getCarrinho(), pagamento.getDescricao(),
                     pagamento.getValor().doubleValue(), 0D, 1, 0D);
         } else {
-            for (ItemPedido item : pagamento.getPedido().getItens()) {
+            for (final ItemPedido item : pagamento.getPedido().getItens()) {
                 carrinho.addProduct(item.getProduto().getId().toString(), item.getProduto().getNome(),
                         item.getProduto().getPreco().doubleValue(), item.getProduto().getPeso().doubleValue(), item.getQuantidade().intValue());
             }

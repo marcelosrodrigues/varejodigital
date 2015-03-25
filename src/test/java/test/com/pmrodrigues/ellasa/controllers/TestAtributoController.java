@@ -1,7 +1,6 @@
 package test.com.pmrodrigues.ellasa.controllers;
 
 import br.com.caelum.vraptor.util.test.MockResult;
-import br.com.caelum.vraptor.util.test.MockValidator;
 import com.pmrodrigues.ellasa.controllers.AtributoController;
 import com.pmrodrigues.ellasa.models.Atributo;
 import com.pmrodrigues.ellasa.repositories.AtributoRepository;
@@ -27,7 +26,7 @@ public class TestAtributoController {
 
         final Atributos atributos = new Atributos();
 
-        final AtributoController controller = new AtributoController(atributos, new MockValidator(), new MockResult(), null);
+        final AtributoController controller = new AtributoController(atributos, new MockResult(), null);
         controller.adicionar("A");
         controller.adicionar("B");
         controller.adicionar("C");
@@ -41,7 +40,7 @@ public class TestAtributoController {
 
         final Atributos atributos = new Atributos();
 
-        final AtributoController controller = new AtributoController(atributos, new MockValidator(), new MockResult(), null);
+        final AtributoController controller = new AtributoController(atributos, new MockResult(), null);
         controller.adicionar("A");
         controller.adicionar("B");
         controller.adicionar("C");
@@ -62,7 +61,7 @@ public class TestAtributoController {
             oneOf(repository).remove(with(aNonNull(Atributo.class)));
         }});
 
-        final AtributoController controller = new AtributoController(atributos, new MockValidator(), new MockResult(), repository);
+        final AtributoController controller = new AtributoController(atributos, new MockResult(), repository);
 
         controller.remover(new Atributo());
     }

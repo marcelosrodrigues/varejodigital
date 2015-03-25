@@ -96,10 +96,11 @@ public abstract class AbstractRepository<E> implements Repository<E> {
         return this.sessionFactory.getCurrentSession();
     }
 
-    public ResultList<E> search(E e, Integer page) {
+    public ResultList<E> search(final E e, final Integer page) {
         return null;
     }
-    public ResultList<E> search(E e) {
+
+    public ResultList<E> search(final E e) {
         return search(e,0);
     }
 

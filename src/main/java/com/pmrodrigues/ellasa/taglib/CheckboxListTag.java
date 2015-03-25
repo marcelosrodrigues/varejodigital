@@ -23,27 +23,27 @@ public class CheckboxListTag extends AbstractTagLib {
     private Collection checked;
 
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
-    public void setValue(Collection value) {
+    public void setValue(final Collection value) {
         this.value = value;
     }
 
-    public void setLabelField(String labelField) {
+    public void setLabelField(final String labelField) {
         this.labelField = labelField;
     }
 
-    public void setValueField(String valueField) {
+    public void setValueField(final String valueField) {
         this.valueField = valueField;
     }
 
-    public void setChecked(Collection checked) {
+    public void setChecked(final Collection checked) {
         this.checked = checked;
     }
 
-    public void setId(String id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -52,16 +52,16 @@ public class CheckboxListTag extends AbstractTagLib {
 
         try {
             final JspWriter out = this.getJspContext().getOut();
-            String errorCss = this.getError();
+            final String errorCss = this.getError();
 
             out.write(format("<div class=\"form-group %s\">", errorCss));
             out.write(format("<label for=\"%s\">%s </label>&nbsp;", this.id, this.label));
 
-            for (Object item : value) {
+            for (final Object item : value) {
                 out.write("<label class=\"checkbox-inline\">");
 
-                Object value = PropertyUtils.getProperty(item, valueField);
-                Object label = PropertyUtils.getProperty(item, labelField);
+                final Object value = PropertyUtils.getProperty(item, valueField);
+                final Object label = PropertyUtils.getProperty(item, labelField);
 
                 out.write(format("<input type=\"checkbox\" name=\"%s\" id=\"%s\" value=\"%s\" %s>%s",
                         this.id, this.id, value, this.checked != null && this.checked.contains(item) ? "checked=\"checked\"" : "", label));

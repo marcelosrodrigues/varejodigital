@@ -124,8 +124,8 @@ public class OrdemPagamento implements Serializable {
 		return meioPagamento;
 	}
 
-	public void setMeioPagamento(MeioPagamento meioPagamento) {
-		this.meioPagamento = meioPagamento;
+    public void setMeioPagamento(final MeioPagamento meioPagamento) {
+        this.meioPagamento = meioPagamento;
 	}
 
 	public boolean isSucesso() {
@@ -153,7 +153,7 @@ public class OrdemPagamento implements Serializable {
         return pedido;
     }
 
-    public void setPedido(Pedido pedido) {
+    public void setPedido(final Pedido pedido) {
         this.pedido = pedido;
     }
 }

@@ -51,7 +51,8 @@ public class RadioTreeViewTag extends SimpleTagSupport {
 
     }
 
-    private Object getNestedValue(Object entity, String property) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private Object getNestedValue(final Object entity, final String property)
+            throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         try {
             return getProperty(entity, property);
         } catch (NestedNullException e) {
@@ -59,7 +60,8 @@ public class RadioTreeViewTag extends SimpleTagSupport {
         }
     }
 
-    private void createTreeView(final Collection list) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+    private void createTreeView(final Collection list)
+            throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
 
         final JspWriter writer = getJspContext().getOut();
         for (final Object entity : list) {
@@ -117,15 +119,15 @@ public class RadioTreeViewTag extends SimpleTagSupport {
         this.id = id;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
-    public void setChecked(Object checked) {
+    public void setChecked(final Object checked) {
         this.checked = checked;
     }
 
-    public void setFather(String father) {
+    public void setFather(final String father) {
         this.father = father;
     }
 }

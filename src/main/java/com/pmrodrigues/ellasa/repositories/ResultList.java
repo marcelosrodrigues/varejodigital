@@ -57,7 +57,7 @@ public class ResultList<E> {
 
     public List<E> getList() {
         return this.criteria.setFirstResult( page * Constante.TAMANHO_PAGINA )
-                            .setMaxResults( ( page * Constante.TAMANHO_PAGINA ) + Constante.TAMANHO_PAGINA )
+                .setMaxResults(page * Constante.TAMANHO_PAGINA + Constante.TAMANHO_PAGINA)
                             .list();
     }
 

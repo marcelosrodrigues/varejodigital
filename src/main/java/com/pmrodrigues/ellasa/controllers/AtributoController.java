@@ -1,6 +1,9 @@
 package com.pmrodrigues.ellasa.controllers;
 
-import br.com.caelum.vraptor.*;
+import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Resource;
+import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.view.Results;
 import com.pmrodrigues.ellasa.models.Atributo;
 import com.pmrodrigues.ellasa.repositories.AtributoRepository;
@@ -12,13 +15,11 @@ import com.pmrodrigues.ellasa.sessionscope.Atributos;
 @Resource
 public class AtributoController {
     private final Atributos atributos;
-    private final Validator validator;
     private final Result result;
     private final AtributoRepository repository;
 
-    public AtributoController(final Atributos atributos, final Validator validator, final Result result, AtributoRepository repository) {
+    public AtributoController(final Atributos atributos, final Result result, final AtributoRepository repository) {
         this.atributos = atributos;
-        this.validator = validator;
         this.result = result;
         this.repository = repository;
     }

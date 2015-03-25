@@ -19,13 +19,14 @@ import java.util.ResourceBundle;
 @RequestScoped
 public class BigDecimalConverter implements Converter<BigDecimal> {
 
-    private static final DecimalFormat FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(new Locale("pt", "BR")));
+    private static final DecimalFormat FORMAT =
+            new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(new Locale("pt", "BR")));
 
     @Override
-    public BigDecimal convert(String value, Class<? extends BigDecimal> type, ResourceBundle bundle) {
+    public BigDecimal convert(final String value, final Class<? extends BigDecimal> type, final ResourceBundle bundle) {
         try {
             if (!GenericValidator.isBlankOrNull(value)) {
-                Number formatted = FORMAT.parse(value);
+                final Number formatted = FORMAT.parse(value);
                 return new BigDecimal(formatted.doubleValue());
             }
             return null;

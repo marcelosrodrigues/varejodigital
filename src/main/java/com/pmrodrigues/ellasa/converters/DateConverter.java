@@ -3,7 +3,7 @@ package com.pmrodrigues.ellasa.converters;
 import br.com.caelum.vraptor.Convert;
 import br.com.caelum.vraptor.Converter;
 import br.com.caelum.vraptor.ioc.RequestScoped;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 

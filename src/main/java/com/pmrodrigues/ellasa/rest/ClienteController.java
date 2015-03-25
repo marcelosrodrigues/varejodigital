@@ -29,7 +29,7 @@ public class ClienteController {
     @Path("/clientes.json")
     public List<Cliente> clientes() {
         logging.debug("listando todos os clientes cadastrados no sistema");
-        List<Cliente> clientes = repository.list();
+        final List<Cliente> clientes = repository.list();
         logging.debug("cliente encontrado com sucesso");
 
         result.use(Results.json())

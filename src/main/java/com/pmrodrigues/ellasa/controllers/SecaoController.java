@@ -64,7 +64,7 @@ public class SecaoController extends AbstractCRUDController<Secao> {
     @Update
     public void update(final Secao object) {
         final String icone = this.getIcone();
-        Secao existed = getRepository().findById(object.getId());
+        final Secao existed = getRepository().findById(object.getId());
         if (!GenericValidator.isBlankOrNull(icone)) {
             existed.setIcone(icone);
         }
@@ -79,7 +79,7 @@ public class SecaoController extends AbstractCRUDController<Secao> {
 
     @Post
     @Path("/secao/{secao}/remover/icone.json")
-    public void removerIcone(Secao secao) {
+    public void removerIcone(final Secao secao) {
 
         secao.setIcone(null);
         getRepository().set(secao);

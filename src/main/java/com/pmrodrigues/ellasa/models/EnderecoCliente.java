@@ -92,7 +92,7 @@ public class EnderecoCliente {
         return telefone;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(final Estado estado) {
         this.estado = estado;
     }
 

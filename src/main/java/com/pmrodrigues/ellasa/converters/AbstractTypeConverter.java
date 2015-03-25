@@ -21,7 +21,7 @@ public class AbstractTypeConverter<E> implements Converter<E> {
     }
 
     @Override
-    public E convert(String value, Class<? extends E> type,
+    public E convert(final String value, final Class<? extends E> type,
                      final ResourceBundle bundle) {
         logging.debug(format("Convertenado para o tipo %s", type));
 

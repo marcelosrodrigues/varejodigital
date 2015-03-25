@@ -51,7 +51,8 @@ public class CheckboxTreeViewTag extends SimpleTagSupport {
 
     }
 
-    private Object getNestedValue(Object entity, String property) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    private Object getNestedValue(final Object entity, final String property)
+            throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         try {
             return getProperty(entity, property);
         } catch (NestedNullException e) {
@@ -110,15 +111,15 @@ public class CheckboxTreeViewTag extends SimpleTagSupport {
         this.id = id;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
 
-    public void setChecked(Collection checked) {
+    public void setChecked(final Collection checked) {
         this.checked = checked;
     }
 
-    public void setFather(String father) {
+    public void setFather(final String father) {
         this.father = father;
     }
 }

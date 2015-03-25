@@ -28,7 +28,7 @@ public class PagamentoController {
     private final UsuarioRepository repository;
 
 
-    public PagamentoController(final PedidoService service, UsuarioRepository repository, final Result result) {
+    public PagamentoController(final PedidoService service, final UsuarioRepository repository, final Result result) {
         this.service = service;
         this.repository = repository;
         this.result = result;
@@ -37,7 +37,7 @@ public class PagamentoController {
     @Post
     @Path("/{loja}/carrinho-de-compras/checkout.json")
     @Consumes("application/json")
-    public Pedido pagar(Loja loja, final Pedido pedido) {
+    public Pedido pagar(final Loja loja, final Pedido pedido) {
 
         final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
         final UserDetails user = (UserDetails) userAuthenticated.getPrincipal();

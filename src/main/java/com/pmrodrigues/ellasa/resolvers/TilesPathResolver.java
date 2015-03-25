@@ -17,7 +17,7 @@ public class TilesPathResolver extends DefaultPathResolver {
 	}
 
 	@Override
-	public String pathFor(ResourceMethod method) {
+    public String pathFor(final ResourceMethod method) {
 
 		if (method.getMethod().isAnnotationPresent(Tiles.class)) {
             return method.getMethod().getAnnotation(Tiles.class).definition();

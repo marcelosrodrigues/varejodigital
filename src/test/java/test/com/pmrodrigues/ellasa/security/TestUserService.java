@@ -9,10 +9,12 @@ import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -74,6 +76,24 @@ public class TestUserService {
         });
 
         service.loadUserByUsername("marcelosrodrigues@globo.com");
+    }
+
+    @Test
+    public void incrementarNumeroDeTentativasFalhas() {
+
+        context.checking(new Expectations() {
+            {
+
+                oneOf(repository).findByEmail(with(aNonNull(String.class)));
+                will(returnValue(usuario));
+
+                oneOf(usuario).incrementarTentativasFalhas();
+
+                oneOf(repository).set(with(aNonNull(Usuario.class)));
+            }
+        });
+
+        service.atualizarTentativasFalhas(new User("teste", "teste", Collections.EMPTY_LIST));
 
     }
 

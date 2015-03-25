@@ -13,19 +13,15 @@ abstract class AbstractTagLib extends SimpleTagSupport {
 
     private String errorField;
 
-    public void setErrorField(String errorField) {
+    public void setErrorField(final String errorField) {
         this.errorField = errorField;
-    }
-
-    public String getErrorField() {
-        return errorField;
     }
 
     public String getError() {
         final List<ValidationMessage> errors = (List<ValidationMessage>) getJspContext().getAttribute("errors", PageContext.REQUEST_SCOPE);
 
         if (errors != null && !errors.isEmpty()) {
-            for (ValidationMessage message : errors) {
+            for (final ValidationMessage message : errors) {
                 if (message.getCategory().equalsIgnoreCase(this.errorField)) {
                     return "has-error";
                 }

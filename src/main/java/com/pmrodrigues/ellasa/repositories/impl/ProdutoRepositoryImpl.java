@@ -23,7 +23,7 @@ public class ProdutoRepositoryImpl extends AbstractRepository<Produto>
     private static final long serialVersionUID = 1L;
 
     @Override
-    public List<Produto> listByLoja(Loja loja) {
+    public List<Produto> listByLoja(final Loja loja) {
         return this.getSession()
                 .createCriteria(Produto.class, "produto")
                 .createCriteria("produto.imagens", "imagem", JoinType.LEFT_OUTER_JOIN)
@@ -35,14 +35,14 @@ public class ProdutoRepositoryImpl extends AbstractRepository<Produto>
     }
 
     @Override
-    public ResultList<Produto> search(Produto produto) {
+    public ResultList<Produto> search(final Produto produto) {
         return this.search(produto, 0);
     }
 
     @Override
-    public ResultList<Produto> search(Produto produto, Integer page) {
+    public ResultList<Produto> search(final Produto produto, final Integer page) {
 
-        Criteria criteria = this.getSession().createCriteria(Produto.class, "p")
+        final Criteria criteria = this.getSession().createCriteria(Produto.class, "p")
                 .addOrder(Order.asc("p.id"));
 
         if (produto != null) {

@@ -20,7 +20,8 @@ public class LojaController extends AbstractCRUDController<Loja> {
 
     private final SecaoRepository secaoRepository;
 
-    public LojaController(ShoppingRepository repository, SecaoRepository secaoRepository, Result result, Validator validator) {
+    public LojaController(final ShoppingRepository repository, final SecaoRepository secaoRepository,
+                          final Result result, final Validator validator) {
         super(repository, result, validator);
         this.secaoRepository = secaoRepository;
     }

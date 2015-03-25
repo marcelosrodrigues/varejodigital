@@ -9,7 +9,7 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 public class CustomClassPathXmlApplicationContext extends XmlWebApplicationContext {
 
     @Override
-    protected void initBeanDefinitionReader(XmlBeanDefinitionReader reader) {
+    protected void initBeanDefinitionReader(final XmlBeanDefinitionReader reader) {
         reader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
         reader.setNamespaceAware(true);
     }

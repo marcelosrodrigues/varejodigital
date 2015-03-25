@@ -12,5 +12,6 @@ public class IndexController {
 
     @Tiles(definition = "index-template")
     @Path("/index.do")
-    public void index() {}
+    public void index() {
+    } //NOPMD
 }

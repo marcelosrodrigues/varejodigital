@@ -22,12 +22,12 @@ public class Atributo implements Serializable {
     }
 
     public Atributo() {
-    }
+    }//NOPMD
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj instanceof Atributo) {
-            Atributo other = (Atributo) obj;
+            final Atributo other = (Atributo) obj;
             return this.descricao.equalsIgnoreCase(other.descricao);
         }
         return false;

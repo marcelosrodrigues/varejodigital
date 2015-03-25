@@ -12,7 +12,7 @@ import org.apache.commons.validator.GenericValidator;
 public class ClienteFactory extends PayerFactory {
     private final OrdemPagamento pagamento;
 
-    public ClienteFactory(OrdemPagamento pagamento) {
+    public ClienteFactory(final OrdemPagamento pagamento) {
         super();
         this.pagamento = pagamento;
     }

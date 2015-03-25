@@ -33,7 +33,7 @@ public class Comissao implements Serializable {
     }
 
     public Comissao() {
-    }
+    } //NOPMD
 
     public BigDecimal getValorTotal() {
         return valorTotal;

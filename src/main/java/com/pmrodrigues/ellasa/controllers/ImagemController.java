@@ -1,6 +1,8 @@
 package com.pmrodrigues.ellasa.controllers;
 
-import br.com.caelum.vraptor.*;
+import br.com.caelum.vraptor.Path;
+import br.com.caelum.vraptor.Post;
+import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.interceptor.multipart.UploadedFile;
 import com.pmrodrigues.ellasa.models.Imagem;
 import com.pmrodrigues.ellasa.repositories.ImagemRepository;
@@ -13,14 +15,12 @@ import javax.inject.Named;
  */
 @Resource
 public class ImagemController {
-    private final Result result;
-    private final Validator validation;
+
     private final Imagens imagens;
     private final ImagemRepository repository;
 
-    public ImagemController(final Result result, final Validator validation, final Imagens imagens, ImagemRepository repository) {
-        this.result = result;
-        this.validation = validation;
+    public ImagemController(final Imagens imagens, final ImagemRepository repository) {
+
         this.imagens = imagens;
         this.repository = repository;
     }

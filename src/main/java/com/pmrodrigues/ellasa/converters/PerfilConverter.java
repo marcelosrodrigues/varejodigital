@@ -11,7 +11,7 @@ import com.pmrodrigues.ellasa.repositories.PerfilRepository;
 @Convert(Perfil.class)
 @RequestScoped
 public class PerfilConverter extends AbstractTypeConverter<Perfil> {
-    public PerfilConverter(PerfilRepository repository) {
+    public PerfilConverter(final PerfilRepository repository) {
         super(repository);
     }
 }

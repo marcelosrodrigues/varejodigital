@@ -116,17 +116,14 @@
                         <exclude>com/pmrodrigues/ellasa/exceptions/**/*.java</exclude>
                     </excludes>
                     <rulesets>
-                        <ruleset>rulesets/java/android.xml</ruleset>
                         <ruleset>rulesets/java/basic.xml</ruleset>
                         <ruleset>rulesets/java/braces.xml</ruleset>
                         <ruleset>rulesets/java/clone.xml</ruleset>
                         <ruleset>rulesets/java/codesize.xml</ruleset>
-                        <ruleset>rulesets/java/controversial.xml</ruleset>
                         <ruleset>rulesets/java/design.xml</ruleset>
                         <ruleset>rulesets/java/empty.xml</ruleset>
                         <ruleset>rulesets/java/finalizers.xml</ruleset>
                         <ruleset>rulesets/java/imports.xml</ruleset>
-                        <ruleset>rulesets/java/naming.xml</ruleset>
                         <ruleset>rulesets/java/optimizations.xml</ruleset>
                         <ruleset>rulesets/java/strictexception.xml</ruleset>
                         <ruleset>rulesets/java/strings.xml</ruleset>
@@ -135,6 +132,20 @@
                         <ruleset>rulesets/java/unusedcode.xml</ruleset>
                     </rulesets>
                 </configuration>
+                <!--<executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>cpd-check</goal>
+                        </goals>
+                    </execution>
+                </executions>-->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -352,8 +363,16 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.1</version>
+                <configuration>
+                    <targetJdk>1.7</targetJdk>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -387,9 +406,9 @@
             <version>2.3</version>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>

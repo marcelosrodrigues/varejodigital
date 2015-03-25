@@ -23,7 +23,7 @@ public class PaginateTagLib extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException, IOException {
 
-        JspWriter out = this.getJspContext().getOut();
+        final JspWriter out = this.getJspContext().getOut();
 
         out.print("<div class=\"row\">");
         out.print("<div class=\"col-sm-6\">");
@@ -46,7 +46,7 @@ public class PaginateTagLib extends SimpleTagSupport {
     }
 
     public String adicionarBotaoNext() {
-        StringBuffer out = new StringBuffer();
+        final StringBuffer out = new StringBuffer();
         out.append(format("<li class=\"paginate_button next %s\" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_next\">", resultList.isNext() ? "" : "disabled"));
         out.append(format("<a href=\"%s?page=%s%s\">&gt;&gt;</a></li>", URL, resultList.isNext() ? this.resultList.getPage() + 1 : resultList.getPageCount(), recuperaParametrosConsulta()));
 
@@ -55,7 +55,7 @@ public class PaginateTagLib extends SimpleTagSupport {
 
     public String adicionarBotaoPrevious() {
 
-        StringBuffer out = new StringBuffer();
+        final StringBuffer out = new StringBuffer();
         out.append(format("<li class=\"paginate_button previous %s\" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_previous\">",
                 resultList.isPrevious() ? "" : "disabled"));
         out.append(format("<a href=\"%s?page=%s%s\">&lt;&lt;</a></li>", URL, resultList.isPrevious() ? resultList.getPage() - 1 : 0, recuperaParametrosConsulta()));
@@ -82,11 +82,11 @@ public class PaginateTagLib extends SimpleTagSupport {
         return out.toString();
     }
 
-    public void setResultList(ResultList resultList) {
+    public void setResultList(final ResultList resultList) {
         this.resultList = resultList;
     }
 
-    public void setUrl(String URL) {
+    public void setUrl(final String URL) {
         this.URL = URL;
     }
 

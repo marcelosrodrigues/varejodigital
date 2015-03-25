@@ -42,11 +42,4 @@ public class MeioPagamento implements Serializable {
         return id;
     }
 
-    public boolean eCartao() {
-        return (method == PaymentMethod.CARTAO_AMEX
-                || method == PaymentMethod.CARTAO_DINERS
-                || method == PaymentMethod.CARTAO_ELO
-                || method == PaymentMethod.CARTAO_MASTER || method == PaymentMethod.CARTAO_VISA);
-    }
-
 }

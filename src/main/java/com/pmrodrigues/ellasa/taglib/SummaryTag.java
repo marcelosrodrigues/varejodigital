@@ -21,7 +21,7 @@ public class SummaryTag extends SimpleTagSupport {
     @Override
     public void doTag() throws JspException, IOException {
 
-        JspWriter out = getJspContext().getOut();
+        final JspWriter out = getJspContext().getOut();
         final List<ValidationMessage> errors = (List<ValidationMessage>) getJspContext().getAttribute("errors", PageContext.REQUEST_SCOPE);
 
         if (errors != null && !errors.isEmpty()) {
@@ -29,7 +29,7 @@ public class SummaryTag extends SimpleTagSupport {
             out.print("<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>");
             out.print(format("<strong>%s</strong><br/>", this.text));
 
-            for (ValidationMessage message : errors) {
+            for (final ValidationMessage message : errors) {
                 out.print(format("<p>%s</p>", message.getMessage()));
             }
             out.print("</div>");
@@ -37,7 +37,7 @@ public class SummaryTag extends SimpleTagSupport {
 
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 }

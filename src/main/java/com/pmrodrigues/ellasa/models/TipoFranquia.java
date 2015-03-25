@@ -24,16 +24,16 @@ public class TipoFranquia implements Serializable {
 		return nome;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+    public void setNome(final String nome) {
+        this.nome = nome;
 	}
 
 	public String getDescricao() {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+    public void setDescricao(final String descricao) {
+        this.descricao = descricao;
 	}
 
 	public Long getId() {

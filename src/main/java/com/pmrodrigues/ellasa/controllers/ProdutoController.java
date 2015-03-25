@@ -36,7 +36,9 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
     private static final Logger logging = Logger.getLogger(ProdutoController.class);
     private final Atributos atributos;
 
-    public ProdutoController(ProdutoRepository repository, ShoppingRepository shoppingRepository, SecaoRepository secaoRepository, Result result, Validator validator, Imagens imagens, Atributos atributos) {
+    public ProdutoController(final ProdutoRepository repository, final ShoppingRepository shoppingRepository,
+                             final SecaoRepository secaoRepository, final Result result, final Validator validator,
+                             final Imagens imagens, final Atributos atributos) {
         super(repository, result, validator);
         this.imagens = imagens;
         this.shoppingRepository = shoppingRepository;
@@ -61,12 +63,12 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
         logging.debug(format("Produto %s salvo com sucesso", produto));
     }
 
-    public void adicionarLista(Produto produto) {
-        for (String arquivo : this.imagens.getArquivos()) {
+    public void adicionarLista(final Produto produto) {
+        for (final String arquivo : this.imagens.getArquivos()) {
             produto.adicionar(new Imagem(arquivo));
         }
 
-        for (Atributo atributo : this.atributos.getAtributos()) {
+        for (final Atributo atributo : this.atributos.getAtributos()) {
             produto.adicionar(atributo);
         }
     }
