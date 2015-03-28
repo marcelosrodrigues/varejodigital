@@ -2,7 +2,7 @@ package test.com.pmrodrigues.ellasa.security;
 
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
-import com.pmrodrigues.ellasa.services.UserService;
+import com.pmrodrigues.ellasa.services.UsuarioService;
 import org.apache.commons.lang.RandomStringUtils;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -28,7 +28,7 @@ public class TestUserService {
 
     private UsuarioRepository repository;
     private Usuario usuario;
-    private final UserService service = new UserService();
+    private final UsuarioService service = new UsuarioService();
 
     @Before
     public void setup() throws Exception {

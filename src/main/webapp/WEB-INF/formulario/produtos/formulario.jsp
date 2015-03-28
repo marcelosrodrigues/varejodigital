@@ -75,8 +75,7 @@
                         <label for="tamanho" class="control-label">Tamanho</label>
 
                         <div class="form-group input-group">
-                            <input id="tamanho" type="text" class="form-control" placeholder="Tamanho"
-                                   value="${object.secao.nome}">
+                            <input id="tamanho" type="text" class="form-control" placeholder="Tamanho">
                             <span class="input-group-btn">
                                 <button id="adicionar-tamanho" class="btn btn-default" type="button">
                                     <i class="fa fa-check"></i>

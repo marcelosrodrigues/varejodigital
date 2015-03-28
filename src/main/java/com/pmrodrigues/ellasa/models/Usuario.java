@@ -19,35 +19,35 @@ import java.util.Set;
 @DynamicUpdate(true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-		@NamedQuery(name = "Usuario.All", query = "FROM Usuario"),
-		@NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u inner join fetch u.endereco.estado left join fetch u.celular left join fetch u.residencial WHERE email = :email")})
+        @NamedQuery(name = "Usuario.All", query = "FROM Usuario"),
+        @NamedQuery(name = "Usuario.FindByEmail", query = "SELECT u FROM Usuario u inner join fetch u.endereco.estado left join fetch u.celular left join fetch u.residencial WHERE email = :email")})
 public class Usuario implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Transient
-	private final String cleanPassword = RandomStringUtils
-			.randomAlphanumeric(10);
+    @Transient
+    private final String cleanPassword = RandomStringUtils
+            .randomAlphanumeric(10);
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotBlank(message = "E-mail é obrigatório")
-	@Column(unique = true, nullable = false)
-	private String email;
+    @NotBlank(message = "E-mail é obrigatório")
+    @Column(unique = true, nullable = false)
+    private String email;
 
-	@Column
-	private String password;
+    @Column
+    private String password;
 
-	@Column
-	private boolean bloqueado = true;
+    @Column
+    private boolean bloqueado = true;
 
-	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	private Telefone celular;
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    private Telefone celular;
 
-	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-	private Telefone residencial;
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+    private Telefone residencial;
 
     @Embedded
     private final Endereco endereco = new Endereco();
@@ -66,10 +66,10 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private Date dataNascimento;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name = "membros" , joinColumns = @JoinColumn(name = "usuario_id"),
-                                  inverseJoinColumns = @JoinColumn(name = "perfil_id"),
-                                  uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","perfil_id"}))
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "membros", joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "perfil_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "perfil_id"}))
     private Set<Perfil> perfis = new HashSet<>();
 
     @Column
@@ -104,60 +104,61 @@ public class Usuario implements Serializable {
         return this.endereco;
     }
 
-	public boolean isBloqueado() {
-		return bloqueado;
-	}
+    public boolean isBloqueado() {
+        return bloqueado;
+    }
 
-	public void desbloquear() {
-		this.bloqueado = false;
-	}
+    public void desbloquear() {
+        this.tentativas = 0L;
+        this.bloqueado = false;
+    }
 
-	public void bloquear() {
-		this.bloqueado = true;
-	}
+    public void bloquear() {
+        this.bloqueado = true;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(final String email) {
-		this.email = email;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-    public void setId( final Long id ){
+    public void setId(final Long id) {
         this.id = id;
     }
 
-	public String getCleanPassword() {
-		return cleanPassword;
-	}
+    public String getCleanPassword() {
+        return cleanPassword;
+    }
 
-	public Telefone getCelular() {
-		return celular;
-	}
+    public Telefone getCelular() {
+        return celular;
+    }
 
-	public void setCelular(final Telefone celular) {
-		this.celular = celular;
-	}
+    public void setCelular(final Telefone celular) {
+        this.celular = celular;
+    }
 
-	public Telefone getResidencial() {
-		return residencial;
-	}
+    public Telefone getResidencial() {
+        return residencial;
+    }
 
-	public void setResidencial(final Telefone residencial) {
-		this.residencial = residencial;
-	}
+    public void setResidencial(final Telefone residencial) {
+        this.residencial = residencial;
+    }
 
-	@PrePersist
-	public void preInsert() {
+    @PrePersist
+    public void preInsert() {
         this.password = MD5.encrypt(this.cleanPassword);
     }
 

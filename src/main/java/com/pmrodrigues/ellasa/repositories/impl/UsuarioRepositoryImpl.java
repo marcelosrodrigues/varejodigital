@@ -12,8 +12,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import static java.lang.String.format;
 
@@ -26,7 +24,6 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
 			.getLogger(UsuarioRepositoryImpl.class);
 
 	@Override
-	@Transactional(propagation = Propagation.SUPPORTS)
 	public Usuario findByEmail(final String email) {
 
 		LOGGER.debug(format("Pesquisando usuário pelo email %s", email));

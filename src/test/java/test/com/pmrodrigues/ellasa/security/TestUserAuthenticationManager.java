@@ -1,7 +1,7 @@
 package test.com.pmrodrigues.ellasa.security;
 
 import com.pmrodrigues.ellasa.security.UserAuthenticationManager;
-import com.pmrodrigues.ellasa.services.UserService;
+import com.pmrodrigues.ellasa.services.UsuarioService;
 import com.pmrodrigues.ellasa.utilities.MD5;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
@@ -26,14 +26,14 @@ public class TestUserAuthenticationManager {
         }
     };
 
-    private final UserService service = context.mock(UserService.class);
+    private final UsuarioService service = context.mock(UsuarioService.class);
 
     private UserAuthenticationManager authenticationManager = new UserAuthenticationManager();
 
     @Before
     public void before() throws Exception {
 
-        Field service = authenticationManager.getClass().getDeclaredField("userService");
+        Field service = authenticationManager.getClass().getDeclaredField("usuarioService");
         service.setAccessible(true);
         service.set(authenticationManager, this.service);
 

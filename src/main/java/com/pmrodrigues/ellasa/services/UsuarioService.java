@@ -9,22 +9,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 
 import static java.lang.String.format;
 
 @Service("userService")
-@Transactional(readOnly = true)
-public class UserService implements UserDetailsService {
+public class UsuarioService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository repository;
 
-	private static final Logger logging = Logger.getLogger(UserService.class);
-	
-	@Override
+    private static final Logger logging = Logger.getLogger(UsuarioService.class);
+
+    @Override
 	public UserDetails loadUserByUsername(final String username)
 			throws UsernameNotFoundException {
 		
@@ -37,7 +35,6 @@ public class UserService implements UserDetailsService {
 		
 		throw new UsernameNotFoundException(format("Usuario %s não encontrado ou senha invalida",username));
 	}
-
 
     public void atualizarTentativasFalhas(final UserDetails user) {
 

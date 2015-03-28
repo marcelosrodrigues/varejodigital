@@ -1,6 +1,6 @@
 package com.pmrodrigues.ellasa.security;
 
-import com.pmrodrigues.ellasa.services.UserService;
+import com.pmrodrigues.ellasa.services.UsuarioService;
 import com.pmrodrigues.ellasa.utilities.MD5;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +11,27 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import static java.lang.String.format;
 
 /**
  * Created by Marceloo on 24/03/2015.
  */
+@Service
 public class UserAuthenticationManager implements AuthenticationManager {
-
-    @Autowired
-    private UserService userService;
 
     private static final Logger logging = Logger.getLogger(UserAuthenticationManager.class);
 
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     public Authentication authenticate(final Authentication authentication) throws AuthenticationException {
 
         logging.debug(format("iniciando a autenticacao do usuario %s", authentication.getPrincipal()));
 
-        final UserDetails user = userService.loadUserByUsername((String) authentication.getPrincipal());
+        final UserDetails user = usuarioService.loadUserByUsername((String) authentication.getPrincipal());
 
         if (user.isAccountNonLocked()) {
             String password = (String) authentication.getCredentials();
@@ -38,7 +39,7 @@ public class UserAuthenticationManager implements AuthenticationManager {
             if (password.equals(user.getPassword())) {
                 return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
             } else {
-                userService.atualizarTentativasFalhas(user);
+                usuarioService.atualizarTentativasFalhas(user);
                 throw new BadCredentialsException(format("Usuario %s não encontrado ou senha invalida", authentication.getPrincipal()));
             }
         } else {

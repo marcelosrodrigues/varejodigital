@@ -3,16 +3,15 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:security="http://www.springframework.org/schema/security"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
-    <bean id="userService" class="com.pmrodrigues.ellasa.services.UserService"/>
+    <import resource="applicationContext-data.xml"/>
 
     <security:http pattern="/**.js" security="none"/>
     <security:http pattern="/**.css" security="none"/>
 
     <security:http pattern="/**/*.json" use-expressions="true" once-per-request="true" create-session="never"
-                   disable-url-rewriting="true">
+                   disable-url-rewriting="true" authentication-manager-ref="authenticationManager">
         <security:anonymous enabled="false"/>
         <security:session-management session-fixation-protection="none"/>
         <security:intercept-url pattern="/**/*.json"
@@ -22,11 +21,13 @@
     </security:http>
 
     <security:http pattern="/**" use-expressions="true" once-per-request="true" create-session="never"
-                   auto-config="true">
+                   auto-config="true" authentication-manager-ref="userAuthenticationManager">
 
     <security:intercept-url pattern="/**/*.do" access="isFullyAuthenticated()"/>
         <security:form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check"
-                             authentication-failure-url="/login.jsp?error=true" default-target-url="/index.do"/>
+                             authentication-failure-handler-ref="failureHandler"
+                             authentication-success-handler-ref="successHandler"
+                             default-target-url="/index.do"/>
         <security:logout invalidate-session="true" delete-cookies="false" logout-success-url="/index.jsp"/>
     </security:http>
 

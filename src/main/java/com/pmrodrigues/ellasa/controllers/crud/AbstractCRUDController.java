@@ -6,10 +6,6 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.ValidationMessage;
 import com.pmrodrigues.ellasa.Constante;
-import com.pmrodrigues.ellasa.annotations.After;
-import com.pmrodrigues.ellasa.annotations.Before;
-import com.pmrodrigues.ellasa.annotations.Insert;
-import com.pmrodrigues.ellasa.annotations.Update;
 import com.pmrodrigues.ellasa.exceptions.UniqueException;
 import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.ResultList;
@@ -17,8 +13,6 @@ import org.apache.log4j.Logger;
 
 import javax.persistence.Entity;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
@@ -36,6 +30,7 @@ public abstract class AbstractCRUDController<E> {
     private final Result result;
     private final Validator validator;
     private final Class<E> persistentClass; //NOPMD
+    private final CRUDUtils<E> crudutils;
 
     protected AbstractCRUDController(final Repository<E> repository, final Result result, final Validator validator) {
         this.repository = repository;
@@ -44,13 +39,14 @@ public abstract class AbstractCRUDController<E> {
         final ParameterizedType type = (ParameterizedType) this.getClass()
                 .getGenericSuperclass();
         this.persistentClass = (Class<E>) type.getActualTypeArguments()[0];
+        this.crudutils = new CRUDUtils<>(this);
     }
 
     @Post
     public void salvar(final E object){
 
         validator.validate(object);
-        final Long idValue = getId(object);
+        final Long idValue = crudutils.getId(object);
         validator.onErrorForwardTo(this.getClass()).formulario();
 
         logging.debug(format("iniciando a operação de inclusão de %s",object));
@@ -58,13 +54,13 @@ public abstract class AbstractCRUDController<E> {
         try {
             if( idValue == null || idValue == 0L ) {
 
-                if( !doInsert(object) ) {
+                if (!crudutils.doInsert(object)) {
                     repository.add(object);
-                    postExecute(object);
+                    crudutils.postExecute(object);
                 }
                 result.include(Constante.SUCESSO,format("%s adicionada com sucesso",persistentClass.getSimpleName()));
             } else {
-                if( !doUpdate(object) ) {
+                if (!crudutils.doUpdate(object)) {
                     repository.set(object);
                 }
                 result.include(Constante.SUCESSO, format("%s alterada com sucesso", persistentClass.getSimpleName()));
@@ -77,86 +73,16 @@ public abstract class AbstractCRUDController<E> {
         }
     }
 
-    private boolean doUpdate(final E object) {
-        try {
-            return invoke(Update.class,object);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private boolean doInsert(final E object) {
-        try {
-           return invoke(Insert.class,object);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    private Method getByAnnotation(final Class annotation) {
-
-        final List<Method> metodos = Arrays.asList(this.getClass().getMethods());
-        for( final Method metodo : metodos ) {
-            if (metodo.isAnnotationPresent(annotation)) {
-                logging.debug(format("Delegado a execução para o método da classe filha %s", metodo));
-                return metodo;
-            }
-        }
-        return null;
-
-    }
-
-    private void postExecute(final E object) {
-        try {
-
-            invoke(After.class,object);
-
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private Long getId(final E object)  {
-        try {
-            final Field id = object.getClass().getDeclaredField("id");
-            id.setAccessible(true);
-            return (Long) id.get(object);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Get
     public void index() {
-        preExecute();
+        crudutils.preExecute();
         final ResultList<E> resultlist = repository.search(null);
         result.include(Constante.RESULT_LIST , resultlist);
     }
 
-    private void preExecute() {
-
-        try {
-            invoke(Before.class);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    private boolean invoke(final Class annotation, final Object... params)
-            throws IllegalAccessException, InvocationTargetException {
-        final Method metodo = this.getByAnnotation(annotation);
-        if( metodo != null ) {
-            metodo.invoke(this,params);
-            return true;
-        }
-        return false;
-    }
-
     public void search(Integer page , final E object ) {
 
-        preExecute();
+        crudutils.preExecute();
 
         if( page == null ){
             page = 0;
@@ -168,11 +94,10 @@ public abstract class AbstractCRUDController<E> {
 
     }
 
-
     @Get
     public void formulario() {
         try {
-            preExecute();
+            crudutils.preExecute();
             final E e = this.persistentClass.newInstance();
             final List<Field> fields = Arrays.asList(e.getClass().getDeclaredFields());
             for (final Field field : fields) {
@@ -191,7 +116,7 @@ public abstract class AbstractCRUDController<E> {
 
     @Get
     public void show(final Long id){
-        preExecute();
+        crudutils.preExecute();
         final E e = this.repository.findById(id);
         result.include(Constante.OBJECT,e);
     }
@@ -208,6 +133,7 @@ public abstract class AbstractCRUDController<E> {
         return validator;
     }
 
+    @Post
     public void delete(final E object) {
         logging.debug(format("excluindo o valor %s do banco de dados", object));
 

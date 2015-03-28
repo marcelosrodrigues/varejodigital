@@ -25,21 +25,20 @@ public class TestUsuarioRepository
 
     private void prepare() {
 
-        this.jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Object>() {
+        this.jdbcTemplate.query("select id , residencial_id , celular_id from usuario where email = 'marsilvarodrigues@gmail.com'", new RowMapper<Void>() {
             @Override
-            public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+            public Void mapRow(ResultSet rs, int rowNum) throws SQLException {
 
                 final Long userId = rs.getLong("id");
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
-                TestUsuarioRepository.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
+                jdbcTemplate.update("delete from usuario where id = ?", userId);
+                jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
             }
 
-            ;
         });
 
     }

@@ -43,12 +43,13 @@ public class Produto implements Serializable {
     @Column(name = "peso")
     private BigDecimal peso;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "produto_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "produto_id", nullable = false)
+    @OrderBy("id asc")
     private final Set<Imagem> imagens = new HashSet<>();
 
-    @OneToMany
-    @JoinColumn(name = "produto_id")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "produto_id", nullable = false)
     @OrderBy("id asc")
     private final Set<Atributo> atributos = new HashSet<>();
 

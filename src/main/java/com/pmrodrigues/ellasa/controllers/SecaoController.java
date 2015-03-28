@@ -26,10 +26,8 @@ public class SecaoController extends AbstractCRUDController<Secao> {
 
     @Before
     public void before() {
-
         final SecaoRepository repository = (SecaoRepository) this.getRepository();
         this.getResult().include(Constante.DEPARTAMENTOS, repository.listAll());
-
     }
 
 

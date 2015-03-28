@@ -47,10 +47,10 @@
                         <h3 class="panel-title">Catálogo Digital Ella S/A</h3>
                     </div>
                     <div class="panel-body">
-                        <c:if test="${not empty param['error']}">
+                        <c:if test="${requestScope['SPRING_SECURITY_403_EXCEPTION']!=null}">
                             <div class="alert alert-danger alert-dismissable">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    E-mail inválido ou senha inválida
+                                    ${requestScope['SPRING_SECURITY_403_EXCEPTION']}
                             </div>
                         </c:if>
                         <form role="form" action="<c:url value='/j_spring_security_check' />" method="post">

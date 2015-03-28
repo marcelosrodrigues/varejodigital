@@ -95,10 +95,6 @@
                         <version>${surefire.version}</version>
                     </dependency>
                 </dependencies>
-                <configuration>
-                    <reuseForks>true</reuseForks>
-                    <forkCount>5</forkCount>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
