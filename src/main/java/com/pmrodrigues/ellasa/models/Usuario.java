@@ -4,6 +4,7 @@ import br.com.caelum.stella.bean.validation.CPF;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.utilities.MD5;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -71,6 +72,13 @@ public class Usuario implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "perfil_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "perfil_id"}))
     private Set<Perfil> perfis = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "lojistas", joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "loja_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "loja_id"})
+    )
+    private Set<Loja> lojas = new HashSet<>();
 
     @Column
     private Long tentativas = 0L;
@@ -166,6 +174,36 @@ public class Usuario implements Serializable {
         tentativas++;
         if (tentativas == Constante.NUMERO_MAXIMO_TENTATIVAS_FALHAS) {
             bloquear();
+        }
+    }
+
+    public Set<Perfil> getRoles() {
+        return this.perfis;
+    }
+
+    public Set<Loja> getLojas() {
+        return this.lojas;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj instanceof Usuario) {
+            Usuario other = (Usuario) obj;
+            return this.id.equals(other.id);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        if (this.id == null && this.email == null && this.cpf == null) {
+            return 0;
+        } else {
+            final HashCodeBuilder hsc = new HashCodeBuilder(7, 43);
+            return hsc.append(this.id)
+                    .append(this.email)
+                    .append(this.cpf)
+                    .toHashCode();
         }
     }
 }

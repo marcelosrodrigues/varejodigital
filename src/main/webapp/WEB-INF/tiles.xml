@@ -57,14 +57,14 @@
     <definition name="loja/search-template" extends="loja/index-template"/>
 
     <definition name="usuario/index-template" extends="principal">
-        <put-attribute name="header" value="Usuários"/>
+        <put-attribute name="header" value="Segurança > Usuários"/>
         <put-attribute name="conteudo" value="/WEB-INF/formulario/usuario/index.jsp"/>
     </definition>
 
     <definition name="usuario/search-template" extends="usuario/index-template"/>
 
     <definition name="usuario/formulario-template" extends="principal">
-        <put-attribute name="header" value="Usuário"/>
+        <put-attribute name="header" value="Segurança > Usuário"/>
         <put-attribute name="conteudo" value="/WEB-INF/formulario/usuario/formulario.jsp"/>
     </definition>
 
@@ -118,5 +118,21 @@
         <put-attribute name="header" value="Pedido"/>
         <put-attribute name="conteudo" value="/WEB-INF/formulario/pedidos/detalhar.jsp"/>
     </definition>
+
+    <definition name="perfil/index-template" extends="principal">
+        <put-attribute name="header" value="Segurança > Grupos"/>
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/perfis/index.jsp"/>
+    </definition>
+
+    <definition name="perfil/search-template" extends="perfil/index-template"/>
+
+    <definition name="perfil/formulario-template" extends="principal">
+        <put-attribute name="header" value="Segurança > Grupo"/>
+        <put-attribute name="conteudo" value="/WEB-INF/formulario/perfis/formulario.jsp"/>
+    </definition>
+
+    <definition name="perfil/show-template" extends="perfil/formulario-template"/>
+
+    <definition name="perfil/*/formulario-template" extends="perfil/formulario-template"/>
 
 </tiles-definitions>

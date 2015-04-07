@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertNotEquals;
@@ -221,5 +222,12 @@ public class TestUsuarioController extends
     @After
     public void after() {
         prepare();
+    }
+
+    @Test
+    public void pesquisarUsuario() {
+
+        final List<Usuario> encontrados = controller.pesquisarUsuario("marcelo");
+        assertNotNull(encontrados);
     }
 }

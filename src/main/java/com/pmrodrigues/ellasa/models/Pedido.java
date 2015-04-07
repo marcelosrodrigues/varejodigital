@@ -3,10 +3,15 @@ package com.pmrodrigues.ellasa.models;
 import com.google.gson.annotations.SerializedName;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.enumarations.StatusPagamento;
+import com.pmrodrigues.ellasa.repositories.utils.FilterName;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.hibernate.annotations.*;
 import org.joda.time.DateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -20,6 +25,14 @@ import java.util.List;
 @Entity
 @Table
 @XStreamAlias("pedido")
+@FilterDefs({
+        @FilterDef(name = FilterName.FILTRO_POR_VENDEDOR, parameters = @ParamDef(name = FilterName.FILTRO_POR_VENDEDOR, type = "long")),
+        @FilterDef(name = FilterName.FILTRO_POR_LOJA, parameters = @ParamDef(name = FilterName.FILTRO_POR_LOJA, type = "long"))
+})
+@Filters({
+        @Filter(name = FilterName.FILTRO_POR_VENDEDOR, condition = "vendedor_id = :vendedor"),
+        @Filter(name = FilterName.FILTRO_POR_LOJA, condition = "exists ( select 1 from lojistas l where l.loja_id = loja_id and l.usuario_id = :loja)")
+})
 public class Pedido implements Serializable {
 
     @Transient

@@ -200,6 +200,11 @@ $("#pesquisar").click(function () {
 
 });
 
+$("#pesquisar-usuario").click(function () {
+    $.getJSON(
+        "/usuarios/" + $("#usuario").val() + "/list.json", montartabelausuario);
+});
+
 function listarSubSecoes(secao) {
 
     var loja = document.getElementById("object.loja");
@@ -228,6 +233,46 @@ $("#adicionar-tamanho").click(function () {
 
 });
 
+function montartabelausuario(data) {
+
+    $("#usuarios > table > tbody").find("tr").remove();
+
+    $.each(data.list, function (index, element) {
+
+        $("#usuarios > table > tbody").append("<tr>"
+        + "<td>" + element.nomeCompleto + "</td>"
+        + "<td>" + element.email + "</td>"
+        + "<td align=\"center\">"
+        + "<button id=\"adicionar-usuario\" type=\"button\" class=\"btn btn-info btn-circle\" email=\"" + element.email + "\" usuario=\"" + element.id + "\" nome=\"" + element.nomeCompleto + "\">"
+        + "<i class=\"fa fa-check\"></i></button></td></tr>");
+
+    });
+
+    $("#adicionar-usuario").each(function (index) {
+        $(this).click(function () {
+
+            $.ajax({
+                url: "/grupo/" + $(this).attr("usuario") + "/adicionar.json",
+                type: "POST",
+                cache: false
+            }).done(adicionartabelamembros);
+
+        });
+    });
+
+    $("#usuarios").show();
+}
+
+function adicionartabelamembros(data) {
+
+    $("#membros > table > tbody").append("<tr>"
+    + "<td>" + data.usuario.nomeCompleto + "</td>"
+    + "<td>" + data.usuario.email + "</td>"
+    + "<td align=\"center\">"
+    + "<button id=\"remover-usuario\" type=\"button\" class=\"btn btn-danger btn-circle\" usuario=\"" + data.usuario.id + "\"  onclick=\"javascript:removerUsuario(this);\">"
+    + "<i class=\"fa fa-times\"></i></button></td></tr>");
+
+}
 
 function montartabelatamanho(data) {
 
@@ -265,6 +310,18 @@ function removerTamanho(tamanho) {
         cache: false
     }).done(function () {
         $(tamanho).parent()
+            .parent()
+            .remove();
+    });
+}
+
+function removerUsuario(usuario) {
+    $.ajax({
+        url: "/grupo/" + $(usuario).attr("usuario") + "/remover.json",
+        type: "POST",
+        cache: false
+    }).done(function () {
+        $(usuario).parent()
             .parent()
             .remove();
     });

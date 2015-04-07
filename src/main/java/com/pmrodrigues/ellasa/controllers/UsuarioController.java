@@ -3,6 +3,7 @@ package com.pmrodrigues.ellasa.controllers;
 import br.com.caelum.vraptor.*;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.validator.ValidationMessage;
+import br.com.caelum.vraptor.view.Results;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.annotations.*;
 import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
@@ -135,5 +136,20 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
                 .subject("Seja bem-vindo a Ella S/A")
                 .template("/templates/novosusuarios.vm", parameters).send();
 
+    }
+
+    @Get
+    @Path("/usuarios/{nome}/list.json")
+    public List<Usuario> pesquisarUsuario(final String nome) {
+        final UsuarioRepository repository = (UsuarioRepository) this.getRepository();
+        final List<Usuario> usuarios = repository.listByNomeOrEmail(nome);
+        this.getResult().use(Results.json())
+                .from(usuarios)
+                .include("id", "nomeCompleto", "email")
+                .exclude("password", "cleanPassword", "bloqueado", "celular", "residencial",
+                        "cpf", "dataNascimento", "perfis", "tentativas")
+                .serialize();
+
+        return usuarios;
     }
 }

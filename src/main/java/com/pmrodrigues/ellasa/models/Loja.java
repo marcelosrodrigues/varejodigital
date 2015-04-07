@@ -1,8 +1,15 @@
 package com.pmrodrigues.ellasa.models;
 
+import com.pmrodrigues.ellasa.repositories.utils.FilterName;
+import org.hibernate.annotations.*;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.persistence.CascadeType;
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +20,12 @@ import java.util.List;
 @Entity
 @Table
 @NamedQueries({@NamedQuery(name = "Loja.All", query = "SELECT c FROM Loja c ORDER BY c.nome ASC")})
+@FilterDefs({
+        @FilterDef(name = FilterName.FILTRO_POR_LOJA, parameters = @ParamDef(name = FilterName.FILTRO_POR_LOJA, type = "long"))
+})
+@Filters({
+        @Filter(name = FilterName.FILTRO_POR_LOJA, condition = "exists ( select 1 from lojistas l where l.loja_id = id and l.usuario_id = :loja)")
+})
 public class Loja implements Serializable {
 
     @Id

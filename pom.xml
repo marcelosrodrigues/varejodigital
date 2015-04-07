@@ -159,6 +159,7 @@
                             <ignore>com.pmrodrigues.ellasa.converters.MeioPagamentoConverter</ignore>
                             <ignore>com.pmrodrigues.ellasa.converters.PerfilConverter</ignore>
                             <ignore>com.pmrodrigues.ellasa.converters.SecaoConverter</ignore>
+                            <ignore>com.pmrodrigues.ellasa.converters.UsuarioConverter</ignore>
                         </ignores>
                         <excludes>
                             <exclude>com/pmrodrigues/ellasa/exceptions/**/*.class</exclude>
@@ -169,6 +170,7 @@
                             <exclude>com/pmrodrigues/ellasa/converters/MeioPagamentoConverter.class</exclude>
                             <exclude>com/pmrodrigues/ellasa/converters/PerfilConverter.class</exclude>
                             <exclude>com/pmrodrigues/ellasa/converters/SecaoConverter.class</exclude>
+                            <exclude>com/pmrodrigues/ellasa/converters/UsuarioConverter.class</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>

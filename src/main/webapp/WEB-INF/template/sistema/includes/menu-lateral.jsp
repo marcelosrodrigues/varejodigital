@@ -22,12 +22,8 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-                <a href="tables.html"><i class="fa fa-table fa-fw"></i> Pedidos<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li>
-                        <a href="<c:url value='/pedido/index.do' />">Meus Pedidos</a>
-                    </li>
-                </ul>
+                <a href="<c:url value='/pedido/index.do' />"><i class="fa fa-table fa-fw"></i> Meus Pedidos<span
+                        class="fa arrow"></span></a>
             </li>
             <li>
                 <a href="#"><i class="fa fa-edit fa-fw"></i> Administração<span class="fa arrow"></span></a>
@@ -36,13 +32,21 @@
                         <a href="<c:url value='/loja/index.do' />">Empresas Parceiras</a>
                     </li>
                     <li>
-                        <a href="<c:url value='/usuario/index.do' />">Usuários</a>
-                    </li>
-                    <li>
                         <a href="<c:url value='/secao/index.do' />">Departamentos</a>
                     </li>
                     <li>
                         <a href="<c:url value='/produto/index.do' />">Produtos</a>
+                    </li>
+                    <li>
+                        <a href="#">Segurança <span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level collapse">
+                            <li>
+                                <a href="<c:url value='/usuario/index.do' />">Usuários</a>
+                            </li>
+                            <li>
+                                <a href="<c:url value='/perfil/index.do' />">Grupos</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

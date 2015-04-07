@@ -1,8 +1,16 @@
 package com.pmrodrigues.ellasa.models;
 
+import com.pmrodrigues.ellasa.repositories.utils.FilterName;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.hibernate.annotations.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -12,6 +20,12 @@ import java.util.Set;
 @Table(name = "produto")
 @XStreamAlias("produto")
 @NamedQueries({@NamedQuery(name = "Produto.All", query = "SELECT p FROM Produto p inner join fetch p.secao s inner join fetch p.loja left join fetch p.imagens i left join fetch p.atributos a ORDER BY s.id")})
+@FilterDefs({
+        @FilterDef(name = FilterName.FILTRO_POR_LOJA, parameters = @ParamDef(name = FilterName.FILTRO_POR_LOJA, type = "long"))
+})
+@Filters({
+        @Filter(name = FilterName.FILTRO_POR_LOJA, condition = "exists ( select 1 from lojistas l where l.loja_id = loja_id and l.usuario_id = :loja)")
+})
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;

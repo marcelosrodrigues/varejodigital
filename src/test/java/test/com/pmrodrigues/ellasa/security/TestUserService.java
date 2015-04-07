@@ -1,5 +1,6 @@
 package test.com.pmrodrigues.ellasa.security;
 
+import com.pmrodrigues.ellasa.models.Perfil;
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
 import com.pmrodrigues.ellasa.services.UsuarioService;
@@ -15,6 +16,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -44,17 +47,27 @@ public class TestUserService {
 
     @Test
     public void deveEncontrarOUsuario() {
+
+        final Set<Perfil> perfis = new HashSet<>();
+        perfis.add(new Perfil("role1"));
+        perfis.add(new Perfil("role2"));
+        perfis.add(new Perfil("role3"));
+
         context.checking(new Expectations() {
             {
 
                 oneOf(repository).findByEmail(with(aNonNull(String.class)));
                 will(returnValue(usuario));
 
+                oneOf(usuario).getRoles();
+                will(returnValue(perfis));
+
                 oneOf(usuario).getPassword();
                 will(returnValue(RandomStringUtils.randomAlphanumeric(8)));
 
                 oneOf(usuario).isBloqueado();
                 will(returnValue(Boolean.FALSE));
+
             }
         });
 

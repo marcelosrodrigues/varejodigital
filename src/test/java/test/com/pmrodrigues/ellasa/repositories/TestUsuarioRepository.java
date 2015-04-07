@@ -14,6 +14,9 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @ContextConfiguration(locations = {"classpath:test-applicationContext.xml"})
 public class TestUsuarioRepository
@@ -73,4 +76,13 @@ public class TestUsuarioRepository
         Assert.assertNotNull(usuario);
     }
 
+    @Test
+    public void pesquisarUsuarioPorEmailOuNome() {
+        final Long count = jdbcTemplate.queryForObject(
+                "select count(1) from usuario where email like ? or nomeCompleto like ?",
+                Long.class, "marcelo%", "marcelo%");
+
+        final List<Usuario> usuario = repository.listByNomeOrEmail("marcelo");
+        assertEquals(count, Long.valueOf(usuario.size()));
+    }
 }

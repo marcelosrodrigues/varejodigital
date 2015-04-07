@@ -13,6 +13,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 import static java.lang.String.format;
 
 @Repository("UsuarioRepository")
@@ -37,6 +39,14 @@ public class UsuarioRepositoryImpl extends AbstractRepository<Usuario> implement
 
 		return usuario;
 	}
+
+    @Override
+    public List<Usuario> listByNomeOrEmail(final String nome) {
+        return this.getSession().createCriteria(Usuario.class)
+                .add(Restrictions.or(Restrictions.like("nomeCompleto", nome, MatchMode.START),
+                        Restrictions.like("email", nome, MatchMode.START)))
+                .list();
+    }
 
     @Override
     public void add(final Usuario usuario) {

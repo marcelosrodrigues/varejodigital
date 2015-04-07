@@ -104,5 +104,9 @@ public abstract class AbstractRepository<E> implements Repository<E> {
         return search(e,0);
     }
 
-
+    @Override
+    public void enableFilter(final String filtro, final Serializable e) {
+        this.getSession().enableFilter(filtro)
+                .setParameter(filtro, e);
+    }
 }

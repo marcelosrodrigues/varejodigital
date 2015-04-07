@@ -18,4 +18,6 @@ public interface Repository<E> extends Serializable {
     ResultList<E> search(E e, Integer page);
 
     ResultList<E> search(E e);
+
+    void enableFilter(String filtro, Serializable e);
 }
