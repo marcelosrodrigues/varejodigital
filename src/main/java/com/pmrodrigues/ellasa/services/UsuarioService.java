@@ -7,7 +7,6 @@ import com.pmrodrigues.ellasa.repositories.utils.FilterName;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,7 +36,7 @@ public class UsuarioService implements UserDetailsService {
 		if( usuario != null ) {
             final List<GrantedAuthority> authorities = new ArrayList<>();
             for (final Perfil role : usuario.getRoles()) {
-                authorities.add(new SimpleGrantedAuthority(role.getNome()));
+                authorities.add(role.getAuthority());
             }
 
             return new User(username, usuario.getPassword(), true, true, true, !usuario.isBloqueado(), authorities);

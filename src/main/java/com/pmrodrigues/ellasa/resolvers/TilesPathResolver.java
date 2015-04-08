@@ -12,7 +12,7 @@ import static java.lang.String.format;
 @Component
 public class TilesPathResolver extends DefaultPathResolver {
 
-	public TilesPathResolver(FormatResolver resolver) {
+	public TilesPathResolver(final FormatResolver resolver) {
 		super(resolver);
 	}
 

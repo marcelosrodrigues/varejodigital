@@ -5,9 +5,11 @@ import br.com.caelum.vraptor.ioc.Component;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.annotations.*;
 import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
+import com.pmrodrigues.ellasa.models.Imagem;
 import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.sessionscope.Imagens;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.validator.GenericValidator;
 
 /**
@@ -52,11 +54,12 @@ public class SecaoController extends AbstractCRUDController<Secao> {
     }
 
     public String getIcone() {
-
-        for (final String imagem : imagens.getArquivos()) {
-            return Constante.URL_IMAGENS + imagem;
+        String icone = null;
+        if (!imagens.getImagens().isEmpty()) {
+            icone = ((Imagem) CollectionUtils.get(imagens, 0)).getUrl();
         }
-        return null;
+
+        return icone;
     }
 
     @Update

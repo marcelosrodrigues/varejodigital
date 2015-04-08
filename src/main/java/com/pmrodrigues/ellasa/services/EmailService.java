@@ -35,7 +35,7 @@ public class EmailService {
             return this;
         } catch (MessagingException e) {
             throw new EnderecoEmailInvalidoException(format(
-                    "O endereço %s é inválido", email));
+                    "O endereço %s é inválido", email), e);
         }
     }
 
@@ -46,7 +46,7 @@ public class EmailService {
             return this;
         } catch (MessagingException e) {
             throw new EnderecoEmailInvalidoException(format(
-                    "O endereço %s é inválido", email));
+                    "O endereço %s é inválido", email), e);
         }
     }
 
@@ -57,7 +57,7 @@ public class EmailService {
             return this;
         } catch (MessagingException e) {
             throw new EnderecoEmailInvalidoException(format(
-                    "O endereço %s é inválido", email));
+                    "O endereço %s é inválido", email), e);
         }
     }
 
@@ -66,8 +66,9 @@ public class EmailService {
             createMimeMessage();
             message.setSubject(subject);
             return this;
-        } catch (Exception e) {
-            return this;
+        } catch (MessagingException e) {
+            throw new EnderecoEmailInvalidoException(format(
+                    "Erro ao adicionar o subject %s ao email", subject), e);
         }
     }
 

@@ -71,14 +71,14 @@ public class Usuario implements Serializable {
     @JoinTable(name = "membros", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "perfil_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "perfil_id"}))
-    private Set<Perfil> perfis = new HashSet<>();
+    private final Set<Perfil> perfis = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "lojistas", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "loja_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "loja_id"})
     )
-    private Set<Loja> lojas = new HashSet<>();
+    private final Set<Loja> lojas = new HashSet<>();
 
     @Column
     private Long tentativas = 0L;
@@ -188,7 +188,7 @@ public class Usuario implements Serializable {
     @Override
     public boolean equals(final Object obj) {
         if (obj instanceof Usuario) {
-            Usuario other = (Usuario) obj;
+            final Usuario other = (Usuario) obj;
             if (this.id == null || other.id == null) {
                 return this.email.equalsIgnoreCase(other.email);
             } else {

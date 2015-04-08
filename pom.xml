@@ -117,9 +117,7 @@
                         <ruleset>rulesets/java/clone.xml</ruleset>
                         <ruleset>rulesets/java/codesize.xml</ruleset>
                         <ruleset>rulesets/java/design.xml</ruleset>
-                        <ruleset>rulesets/java/empty.xml</ruleset>
                         <ruleset>rulesets/java/finalizers.xml</ruleset>
-                        <ruleset>rulesets/java/imports.xml</ruleset>
                         <ruleset>rulesets/java/optimizations.xml</ruleset>
                         <ruleset>rulesets/java/strictexception.xml</ruleset>
                         <ruleset>rulesets/java/strings.xml</ruleset>

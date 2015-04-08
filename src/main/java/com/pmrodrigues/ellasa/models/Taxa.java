@@ -16,13 +16,13 @@ public class Taxa implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //NOPMD
 
     @Column
-    private String nome;
+    private String nome; //NOPMD
 
     @Column
-    private BigDecimal valor;
+    private BigDecimal valor; //NOPMD
 
     public BigDecimal getValor() {
         return valor;

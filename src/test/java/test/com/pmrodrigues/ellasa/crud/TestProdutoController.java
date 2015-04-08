@@ -5,6 +5,7 @@ import br.com.caelum.vraptor.util.test.MockValidator;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.ProdutoController;
 import com.pmrodrigues.ellasa.models.Atributo;
+import com.pmrodrigues.ellasa.models.Imagem;
 import com.pmrodrigues.ellasa.models.Produto;
 import com.pmrodrigues.ellasa.repositories.ProdutoRepository;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
@@ -59,13 +60,13 @@ public class TestProdutoController {
 
         final Imagens imagens = context.mock(Imagens.class);
         final Atributos atributos = context.mock(Atributos.class);
-        final Set<String> arquivos = new HashSet<>();
+        final Set<Imagem> arquivos = new HashSet<>();
         final List<Atributo> tamanhos = new ArrayList<>();
-        arquivos.addAll(Arrays.asList("arquivo.gif", "arquivo2.gif", "arquivo3.gif"));
+        arquivos.addAll(Arrays.asList(new Imagem("arquivo.gif"), new Imagem("arquivo2.gif"), new Imagem("arquivo3.gif")));
         tamanhos.addAll(Arrays.asList(new Atributo("teste")));
 
         context.checking(new Expectations() {{
-            oneOf(imagens).getArquivos();
+            oneOf(imagens).getImagens();
             will(returnValue(arquivos));
 
             oneOf(atributos).getAtributos();
@@ -89,13 +90,13 @@ public class TestProdutoController {
     public void alterarProduto() {
         final Imagens imagens = context.mock(Imagens.class);
         final Atributos atributos = context.mock(Atributos.class);
-        final Set<String> arquivos = new HashSet<>();
+        final Set<Imagem> arquivos = new HashSet<>();
         final List<Atributo> tamanhos = new ArrayList<>();
-        arquivos.addAll(Arrays.asList("arquivo.gif", "arquivo2.gif", "arquivo3.gif"));
+        arquivos.addAll(Arrays.asList(new Imagem("arquivo.gif"), new Imagem("arquivo2.gif"), new Imagem("arquivo3.gif")));
         tamanhos.addAll(Arrays.asList(new Atributo("teste")));
 
         context.checking(new Expectations() {{
-            oneOf(imagens).getArquivos();
+            oneOf(imagens).getImagens();
             will(returnValue(arquivos));
 
             oneOf(atributos).getAtributos();

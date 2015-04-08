@@ -62,7 +62,13 @@ public class TreeViewTag extends SimpleTagSupport {
                 }
 
                 writer.println("<li>");
-                if (sublist != null && !sublist.isEmpty()) {
+                if (sublist == null || sublist.isEmpty()) {
+
+                    writer.println(format("<a href=\"%s\">%s</a>",
+                            format("%s?id=%s", url, getProperty(entity, value)),
+                            getProperty(entity, label)));
+
+                } else {
 
                     writer.println(format("<input type=\"checkbox\" id=\"item-%s\" /><label for=\"item-%s\"><a href=\"%s\">%s</a></label>",
                             getProperty(entity, value),
@@ -73,12 +79,6 @@ public class TreeViewTag extends SimpleTagSupport {
                     writer.println("<ul>");
                     createTreeView(sublist);
                     writer.append("</ul>");
-
-                } else {
-
-                    writer.println(format("<a href=\"%s\">%s</a>",
-                            format("%s?id=%s", url, getProperty(entity, value)),
-                            getProperty(entity, label)));
                 }
 
                 writer.println("</li>");

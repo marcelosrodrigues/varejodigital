@@ -25,7 +25,7 @@ public class ItemPedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long id; //NOPMD
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id")
@@ -40,7 +40,7 @@ public class ItemPedido implements Serializable {
 
     @ElementCollection
     @CollectionTable(name = "comissao", joinColumns = @JoinColumn(name = "item_id"))
-    private Set<Comissao> comissoes = new HashSet<>();
+    private final Set<Comissao> comissoes = new HashSet<>();
 
     @Column
     private BigDecimal preco;
@@ -60,6 +60,7 @@ public class ItemPedido implements Serializable {
     }
 
     public ItemPedido() {
+        //NOPMD
     }
 
     public Produto getProduto() {

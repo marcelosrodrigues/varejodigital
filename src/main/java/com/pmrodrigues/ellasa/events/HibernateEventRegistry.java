@@ -1,5 +1,6 @@
 package com.pmrodrigues.ellasa.events;
 
+import com.pmrodrigues.ellasa.exceptions.ErroNaoDocumentoException;
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -63,7 +64,7 @@ public class HibernateEventRegistry implements Integrator {
                     method.invoke(entity);
                 } catch (IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException e) {
-                    throw new RuntimeException(e);
+                    throw new ErroNaoDocumentoException(e);
                 }
             }
         }

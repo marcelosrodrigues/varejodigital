@@ -6,18 +6,17 @@ import org.joda.time.DateTime;
 import javax.persistence.*;
 import java.util.Date;
 
-@SuppressWarnings("FieldCanBeLocal")
 @Entity
 @Table(name = "endereco")
 public class EnderecoCliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //NOPMD
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Cliente.class)
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    private Cliente cliente; //NOPMD
 
     @Column
     private String logradouro;
@@ -42,20 +41,20 @@ public class EnderecoCliente {
     private Estado estado;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    private Date dataCriacaco = DateTime.now().toDate();
+    @Column(name = "dataCriacaco")
+    private Date dataCriacao = DateTime.now().toDate(); //NOPMD
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Date dataAlteracao = DateTime.now().toDate();
+    private Date dataAlteracao = DateTime.now().toDate(); //NOPMD
 
     @Enumerated
-    private Tipo tipo = Tipo.RESIDENCIAL;
+    private Tipo tipo = Tipo.RESIDENCIAL; //NOPMD
 
 
     @PrePersist
     public void onInsert() {
-        dataCriacaco = DateTime.now().toDate();
+        dataCriacao = DateTime.now().toDate();
         dataAlteracao = DateTime.now().toDate();
     }
 

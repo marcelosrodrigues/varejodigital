@@ -14,15 +14,15 @@ public class Contrato implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id; //NOPMD
 
 	@Temporal(TemporalType.DATE)
 	@Column(nullable = false)
-	private final Date inicio = DateTime.now().toDate();
+	private final Date inicio = DateTime.now().toDate(); //NOPMD
 
 	@Column(nullable = true)
 	@Temporal(TemporalType.DATE)
-	private Date termino;
+	private Date termino; //NOPMD
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "franqueado_id")
@@ -55,6 +55,7 @@ public class Contrato implements Serializable {
 	}
 
     public Contrato() {
-    } //NOPMD
+		//NOPMD
+	}
 
 }

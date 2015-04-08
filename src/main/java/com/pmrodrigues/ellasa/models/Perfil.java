@@ -3,6 +3,8 @@ package com.pmrodrigues.ellasa.models;
 import org.apache.commons.validator.GenericValidator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,7 +33,7 @@ public class Perfil implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "usuario_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "perfil_id"}))
     @LazyCollection(LazyCollectionOption.EXTRA)
-    private Set<Usuario> membros = new HashSet<>();
+    private final Set<Usuario> membros = new HashSet<>();
 
     public Perfil(final String nome) {
         this();
@@ -82,5 +84,9 @@ public class Perfil implements Serializable {
 
     public void adicionar(final Collection<Usuario> usuarios) {
         this.membros.addAll(usuarios);
+    }
+
+    public GrantedAuthority getAuthority() {
+        return new SimpleGrantedAuthority(this.nome);
     }
 }

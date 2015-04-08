@@ -22,7 +22,8 @@ public class Atributo implements Serializable {
     }
 
     public Atributo() {
-    }//NOPMD
+        //NOPMD
+    }
 
     @Override
     public boolean equals(final Object obj) {

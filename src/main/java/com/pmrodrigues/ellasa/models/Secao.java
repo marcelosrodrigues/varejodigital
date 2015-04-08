@@ -37,7 +37,7 @@ public class Secao implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "secao_id"),
             inverseJoinColumns = @JoinColumn(name = "loja_id"))
-    private final Set<Loja> lojas = new HashSet<>();
+    private final Set<Loja> lojas = new HashSet<>(); //NOPMD
 
     public Set<Secao> getSubsecoes() {
         return subsecoes;

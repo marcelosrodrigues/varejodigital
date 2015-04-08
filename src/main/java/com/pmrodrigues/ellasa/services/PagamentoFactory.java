@@ -1,5 +1,6 @@
 package com.pmrodrigues.ellasa.services;
 
+import com.pmrodrigues.ellasa.exceptions.MeioPagamentoInvalidoException;
 import com.pmrodrigues.ellasa.models.MeioPagamento;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.pagamentos.entity.Transaction.PaymentMethod;
@@ -41,7 +42,7 @@ public class PagamentoFactory implements Serializable {
 				|| method == PaymentMethod.CARTAO_VISA) {
 			return cartao;
 		} else {
-			throw new RuntimeException("Meio de pagamento inválido");
+			throw new MeioPagamentoInvalidoException("Meio de pagamento inválido");
 		}
 
 	}

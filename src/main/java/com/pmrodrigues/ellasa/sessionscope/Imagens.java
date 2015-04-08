@@ -4,6 +4,7 @@ import br.com.caelum.vraptor.interceptor.multipart.UploadedFile;
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.SessionScoped;
 import com.pmrodrigues.ellasa.Constante;
+import com.pmrodrigues.ellasa.models.Imagem;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -22,7 +23,7 @@ import static java.lang.String.format;
 @SessionScoped
 public class Imagens {
 
-    private final Collection<String> fileName = new HashSet<>();
+    private final Collection<Imagem> imagens = new HashSet<>();
     private final ResourceBundle bundle = ResourceBundle.getBundle("upload");
     private static final Logger logging = Logger.getLogger(Imagens.class);
 
@@ -37,7 +38,7 @@ public class Imagens {
 
             FileUtils.copyInputStreamToFile(imagem.getFile(), image);
 
-            fileName.add(imagem.getFileName());
+            imagens.add(new Imagem(imagem.getFileName()));
 
             logging.debug(format("termino do upload da imagem %s", imagem.getFileName()));
 
@@ -61,15 +62,15 @@ public class Imagens {
             image.delete();
         }
 
-        this.fileName.remove(imagem);
+        this.imagens.remove(imagem);
 
     }
 
-    public Collection<String> getArquivos() {
-        return fileName;
+    public Collection<Imagem> getImagens() {
+        return imagens;
     }
 
     public void apagar() {
-        this.fileName.clear();
+        this.imagens.clear();
     }
 }

@@ -64,8 +64,8 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
     }
 
     public void adicionarLista(final Produto produto) {
-        for (final String arquivo : this.imagens.getArquivos()) {
-            produto.adicionar(new Imagem(arquivo));
+        for (final Imagem imagem : this.imagens.getImagens()) {
+            produto.adicionar(imagem);
         }
 
         for (final Atributo atributo : this.atributos.getAtributos()) {

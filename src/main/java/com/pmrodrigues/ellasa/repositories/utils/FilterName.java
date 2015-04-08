@@ -3,7 +3,7 @@ package com.pmrodrigues.ellasa.repositories.utils;
 /**
  * Created by Marceloo on 01/04/2015.
  */
-public interface FilterName {
+public interface FilterName { //NOPMD
 
     String FILTRO_POR_VENDEDOR = "vendedor";
 

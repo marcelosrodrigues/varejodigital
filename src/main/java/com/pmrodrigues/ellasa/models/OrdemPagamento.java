@@ -45,10 +45,10 @@ public class OrdemPagamento implements Serializable {
 	private String motivo;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private final Date dataGeracao = DateTime.now().toDate();
+	private final Date dataGeracao = DateTime.now().toDate(); //NOPMD
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataEnvio;
+	private Date dataEnvio; //NOPMD
 
 	@Column(nullable = false)
 	private String descricao;

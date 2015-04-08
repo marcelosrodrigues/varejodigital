@@ -84,7 +84,7 @@ public class TestSecaoController extends AbstractTransactionalJUnit4SpringContex
         arquivos.addAll(Arrays.asList("arquivo.gif"));
 
         context.checking(new Expectations() {{
-            oneOf(imagens).getArquivos();
+            oneOf(imagens).getImagens();
             will(returnValue(arquivos));
 
             oneOf(imagens).apagar();
@@ -109,7 +109,7 @@ public class TestSecaoController extends AbstractTransactionalJUnit4SpringContex
         arquivos.addAll(Arrays.asList("arquivo.gif"));
 
         context.checking(new Expectations() {{
-            oneOf(imagens).getArquivos();
+            oneOf(imagens).getImagens();
             will(returnValue(arquivos));
 
             oneOf(imagens).apagar();

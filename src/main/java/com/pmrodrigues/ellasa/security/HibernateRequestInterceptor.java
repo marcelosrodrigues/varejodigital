@@ -44,7 +44,7 @@ public class HibernateRequestInterceptor implements Interceptor {
     }
 
     @Override
-    public boolean accepts(ResourceMethod method) {
+    public boolean accepts(final ResourceMethod method) {
         return true;
     }
 

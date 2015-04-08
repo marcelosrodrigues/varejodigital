@@ -14,8 +14,8 @@ import java.util.Collection;
 @SessionScoped
 public class Membros {
 
-    private Collection<Usuario> usuarios = new ArrayList<>();
-    private Collection<Usuario> removidos = new ArrayList<>();
+    private final Collection<Usuario> usuarios = new ArrayList<>();
+    private final Collection<Usuario> removidos = new ArrayList<>();
 
     public void adicionar(final Usuario usuario) {
 

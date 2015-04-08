@@ -17,7 +17,7 @@ import java.util.List;
 @SessionScoped
 public class Atributos {
 
-    private List<Atributo> atributos = new ArrayList<>();
+    private final List<Atributo> atributos = new ArrayList<>();
 
     public void adicionar(final String valor) {
         final Atributo atributo = new Atributo(valor);

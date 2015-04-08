@@ -1,5 +1,6 @@
 package com.pmrodrigues.ellasa.services;
 
+import com.pmrodrigues.ellasa.exceptions.ErroNaoDocumentoException;
 import com.pmrodrigues.ellasa.models.OrdemPagamento;
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.ContratoRepository;
@@ -50,7 +51,7 @@ public class ContratoService {
             repository.add(ordempagamento.getContrato());
             ordempagamentoRepository.add(ordempagamento);
         } else {
-            throw new RuntimeException(ordempagamento.getMotivo());
+            throw new ErroNaoDocumentoException(ordempagamento.getMotivo());
         }
 
     }

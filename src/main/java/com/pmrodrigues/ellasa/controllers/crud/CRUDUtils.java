@@ -4,6 +4,7 @@ import com.pmrodrigues.ellasa.annotations.After;
 import com.pmrodrigues.ellasa.annotations.Before;
 import com.pmrodrigues.ellasa.annotations.Insert;
 import com.pmrodrigues.ellasa.annotations.Update;
+import com.pmrodrigues.ellasa.exceptions.ErroNaoDocumentoException;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
@@ -30,7 +31,7 @@ class CRUDUtils<E> {
         try {
             return invoke(Update.class, object);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
     }
 
@@ -38,7 +39,7 @@ class CRUDUtils<E> {
         try {
             return invoke(Insert.class, object);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
 
     }
@@ -62,7 +63,7 @@ class CRUDUtils<E> {
             invoke(After.class, object);
 
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
     }
 
@@ -72,7 +73,7 @@ class CRUDUtils<E> {
             id.setAccessible(true);
             return (Long) id.get(object);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
     }
 
@@ -81,7 +82,7 @@ class CRUDUtils<E> {
         try {
             invoke(Before.class);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
 
     }

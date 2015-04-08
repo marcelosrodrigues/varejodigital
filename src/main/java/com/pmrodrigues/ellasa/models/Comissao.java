@@ -10,17 +10,16 @@ import java.math.BigDecimal;
 /**
  * Created by Marceloo on 14/10/2014.
  */
-@SuppressWarnings("FieldCanBeLocal")
 @Embeddable
 public class Comissao implements Serializable {
 
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "taxa_id")
-    private Taxa taxa;
+    private Taxa taxa; //NOPMD
 
     @Column
-    private BigDecimal valorUnitario;
+    private BigDecimal valorUnitario; //NOPMD
 
     @Column
     private BigDecimal valorTotal;
@@ -33,7 +32,8 @@ public class Comissao implements Serializable {
     }
 
     public Comissao() {
-    } //NOPMD
+        //NOPMD
+    }
 
     public BigDecimal getValorTotal() {
         return valorTotal;

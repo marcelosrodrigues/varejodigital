@@ -73,16 +73,7 @@ public class RadioTreeViewTag extends SimpleTagSupport {
 
             writer.write("<li>");
 
-            if (sublist != null && !sublist.isEmpty()) {
-
-                writer.write(format("<div class=\"form-group\"><label>%s</label></div>",
-                        getProperty(entity, label)));
-
-                writer.write("<ul>");
-                createTreeView(sublist);
-                writer.append("</ul>");
-
-            } else {
+            if (sublist == null || sublist.isEmpty()) {
 
                 writer.write(format("<div class=\"radio\"><label><input type=\"radio\" id=\"%s\" name=\"%s\" father=\"%s\" value=\"%s\" %s />%s</label></div>",
                         format("%s", id),
@@ -91,6 +82,15 @@ public class RadioTreeViewTag extends SimpleTagSupport {
                         getProperty(entity, value),
                         entity.equals(checked) ? "checked=\"checked\"" : "",
                         getProperty(entity, label)));
+
+            } else {
+
+                writer.write(format("<div class=\"form-group\"><label>%s</label></div>",
+                        getProperty(entity, label)));
+
+                writer.write("<ul>");
+                createTreeView(sublist);
+                writer.append("</ul>");
 
             }
 

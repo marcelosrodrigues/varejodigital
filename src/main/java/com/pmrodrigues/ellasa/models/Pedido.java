@@ -53,7 +53,7 @@ public class Pedido implements Serializable {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pedido_id", nullable = false)
-    private Collection<ItemPedido> itens = new HashSet<>();
+    private final Collection<ItemPedido> itens = new HashSet<>();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "loja_id")
@@ -72,19 +72,19 @@ public class Pedido implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Date dataEntrega = DateTime.now().toDate();
+    private Date dataEntrega = DateTime.now().toDate(); //NOPMD
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "dataCriacacao")
+    private Date dataCriacao; //NOPMD
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Date dataCriacaco;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    private Date dataAlteracao;
+    private Date dataAlteracao; //NOPMD
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "vendedor_id")
-    private Usuario vendedor;
+    private Usuario vendedor; //NOPMD
 
     @Column(name = "akatus_transaction_code")
     private String codigoReferencia;
@@ -98,7 +98,7 @@ public class Pedido implements Serializable {
 
     @PrePersist
     public void onInsert() {
-        dataCriacaco = DateTime.now().toDate();
+        dataCriacao = DateTime.now().toDate();
         dataAlteracao = DateTime.now().toDate();
         dataCompra = DateTime.now().toDate();
     }

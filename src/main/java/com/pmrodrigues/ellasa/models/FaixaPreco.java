@@ -12,18 +12,18 @@ public class FaixaPreco implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long id;
+    private Long id; //NOPMD
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "uf_destino")
-    private Estado destino;
+    private Estado destino; //NOPMD
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "uf_origem")
-    private Estado origem;
+    private Estado origem; //NOPMD
 
     @Column(nullable = false, name = "preco")
-    private BigDecimal preco;
+    private BigDecimal preco; //NOPMD
 
 
 }

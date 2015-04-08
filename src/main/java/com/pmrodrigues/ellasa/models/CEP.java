@@ -11,16 +11,16 @@ public class CEP implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long id;
+    private Long id; //NOPMD
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "estado_id")
-    private Estado estado;
+    private Estado estado; //NOPMD
 
     @Column(nullable = false)
-    private Long inicial;
+    private Long inicial; //NOPMD
 
     @Column(nullable = false, name = "final")
-    private Long fim;
+    private Long fim; //NOPMD
 
 }

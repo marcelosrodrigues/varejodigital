@@ -7,6 +7,7 @@ import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.resource.ResourceMethod;
 import br.com.caelum.vraptor.serialization.xstream.XStreamBuilder;
 import com.google.gson.*;
+import com.pmrodrigues.ellasa.exceptions.ErroNaoDocumentoException;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -57,7 +58,7 @@ public class CustomJSONDeserialization extends JsonDeserializer {
 
         } catch (IOException e) {
             logging.fatal("erro ao deserializar a mensagem json " + e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
 
     }

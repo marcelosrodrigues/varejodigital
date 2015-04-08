@@ -36,14 +36,13 @@ public class Cliente implements Serializable {
     @Where(clause = "tipo = 0")
     private EnderecoCliente endereco;
 
-    @SuppressWarnings("FieldCanBeLocal")
     @Temporal(TemporalType.TIMESTAMP)
-    @Column
-    private Date dataCriacaco = DateTime.now().toDate();
+    @Column(name = "dataCriacaco")
+    private Date dataCriacao = DateTime.now().toDate(); //NOPMD
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
-    private Date dataAlteracao = DateTime.now().toDate();
+    private Date dataAlteracao = DateTime.now().toDate(); //NOPMD
 
     @Enumerated(EnumType.ORDINAL)
     private Genero sexo;
@@ -51,7 +50,7 @@ public class Cliente implements Serializable {
 
     @PrePersist
     public void onInsert() {
-        dataCriacaco = DateTime.now().toDate();
+        dataCriacao = DateTime.now().toDate();
         dataAlteracao = DateTime.now().toDate();
     }
 

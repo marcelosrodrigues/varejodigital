@@ -6,6 +6,7 @@ import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.ValidationMessage;
 import com.pmrodrigues.ellasa.Constante;
+import com.pmrodrigues.ellasa.exceptions.ErroNaoDocumentoException;
 import com.pmrodrigues.ellasa.exceptions.UniqueException;
 import com.pmrodrigues.ellasa.repositories.Repository;
 import com.pmrodrigues.ellasa.repositories.ResultList;
@@ -22,7 +23,7 @@ import static java.lang.String.format;
 /**
  * Created by Marceloo on 08/12/2014.
  */
-public abstract class AbstractCRUDController<E> {
+public abstract class AbstractCRUDController<E> { //NOPMD
 
     private static final Logger logging = Logger.getLogger(AbstractCRUDController.class);
 
@@ -110,7 +111,7 @@ public abstract class AbstractCRUDController<E> {
 
             result.include(Constante.OBJECT,e);
         } catch (InstantiationException | IllegalAccessException ex) {
-            throw new RuntimeException(ex);
+            throw new ErroNaoDocumentoException(ex);
         }
     }
 

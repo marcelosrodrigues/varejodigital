@@ -39,57 +39,57 @@ public class CRUDRoutes implements RoutesConfiguration {
             public void routes() {
                 for (final Class<? extends AbstractCRUDController> clazz : classes) {
 
-                      final ParameterizedType type = (ParameterizedType) clazz.getGenericSuperclass();
+                    final ParameterizedType type = (ParameterizedType) clazz.getGenericSuperclass();
                     final Class persistedType = (Class) type.getActualTypeArguments()[0];
 
-                      final String entityName = persistedType.getSimpleName().toLowerCase();
+                    final String entityName = persistedType.getSimpleName().toLowerCase();
 
                     for (final Method metodo : clazz.getMethods()) {
 
-                          switch (metodo.getName()){
-                              case "index":
-                                  logging.debug(format("criando a chamada para url /%s/index.do executando a classe %s metodo %s",entityName,clazz,metodo));
-                                  routeFor(format("/%s/index.do", entityName)).is(clazz,metodo);
-                                  break;
-                              case "formulario":
-                                  logging.debug(format("criando a chamada para url /%s/novo.do executando a classe %s metodo %s",entityName,clazz,metodo));
-                                  routeFor(format("/%s/novo.do", entityName)).with(HttpMethod.GET).is(clazz, metodo);
-                                  break;
-                              case "salvar":
-                                  logging.debug(format("criando a chamada para url /%s/salvar.do executando a classe %s metodo %s", entityName, clazz, metodo));
-                                  routeFor(format("/%s/salvar.do", entityName)).with(HttpMethod.POST).is(clazz, metodo);
-                                  break;
-                              case "show":
-                                  logging.debug(format("criando a chamada para url /%s/abrir.do executando a classe %s metodo %s",entityName,clazz,metodo));
-                                  routeFor(format("/%s/abrir.do",entityName)).with(HttpMethod.GET).is(clazz, metodo);
-                                  break;
-                              case "search":
-                                  logging.debug(format("criando a chamada para url /%s/pesquisar.do executando a classe %s metodo %s",entityName,clazz,metodo));
-                                  routeFor(format("/%s/pesquisar.do",entityName)).is(clazz, metodo);
-                                  break;
-                              case "delete":
-                                  logging.debug(format("criando a chamada para url /%s/excluir.do executando a classe %s metodo %s", entityName, clazz, metodo));
-                                  routeFor(format("/%s/excluir.do", entityName)).with(HttpMethod.POST).is(clazz, metodo);
-                                  break;
-                              default :
-                                  logging.debug("criando url default para os métodos que anotados");
+                        switch (metodo.getName()) {
+                            case "index":
+                                logging.debug(format("criando a chamada para url /%s/index.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                routeFor(format("/%s/index.do", entityName)).is(clazz, metodo);
+                                break;
+                            case "formulario":
+                                logging.debug(format("criando a chamada para url /%s/novo.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                routeFor(format("/%s/novo.do", entityName)).with(HttpMethod.GET).is(clazz, metodo);
+                                break;
+                            case "salvar":
+                                logging.debug(format("criando a chamada para url /%s/salvar.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                routeFor(format("/%s/salvar.do", entityName)).with(HttpMethod.POST).is(clazz, metodo);
+                                break;
+                            case "show":
+                                logging.debug(format("criando a chamada para url /%s/abrir.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                routeFor(format("/%s/abrir.do", entityName)).with(HttpMethod.GET).is(clazz, metodo);
+                                break;
+                            case "search":
+                                logging.debug(format("criando a chamada para url /%s/pesquisar.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                routeFor(format("/%s/pesquisar.do", entityName)).is(clazz, metodo);
+                                break;
+                            case "delete":
+                                logging.debug(format("criando a chamada para url /%s/excluir.do executando a classe %s metodo %s", entityName, clazz, metodo));
+                                routeFor(format("/%s/excluir.do", entityName)).with(HttpMethod.POST).is(clazz, metodo);
+                                break;
+                            default:
+                                logging.debug("criando url default para os métodos que anotados");
 
-                                  HttpMethod httpMethod = HttpMethod.GET;
-                                  if( metodo.isAnnotationPresent(Post.class) ){
-                                      httpMethod = HttpMethod.POST;
-                                  }
-                                  if( metodo.isAnnotationPresent(Path.class) ){
-                                      Path path = metodo.getAnnotation(Path.class);
-                                      routeFor(path.value()[0]).with(httpMethod).is(clazz, metodo);
-                                  } else if (metodo.isAnnotationPresent(Post.class) || metodo.isAnnotationPresent(Get.class) ){
-                                      routeFor(format("/%s/%s.do",entityName,metodo.getName())).with(httpMethod).is(clazz, metodo);
-                                  }
-                                  break;
-                          }
+                                HttpMethod httpMethod = HttpMethod.GET;
+                                if (metodo.isAnnotationPresent(Post.class)) {
+                                    httpMethod = HttpMethod.POST;
+                                }
+                                if (metodo.isAnnotationPresent(Path.class)) {
+                                    final Path path = metodo.getAnnotation(Path.class);
+                                    routeFor(path.value()[0]).with(httpMethod).is(clazz, metodo);
+                                } else if (metodo.isAnnotationPresent(Post.class) || metodo.isAnnotationPresent(Get.class)) {
+                                    routeFor(format("/%s/%s.do", entityName, metodo.getName())).with(httpMethod).is(clazz, metodo);
+                                }
+                                break;
+                        }
 
-                      }
+                    }
 
-              }
+                }
             }
         };
     }

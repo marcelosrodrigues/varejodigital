@@ -7,6 +7,7 @@ import br.com.caelum.vraptor.view.Results;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.annotations.*;
 import com.pmrodrigues.ellasa.controllers.crud.AbstractCRUDController;
+import com.pmrodrigues.ellasa.exceptions.ErroNaoDocumentoException;
 import com.pmrodrigues.ellasa.exceptions.UniqueException;
 import com.pmrodrigues.ellasa.models.Estado;
 import com.pmrodrigues.ellasa.models.Usuario;
@@ -69,7 +70,7 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
         } catch (IllegalAccessException | InvocationTargetException e) {
             logging.fatal("erro ao copiar os valores digitados para a entidade existente no banco de dados " +
                     e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
     }
 
@@ -121,7 +122,7 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
             super.getValidator().onErrorForwardTo(this.getClass()).openUserProfile();
         } catch (InvocationTargetException | IllegalAccessException e) {
             logging.fatal("erro ao copiar os valores digitados para a entidade existente no banco de dados " + e.getMessage(), e);
-            throw new RuntimeException(e);
+            throw new ErroNaoDocumentoException(e);
         }
     }
 
