@@ -23,7 +23,7 @@
     <security:http pattern="/**" use-expressions="true" once-per-request="true" create-session="never"
                    auto-config="true" authentication-manager-ref="userAuthenticationManager">
 
-    <security:intercept-url pattern="/**/*.do" access="isFullyAuthenticated()"/>
+        <security:intercept-url pattern="/**/*.do" access="isFullyAuthenticated()"/>
         <security:form-login login-page="/login.jsp" login-processing-url="/j_spring_security_check"
                              authentication-failure-handler-ref="failureHandler"
                              authentication-success-handler-ref="successHandler"

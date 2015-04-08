@@ -42,6 +42,9 @@ public class TestSuccessHandler {
 
             oneOf(repository).set(with(aNonNull(Usuario.class)));
 
+            oneOf(request).getContextPath();
+            will(returnValue(null));
+
             oneOf(response).sendRedirect(with(aNonNull(String.class)));
         }});
 
@@ -51,6 +54,34 @@ public class TestSuccessHandler {
         repository.set(handler, this.repository);
         handler.onAuthenticationSuccess(request, response, authentication);
 
+    }
+
+    @Test
+    public void testOnAuthenticationSuccessComAcertoDeContexto() throws Exception {
+
+        usuario.setEmail("teste");
+
+        context.checking(new Expectations() {{
+
+            oneOf(authentication).getPrincipal();
+            will(returnValue("teste"));
+
+            oneOf(repository).findByEmail(with(aNonNull(String.class)));
+            will(returnValue(usuario));
+
+            oneOf(repository).set(with(aNonNull(Usuario.class)));
+
+            allowing(request).getContextPath();
+            will(returnValue("/teste"));
+
+            oneOf(response).sendRedirect(with(aNonNull(String.class)));
+        }});
+
+        final SuccessHandler handler = new SuccessHandler();
+        final Field repository = handler.getClass().getDeclaredField("repository");
+        repository.setAccessible(true);
+        repository.set(handler, this.repository);
+        handler.onAuthenticationSuccess(request, response, authentication);
 
     }
 }

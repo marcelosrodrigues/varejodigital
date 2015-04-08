@@ -189,7 +189,11 @@ public class Usuario implements Serializable {
     public boolean equals(final Object obj) {
         if (obj instanceof Usuario) {
             Usuario other = (Usuario) obj;
-            return this.id.equals(other.id);
+            if (this.id == null || other.id == null) {
+                return this.email.equalsIgnoreCase(other.email);
+            } else {
+                return this.id.equals(other.id);
+            }
         }
         return false;
     }

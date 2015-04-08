@@ -2,6 +2,7 @@ package com.pmrodrigues.ellasa.security;
 
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
+import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,11 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
         usuario.desbloquear();
         repository.set(usuario);
 
-        response.sendRedirect("/index.do");
+        String context = "";
+        if (!GenericValidator.isBlankOrNull(request.getContextPath())) {
+            context = "/" + request.getContextPath();
+        }
+
+        response.sendRedirect(context + "/index.do");
     }
 }
