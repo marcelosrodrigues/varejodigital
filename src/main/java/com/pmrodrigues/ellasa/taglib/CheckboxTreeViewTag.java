@@ -72,12 +72,12 @@ public class CheckboxTreeViewTag extends SimpleTagSupport {
 
             writer.write("<li>");
 
-            writer.write(format("<div class=\"checkbox\"><label><input type=\"checkbox\" id=\"%s\" name=\"%s\" father=\"%s\" value=\"%s\" \"%s\">%s</label></div>",
+            writer.write(format("<div class=\"checkbox\"><label><input type=\"checkbox\" id=\"%s\" name=\"%s\" father=\"%s\" value=\"%s\" %s>%s</label></div>",
                     format("%s[]", id),
                     format("%s[]", id),
                     getNestedValue(entity, father),
                     getProperty(entity, value),
-                    checked != null && checked.contains(entity) ? "checked" : "",
+                    checked != null && checked.contains(entity) ? "checked=\"checked\"" : "",
                     getProperty(entity, label)));
 
             if (sublist != null && !sublist.isEmpty()) {

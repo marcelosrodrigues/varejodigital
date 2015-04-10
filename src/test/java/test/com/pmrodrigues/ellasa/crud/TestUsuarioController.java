@@ -64,7 +64,7 @@ public class TestUsuarioController extends
 
     private Long userId;
 
-    @Resource(name = "org.springframework.security.authenticationManager")
+    @Resource(name = "userAuthenticationManager")
     private AuthenticationManager authenticationManager;
 
     @Before

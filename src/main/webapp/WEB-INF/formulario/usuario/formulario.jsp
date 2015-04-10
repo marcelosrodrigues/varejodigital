@@ -11,7 +11,7 @@
             <fmt:message key="usuario.heading" bundle="${labels}"/>
         </div>
 
-        <div class="panel-body" style="margin-left: 40px;">
+        <div class="panel-body" style="">
 
             <c:if test="${not empty errors}">
                 <div class="alert alert-dismissable alert-danger">
@@ -40,7 +40,7 @@
                                            placeholder="<fmt:message key='usuario.nome' bundle='${labels}'/>"/>
                                 </div>
                             </div>
-                            <div class="col-sm-4" style="margin-left: 20px;">
+                            <div class="col-sm-4" style="margin-left: 8px;">
                                 <div class="form-group">
                                     <label for="object.dataNascimento"><fmt:message key="usuario.dataNascimento"
                                                                                     bundle="${labels}"/></label>
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4" style="margin-left: 20px;">
+                            <div class="col-sm-4" style="margin-left: 8px;">
                                 <div class="form-group">
                                     <label for="object.cpf"><fmt:message key="usuario.cpf" bundle="${labels}"/></label>
                                     <input type="text" value="${object.cpf}" id="object.cpf" name="object.cpf"
@@ -74,7 +74,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-3" style="margin-left: 15px;">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="object.endereco.estado"><fmt:message key="endereco.estado"
                                                                             bundle="${labels}"/></label>
@@ -109,7 +109,7 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-10" style="margin-left: 15px;">
+                <div class="col-lg-10">
                     <div class="form-group">
                         <label for="object.endereco.logradouro"><fmt:message key="endereco.logradouro"
                                                                              bundle="${labels}"/></label>
@@ -121,7 +121,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-3" style="margin-left: 15px;">
+                <div class="col-sm-3">
                     <div class="form-group">
                         <label for="object.endereco.numero"><fmt:message key="endereco.numero"
                                                                          bundle="${labels}"/></label>
@@ -153,7 +153,7 @@
 
             </div>
 
-            <div class="row" style="margin-left: 1px;">
+                        <div class="row">
 
                 <div class="col-sm-5">
                     <div class="form-group">
@@ -177,7 +177,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-5" style="margin-left: 90px;">
+                            <div class="col-sm-5" style="margin-left: 135px;">
                     <div class="form-group">
                         <label for="object.residencial.ddd"><fmt:message key="usuario.residencial"
                                                                          bundle="${labels}"/></label>

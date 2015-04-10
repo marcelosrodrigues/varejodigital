@@ -75,7 +75,7 @@ public class Pedido implements Serializable {
     private Date dataEntrega = DateTime.now().toDate(); //NOPMD
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dataCriacacao")
+    @Column(name = "dataCriacaco")
     private Date dataCriacao; //NOPMD
 
     @Temporal(TemporalType.TIMESTAMP)

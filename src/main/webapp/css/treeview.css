@@ -51,7 +51,7 @@
 .css-treeview label::before,
 .css-treeview a,
 .css-treeview a::before {
-    background: url("/images/icons.png") no-repeat;
+    background: url("/ellasa/images/icons.png") no-repeat;
 }
 
 .css-treeview label,

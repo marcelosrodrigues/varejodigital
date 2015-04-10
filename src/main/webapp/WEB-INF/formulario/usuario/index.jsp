@@ -49,8 +49,16 @@
                 <td><a href='<c:url value="/usuario/abrir.do?id=${object.id}" />'>${object.id}</a></td>
                 <td>${object.nomeCompleto}</td>
                 <td>${object.email}</td>
-                <td>(${object.celular.ddd}) ${object.celular.numero}</td>
-                <td>(${object.residencial.ddd}) ${object.residencial.numero}</td>
+                <td>
+                    <c:if test="${object.celular.ddd != null && not empty object.celular.ddd && object.celular.numero != null && not empty object.celular.ddd && not empty object.celular.numero}">
+                        (${object.celular.ddd}) ${object.celular.numero}
+                    </c:if>
+                </td>
+                <td><c:if
+                        test="${object.residencial.ddd != null && not empty object.residencial.ddd && object.residencial.numero != null && not empty object.residencial.ddd && not empty object.residencial.numero}">
+                    (${object.residencial.ddd}) ${object.residencial.numero}
+                </c:if>
+                </td>
                 <td><c:choose>
                      <c:when test="${object.bloqueado}">
                          Bloqueado

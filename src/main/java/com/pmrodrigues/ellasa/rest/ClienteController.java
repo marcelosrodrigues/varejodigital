@@ -35,7 +35,7 @@ public class ClienteController {
         result.use(Results.json())
                 .from(clientes)
                 .include("endereco", "endereco.estado")
-                .exclude("endereco.estado.uf", "endereco.estado.nome", "dataCriacaco", "dataAlteracao", "endereco.dataCriacaco", "endereco.dataAlteracao")
+                .exclude("endereco.estado.uf", "endereco.estado.nome", "dataCriacao", "dataAlteracao", "endereco.dataCriacao", "endereco.dataAlteracao")
                 .serialize();
 
 

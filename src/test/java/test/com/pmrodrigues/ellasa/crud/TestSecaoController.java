@@ -4,6 +4,7 @@ import br.com.caelum.vraptor.util.test.MockResult;
 import br.com.caelum.vraptor.util.test.MockValidator;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.SecaoController;
+import com.pmrodrigues.ellasa.models.Imagem;
 import com.pmrodrigues.ellasa.models.Secao;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.sessionscope.Imagens;
@@ -80,11 +81,11 @@ public class TestSecaoController extends AbstractTransactionalJUnit4SpringContex
     @Test
     public void insert() {
 
-        final Set<String> arquivos = new HashSet<>();
-        arquivos.addAll(Arrays.asList("arquivo.gif"));
+        final Set<Imagem> arquivos = new HashSet<>();
+        arquivos.addAll(Arrays.asList(new Imagem("arquivo.gif")));
 
         context.checking(new Expectations() {{
-            oneOf(imagens).getImagens();
+            allowing(imagens).getImagens();
             will(returnValue(arquivos));
 
             oneOf(imagens).apagar();
@@ -105,11 +106,11 @@ public class TestSecaoController extends AbstractTransactionalJUnit4SpringContex
 
     @Test
     public void updateAtualizandoComponenteIncluindoArquivo() {
-        final Set<String> arquivos = new HashSet<>();
-        arquivos.addAll(Arrays.asList("arquivo.gif"));
+        final Set<Imagem> arquivos = new HashSet<>();
+        arquivos.addAll(Arrays.asList(new Imagem("arquivo.gif")));
 
         context.checking(new Expectations() {{
-            oneOf(imagens).getImagens();
+            allowing(imagens).getImagens();
             will(returnValue(arquivos));
 
             oneOf(imagens).apagar();

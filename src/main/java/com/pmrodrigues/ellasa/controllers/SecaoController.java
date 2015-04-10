@@ -56,7 +56,7 @@ public class SecaoController extends AbstractCRUDController<Secao> {
     public String getIcone() {
         String icone = null;
         if (!imagens.getImagens().isEmpty()) {
-            icone = ((Imagem) CollectionUtils.get(imagens, 0)).getUrl();
+            icone = ((Imagem) CollectionUtils.get(imagens.getImagens(), 0)).getUrl();
         }
 
         return icone;

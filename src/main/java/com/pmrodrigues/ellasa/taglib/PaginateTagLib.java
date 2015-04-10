@@ -26,12 +26,12 @@ public class PaginateTagLib extends SimpleTagSupport {
         final JspWriter out = this.getJspContext().getOut();
 
         out.print("<div class=\"row\">");
-        out.print("<div class=\"col-sm-6\">");
+        out.print("<div class=\"col-sm-5\">");
         out.print(format("<div class=\"dataTables_info\" id=\"dataTables-example_info\" role=\"alert\" " +
                         "aria-live=\"polite\" aria-relevant=\"all\">Página %s de %s</div></div>",
                 resultList.getPage() + 1, resultList.getPageCount()));
 
-        out.print("<div class=\"col-sm-6\" style=\"top: -30px;text-align:right;\"><div class=\"dataTables_paginate paging_simple_numbers\">");
+        out.print("<div class=\"col-sm-7\" style=\"top: -30px;text-align:right;\"><div class=\"dataTables_paginate paging_simple_numbers\">");
         out.print("<ul class=\"pagination\">");
 
         out.print(this.adicionarBotaoPrevious());
@@ -48,7 +48,7 @@ public class PaginateTagLib extends SimpleTagSupport {
     public String adicionarBotaoNext() {
         final StringBuffer out = new StringBuffer();
         out.append(format("<li class=\"paginate_button next %s\" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_next\">", resultList.isNext() ? "" : "disabled"));
-        out.append(format("<a href=\"%s?page=%s%s\">&gt;&gt;</a></li>", URL, resultList.isNext() ? this.resultList.getPage() + 1 : resultList.getPageCount(), recuperaParametrosConsulta()));
+        out.append(format("<a href=\"/ellasa%s?page=%s%s\">&gt;&gt;</a></li>", URL, resultList.isNext() ? this.resultList.getPage() + 1 : resultList.getPageCount(), recuperaParametrosConsulta()));
 
         return out.toString();
     }
@@ -58,7 +58,7 @@ public class PaginateTagLib extends SimpleTagSupport {
         final StringBuffer out = new StringBuffer();
         out.append(format("<li class=\"paginate_button previous %s\" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_previous\">",
                 resultList.isPrevious() ? "" : "disabled"));
-        out.append(format("<a href=\"%s?page=%s%s\">&lt;&lt;</a></li>", URL, resultList.isPrevious() ? resultList.getPage() - 1 : 0, recuperaParametrosConsulta()));
+        out.append(format("<a href=\"/ellasa%s?page=%s%s\">&lt;&lt;</a></li>", URL, resultList.isPrevious() ? resultList.getPage() - 1 : 0, recuperaParametrosConsulta()));
         return out.toString();
 
     }
@@ -76,7 +76,7 @@ public class PaginateTagLib extends SimpleTagSupport {
         }
 
         for (; index < pagecount; index++) {
-            out.append(format("<li class=\"paginate_button\" tabindex=\"%s\"><a href=\"%s?page=%s%s\">%s</a></li>", index, URL, index, recuperaParametrosConsulta(), index + 1));
+            out.append(format("<li class=\"paginate_button\" tabindex=\"%s\"><a href=\"/ellasa%s?page=%s%s\">%s</a></li>", index, URL, index, recuperaParametrosConsulta(), index + 1));
         }
 
         return out.toString();

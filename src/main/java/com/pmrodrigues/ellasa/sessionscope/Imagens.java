@@ -62,7 +62,7 @@ public class Imagens {
             image.delete();
         }
 
-        this.imagens.remove(imagem);
+        this.imagens.remove(new Imagem(imagem));
 
     }
 

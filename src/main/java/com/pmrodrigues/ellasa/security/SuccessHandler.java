@@ -41,7 +41,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 
         String context = "";
         if (!GenericValidator.isBlankOrNull(request.getContextPath())) {
-            context = "/" + request.getContextPath();
+            context = request.getContextPath();
         }
 
         response.sendRedirect(context + "/index.do");

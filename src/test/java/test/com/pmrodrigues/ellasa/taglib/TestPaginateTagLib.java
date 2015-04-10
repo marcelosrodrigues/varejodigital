@@ -63,25 +63,25 @@ public class TestPaginateTagLib {
         String result = writer.toString();
 
         final String EXPECTED = "<div class=\"row\">" +
-                "<div class=\"col-sm-6\">" +
+                "<div class=\"col-sm-5\">" +
                 "<div class=\"dataTables_info\" id=\"dataTables-example_info\" role=\"alert\" aria-live=\"polite\" aria-relevant=\"all\">Página 1 de 3</div>" +
                 "</div>" +
-                "<div class=\"col-sm-6\" style=\"top: -30px;text-align:right;\"><div class=\"dataTables_paginate paging_simple_numbers\">" +
+                "<div class=\"col-sm-7\" style=\"top: -30px;text-align:right;\"><div class=\"dataTables_paginate paging_simple_numbers\">" +
                 "<ul class=\"pagination\">" +
                 "<li class=\"paginate_button previous disabled\" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_previous\">" +
-                "<a href=\"/loja/pesquisar.do?page=0\">&lt;&lt;</a>" +
+                "<a href=\"/ellasa/loja/pesquisar.do?page=0\">&lt;&lt;</a>" +
                 "</li>" +
                 "<li class=\"paginate_button\" tabindex=\"0\">" +
-                "<a href=\"/loja/pesquisar.do?page=0\">1</a>" +
+                "<a href=\"/ellasa/loja/pesquisar.do?page=0\">1</a>" +
                 "</li>" +
                 "<li class=\"paginate_button\" tabindex=\"1\">" +
-                "<a href=\"/loja/pesquisar.do?page=1\">2</a>" +
+                "<a href=\"/ellasa/loja/pesquisar.do?page=1\">2</a>" +
                 "</li>" +
                 "<li class=\"paginate_button\" tabindex=\"2\">" +
-                "<a href=\"/loja/pesquisar.do?page=2\">3</a>" +
+                "<a href=\"/ellasa/loja/pesquisar.do?page=2\">3</a>" +
                 "</li>" +
                 "<li class=\"paginate_button next \" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_next\">" +
-                "<a href=\"/loja/pesquisar.do?page=1\">&gt;&gt;</a>" +
+                "<a href=\"/ellasa/loja/pesquisar.do?page=1\">&gt;&gt;</a>" +
                 "</li>" +
                 "</ul>" +
                 "</div>" +
@@ -126,7 +126,7 @@ public class TestPaginateTagLib {
 
         final String EXPECTED =
                 "<li class=\"paginate_button next \" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_next\">" +
-                        "<a href=\"/loja/pesquisar.do?page=2\">&gt;&gt;</a>" +
+                        "<a href=\"/ellasa/loja/pesquisar.do?page=2\">&gt;&gt;</a>" +
                         "</li>";
 
         assertEquals(EXPECTED, result);
@@ -167,7 +167,7 @@ public class TestPaginateTagLib {
 
         final String EXPECTED =
                 "<li class=\"paginate_button next disabled\" aria-controls=\"dataTables-example\" tabindex=\"0\" id=\"dataTables-example_next\">" +
-                        "<a href=\"/loja/pesquisar.do?page=3\">&gt;&gt;</a>" +
+                        "<a href=\"/ellasa/loja/pesquisar.do?page=3\">&gt;&gt;</a>" +
                         "</li>";
 
         assertEquals(EXPECTED, result);
@@ -209,7 +209,7 @@ public class TestPaginateTagLib {
 
         StringBuffer EXPECTED = new StringBuffer();
         for (int i = 0; i < 10; i++) {
-            EXPECTED.append(String.format("<li class=\"paginate_button\" tabindex=\"%s\"><a href=\"/loja/pesquisar.do?page=%s\">%s</a></li>", i, i, i + 1));
+            EXPECTED.append(String.format("<li class=\"paginate_button\" tabindex=\"%s\"><a href=\"/ellasa/loja/pesquisar.do?page=%s\">%s</a></li>", i, i, i + 1));
         }
 
         assertEquals(EXPECTED.toString(), result);

@@ -10,6 +10,6 @@
         label="nome"
         value="id"
         subList="subsecoes"
-        url="/secao/abrir.do"/>
+        url="/ellasa/secao/abrir.do"/>
 <br/>
 <a href="<c:url value='/secao/novo.do' />" class="btn btn-info">Adicionar</a>

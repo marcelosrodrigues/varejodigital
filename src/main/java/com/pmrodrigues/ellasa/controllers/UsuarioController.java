@@ -19,7 +19,6 @@ import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -97,8 +96,8 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
         this.carregar();
 
         final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
-        final User user = (User) userAuthenticated.getPrincipal();
-        final Usuario object = ((UsuarioRepository) this.getRepository()).findByEmail(user.getUsername());
+        final String username = (String) userAuthenticated.getPrincipal();
+        final Usuario object = ((UsuarioRepository) this.getRepository()).findByEmail(username);
 
         this.getResult().include(Constante.OBJECT, object);
     }
@@ -111,8 +110,8 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
         try {
 
             final Authentication userAuthenticated = SecurityContextHolder.getContext().getAuthentication();
-            final User user = (User) userAuthenticated.getPrincipal();
-            final Usuario existed = ((UsuarioRepository) this.getRepository()).findByEmail(user.getUsername());
+            final String username = (String) userAuthenticated.getPrincipal();
+            final Usuario existed = ((UsuarioRepository) this.getRepository()).findByEmail(username);
 
             update(object, existed);
 

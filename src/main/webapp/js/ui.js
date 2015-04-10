@@ -74,7 +74,7 @@ function setChecked(pai, checked) {
 $(function () {
 
     $('#fileupload').fileupload({
-        url: '/imagem/upload.json',
+        url: '/ellasa/imagem/upload.json',
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -99,7 +99,7 @@ $(function () {
 
                     $.ajax({
                         type: "POST",
-                        url: "/imagem/" + image + "/delete.json",
+                        url: "/ellasa/imagem/" + image + "/delete.json",
                         cache: false
                     });
 
@@ -114,7 +114,7 @@ $(function () {
 $(function () {
 
     $('#icone').fileupload({
-        url: '/imagem/upload.json',
+        url: '/ellasa/imagem/upload.json',
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -139,7 +139,7 @@ $(function () {
 
                     $.ajax({
                         type: "POST",
-                        url: "/imagem/" + image + "/delete.json",
+                        url: "/ellasa/imagem/" + image + "/delete.json",
                         cache: false
                     });
 
@@ -154,7 +154,7 @@ $(function () {
 function deletarImagem(image) {
     $.ajax({
         type: "POST",
-        url: "/imagem/" + image + "/remove.json",
+        url: "/ellasa/imagem/" + image + "/remove.json",
         cache: false
     });
 
@@ -166,7 +166,7 @@ function deletarImagem(image) {
 function deletarIcone(image) {
     $.ajax({
         type: "POST",
-        url: "/secao/" + image + "/remover/icone.json",
+        url: "/ellasa/secao/" + image + "/remover/icone.json",
         cache: false
     });
 
@@ -196,20 +196,20 @@ $("#pesquisar").click(function () {
     var loja = document.getElementById("object.loja");
 
     $.getJSON(
-        "/" + $(loja).val() + "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
+        "/ellasa/" + $(loja).val() + "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
 
 });
 
 $("#pesquisar-usuario").click(function () {
     $.getJSON(
-        "/usuarios/" + $("#usuario").val() + "/list.json", montartabelausuario);
+        "/ellasa/usuarios/" + $("#usuario").val() + "/list.json", montartabelausuario);
 });
 
 function listarSubSecoes(secao) {
 
     var loja = document.getElementById("object.loja");
 
-    $.getJSON("/" + $(loja).val() + "/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
+    $.getJSON("/ellasa/" + $(loja).val() + "/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
 
         if (data.list.length == 0) {
             $("input[id='object.secao']").val($(secao).attr("secao"));
@@ -226,7 +226,7 @@ function listarSubSecoes(secao) {
 $("#adicionar-tamanho").click(function () {
 
     $.ajax({
-        url: "/produto/tamanho/" + $("#tamanho").val() + "/adicionar.json",
+        url: "/ellasa/produto/tamanho/" + $("#tamanho").val() + "/adicionar.json",
         type: "POST",
         cache: false
     }).done(montartabelatamanho);
@@ -252,7 +252,7 @@ function montartabelausuario(data) {
         $(this).click(function () {
 
             $.ajax({
-                url: "/grupo/" + $(this).attr("usuario") + "/adicionar.json",
+                url: "/ellasa/grupo/" + $(this).attr("usuario") + "/adicionar.json",
                 type: "POST",
                 cache: false
             }).done(adicionartabelamembros);
@@ -292,7 +292,7 @@ function montartabelatamanho(data) {
         $(this).click(function () {
 
             $.ajax({
-                url: "/produto/tamanho/" + $(this).attr("nome") + "/remover.json",
+                url: "/ellasa/produto/tamanho/" + $(this).attr("nome") + "/remover.json",
                 type: "POST",
                 cache: false
             }).done(montartabelatamanho);
@@ -305,7 +305,7 @@ function montartabelatamanho(data) {
 
 function removerTamanho(tamanho) {
     $.ajax({
-        url: "/produto/tamanho/" + $(tamanho).attr("nome") + "/" + $(tamanho).attr("tamanho") + "/remover.json",
+        url: "/ellasa/produto/tamanho/" + $(tamanho).attr("nome") + "/" + $(tamanho).attr("tamanho") + "/remover.json",
         type: "POST",
         cache: false
     }).done(function () {
@@ -317,7 +317,7 @@ function removerTamanho(tamanho) {
 
 function removerUsuario(usuario) {
     $.ajax({
-        url: "/grupo/" + $(usuario).attr("usuario") + "/remover.json",
+        url: "/ellasa/grupo/" + $(usuario).attr("usuario") + "/remover.json",
         type: "POST",
         cache: false
     }).done(function () {
@@ -330,7 +330,7 @@ function removerUsuario(usuario) {
 function removerProduto(value) {
     var remove = confirm("Confirma a exclus\00C3o do produto ?");
     if (remove) {
-        $("form").attr("action", "/produto/excluir.do?object.id=" + value);
+        $("form").attr("action", "/ellasa/produto/excluir.do?object.id=" + value);
         $("form").attr("method", "POST");
         $("form").submit();
     }

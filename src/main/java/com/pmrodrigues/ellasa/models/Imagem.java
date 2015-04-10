@@ -1,6 +1,8 @@
 package com.pmrodrigues.ellasa.models;
 
 import com.pmrodrigues.ellasa.Constante;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.codec.net.URLCodec;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,7 +22,8 @@ public class Imagem implements Serializable {
 
     public Imagem(final String arquivo) {
         this();
-        this.url = Constante.URL_IMAGENS + arquivo;
+        final URLCodec codec = new URLCodec();
+        this.url = Constante.URL_IMAGENS + StringUtils.newStringUsAscii(codec.encode(arquivo.getBytes()));
     }
 
     public Imagem() {

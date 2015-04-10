@@ -39,6 +39,28 @@
                 <flyway.database.url>jdbc:mysql://allinshopp.com.br:3306/ellasa</flyway.database.url>
                 <flyway.password>2pk0#3ty?</flyway.password>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <version>1.0-beta-5</version>
+                        <configuration>
+                            <fromFile>${project.build.directory}/ellasa.war</fromFile>
+                            <url>scp://root@allinshopp.com.br/opt/jetty/webapps</url>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>upload-war-to-server</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>upload-single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
@@ -52,24 +74,6 @@
             </extension>
         </extensions>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>wagon-maven-plugin</artifactId>
-                <version>1.0-beta-5</version>
-                <configuration>
-                    <fromFile>${project.build.directory}/ellasa.war</fromFile>
-                    <url>scp://root@allinshopp.com.br/opt/jetty/webapps</url>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>upload-war-to-server</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>upload-single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -225,7 +229,7 @@
                     <scanIntervalSeconds>0</scanIntervalSeconds>
                     <daemon>true</daemon>
                     <webApp>
-                        <contextPath>/</contextPath>
+                        <contextPath>/ellasa</contextPath>
                     </webApp>
                     <stopKey>foo</stopKey>
                     <stopPort>9999</stopPort>
