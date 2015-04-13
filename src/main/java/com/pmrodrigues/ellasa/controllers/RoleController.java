@@ -36,7 +36,7 @@ public class RoleController extends AbstractCRUDController<Perfil> {
                         "cpf", "dataNascimento", "perfis", "tentativas")
                 .serialize();
 
-        return membros.getNovosMembros();
+        return membros.novos();
     }
 
     @Post
@@ -50,15 +50,15 @@ public class RoleController extends AbstractCRUDController<Perfil> {
                         "cpf", "dataNascimento", "perfis", "tentativas")
                 .serialize();
 
-        return membros.getNovosMembros();
+        return membros.novos();
     }
 
     @Update
     public void update(final Perfil object) {
 
         final Perfil existed = getRepository().findById(object.getId());
-        existed.remover(membros.getRemovidos());
-        existed.adicionar(membros.getNovosMembros());
+        existed.remover(membros.removidos());
+        existed.adicionar(membros.novos());
 
         getRepository().set(existed);
 

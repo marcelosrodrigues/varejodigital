@@ -10,6 +10,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Marceloo on 12/11/2014.
  */
@@ -26,5 +28,13 @@ public class ShoppingRepositoryImpl extends AbstractRepository<Loja> implements 
         }
 
         return new ResultList<Loja>(criteria,page);
+    }
+
+    @Override
+    public List<Loja> listByNome(String nome) {
+        return this.getSession().createCriteria(Loja.class)
+                .add(Restrictions.like("nome", nome, MatchMode.START))
+                .addOrder(Order.asc("nome"))
+                .list();
     }
 }

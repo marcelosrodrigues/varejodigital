@@ -2,13 +2,12 @@ package com.pmrodrigues.ellasa.sessionscope;
 
 import br.com.caelum.vraptor.ioc.Component;
 import br.com.caelum.vraptor.ioc.SessionScoped;
-import com.pmrodrigues.ellasa.models.Usuario;
+import com.pmrodrigues.ellasa.models.Loja;
 
 /**
- * Created by Marceloo on 30/03/2015.
+ * Created by Marceloo on 13/04/2015.
  */
-@Component
 @SessionScoped
-public class Membros extends AbstractSimpleSessionScope<Usuario> {
-
+@Component
+public class Lojas extends AbstractSimpleSessionScope<Loja> {
 }

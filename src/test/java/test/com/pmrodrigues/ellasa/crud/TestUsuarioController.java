@@ -5,11 +5,15 @@ import br.com.caelum.vraptor.util.test.MockValidator;
 import com.pmrodrigues.ellasa.Constante;
 import com.pmrodrigues.ellasa.controllers.UsuarioController;
 import com.pmrodrigues.ellasa.models.Estado;
+import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.models.Telefone;
 import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
+import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
 import com.pmrodrigues.ellasa.services.EmailService;
+import com.pmrodrigues.ellasa.sessionscope.Lojas;
+import org.hibernate.SessionFactory;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -34,8 +38,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Marceloo on 02/01/2015.
@@ -57,10 +60,17 @@ public class TestUsuarioController extends
     @Autowired
     private EstadoRepository estadoRepository;
 
+    @Autowired
+    private ShoppingRepository shoppingRepository;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
     private MockResult result = new MockResult();
     private MockValidator validator = new MockValidator();
     private UsuarioController controller;
     private EmailService email = context.mock(EmailService.class);
+    private Lojas lojas = new Lojas();
 
     private Long userId;
 
@@ -69,7 +79,7 @@ public class TestUsuarioController extends
 
     @Before
     public void before() {
-        controller = new UsuarioController(userRepository, estadoRepository, email, result, validator);
+        controller = new UsuarioController(userRepository, estadoRepository, lojas, email, result, validator);
 
 
         prepare();
@@ -101,8 +111,9 @@ public class TestUsuarioController extends
                 final Long celularId = rs.getLong("celular_id");
                 final Long residencialId = rs.getLong("residencial_id");
 
-                TestUsuarioController.this.jdbcTemplate.update("delete from usuario where id = ?", userId);
-                TestUsuarioController.this.jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
+                jdbcTemplate.update("delete from lojistas where usuario_id = ?", userId);
+                jdbcTemplate.update("delete from usuario where id = ?", userId);
+                jdbcTemplate.update("delete from telefone where id in (?,?)", celularId, residencialId);
 
                 return null;
             }
@@ -151,6 +162,40 @@ public class TestUsuarioController extends
 
 
         controller.salvar(usuario);
+    }
+
+    @Test
+    public void inserirUsuarioAssociandoAUmaLoja() {
+        final Usuario usuario = createUsuario();
+
+        context.checking(new Expectations() {{
+            oneOf(email).from(with(aNonNull(String.class)));
+            will(returnValue(email));
+
+            oneOf(email).to(with(aNonNull(String.class)));
+            will(returnValue(email));
+
+            oneOf(email).subject(with(aNonNull(String.class)));
+            will(returnValue(email));
+
+            oneOf(email).template(with(aNonNull(String.class)), with(aNonNull(Map.class)));
+            will(returnValue(email));
+
+            oneOf(email).send();
+        }});
+
+        for (Loja loja : shoppingRepository.list()) {
+            lojas.adicionar(loja);
+        }
+
+        controller.salvar(usuario);
+
+        sessionFactory.getCurrentSession()
+                .flush();
+
+        final Long count = jdbcTemplate.queryForObject("select count(1) from lojistas inner join usuario on usuario_id = id where email = ?", Long.class, usuario.getEmail());
+        assertTrue(count > 0L);
+
     }
 
     @Test

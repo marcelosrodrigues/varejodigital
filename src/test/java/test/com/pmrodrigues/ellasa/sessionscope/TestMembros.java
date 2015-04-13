@@ -28,7 +28,7 @@ public class TestMembros {
 
         membros.remover(usuario1);
 
-        assertEquals(2, membros.getNovosMembros().size());
+        assertEquals(2, membros.novos().size());
     }
 
     @Test
@@ -53,8 +53,8 @@ public class TestMembros {
 
         membros.remover(usuario4);
 
-        assertEquals(3, membros.getNovosMembros().size());
-        assertEquals(1, membros.getRemovidos().size());
+        assertEquals(3, membros.novos().size());
+        assertEquals(1, membros.removidos().size());
     }
 
     @Test
@@ -79,13 +79,13 @@ public class TestMembros {
 
         membros.remover(usuario4);
 
-        assertEquals(3, membros.getNovosMembros().size());
-        assertEquals(1, membros.getRemovidos().size());
+        assertEquals(3, membros.novos().size());
+        assertEquals(1, membros.removidos().size());
 
         membros.adicionar(usuario4);
 
-        assertEquals(4, membros.getNovosMembros().size());
-        assertEquals(0, membros.getRemovidos().size());
+        assertEquals(4, membros.novos().size());
+        assertEquals(0, membros.removidos().size());
     }
 
 }

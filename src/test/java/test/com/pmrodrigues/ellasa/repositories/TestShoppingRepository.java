@@ -83,4 +83,14 @@ public class TestShoppingRepository
         final List<Loja> lojas = resultado.getList();
 
     }
+
+    @Test
+    public void listarByNome() {
+
+        final List<Loja> resultado = repository.listByNome("TESTE");
+        final Long quantidade = jdbcTemplate.queryForObject("select count(1) from loja where nome like 'TESTE%'", Long.class);
+
+        assertEquals(quantidade, Long.valueOf(resultado.size()));
+
+    }
 }

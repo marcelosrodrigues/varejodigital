@@ -57,8 +57,8 @@ public abstract class AbstractCRUDController<E> { //NOPMD
 
                 if (!crudutils.doInsert(object)) {
                     repository.add(object);
-                    crudutils.postExecute(object);
                 }
+                crudutils.postExecute(object);
                 result.include(Constante.SUCESSO,format("%s adicionada com sucesso",persistentClass.getSimpleName()));
             } else {
                 if (!crudutils.doUpdate(object)) {

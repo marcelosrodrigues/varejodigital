@@ -32,7 +32,7 @@ public class TestRoleController {
     @Test
     public void adicionarUsuario() {
         controller.adicionar(new Usuario());
-        assertFalse(membros.getNovosMembros().isEmpty());
+        assertFalse(membros.novos().isEmpty());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class TestRoleController {
         remover.setId(1L);
         controller.remover(remover);
 
-        assertTrue(membros.getNovosMembros().isEmpty());
+        assertTrue(membros.novos().isEmpty());
     }
 
     @Test

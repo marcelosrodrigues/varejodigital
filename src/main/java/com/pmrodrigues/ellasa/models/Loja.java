@@ -12,6 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -57,11 +58,11 @@ public class Loja implements Serializable {
         this.nome = nome;
     }
 
-    public List<Secao> getSecoes() {
+    public Collection<Secao> getSecoes() {
         return secoes;
     }
 
-    public void setSecoes(final List<Secao> secoes) {
+    public void setSecoes(final Collection<Secao> secoes) {
         this.secoes.clear();
         this.secoes.addAll(secoes);
     }

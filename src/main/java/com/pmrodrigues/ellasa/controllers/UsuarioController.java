@@ -14,6 +14,7 @@ import com.pmrodrigues.ellasa.models.Usuario;
 import com.pmrodrigues.ellasa.repositories.EstadoRepository;
 import com.pmrodrigues.ellasa.repositories.UsuarioRepository;
 import com.pmrodrigues.ellasa.services.EmailService;
+import com.pmrodrigues.ellasa.sessionscope.Lojas;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.validator.GenericValidator;
 import org.apache.log4j.Logger;
@@ -39,12 +40,14 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
     private final EmailService email;
 
     private static final Logger logging = Logger.getLogger(UsuarioController.class);
+    private final Lojas lojas;
 
     public UsuarioController(final UsuarioRepository repository, final EstadoRepository estadoRepository,
-                             final EmailService email, final Result result, final Validator validator) {
+                             final Lojas lojas, final EmailService email, final Result result, final Validator validator) {
         super(repository, result, validator);
         this.estadoRepository = estadoRepository;
         this.email = email;
+        this.lojas = lojas;
     }
 
     @Before
@@ -53,6 +56,16 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
         logging.trace("carregando os estados para montagem da tela");
         final List<Estado> estados = estadoRepository.list();
         super.getResult().include(Constante.LISTA_ESTADOS, estados);
+    }
+
+    @Insert
+    public void insert(final Usuario object) {
+
+        object.adicionar(lojas.novos());
+        lojas.apagar();
+
+        this.getRepository().add(object);
+
     }
 
     @Update
@@ -83,7 +96,9 @@ public class UsuarioController extends AbstractCRUDController<Usuario> {
                 && GenericValidator.isBlankOrNull(origem.getResidencial().getNumero())) {
             destino.setResidencial(null);
         }
-
+        destino.adicionar(lojas.novos());
+        destino.remover(lojas.removidos());
+        lojas.apagar();
         this.getRepository().set(destino);
     }
 

@@ -205,6 +205,51 @@ $("#pesquisar-usuario").click(function () {
         "/ellasa/usuarios/" + $("#usuario").val() + "/list.json", montartabelausuario);
 });
 
+$("#pesquisar-loja").click(function () {
+    $.getJSON(
+        "/ellasa/loja/" + $("#loja").val() + "/list.json", montartabelaloja);
+});
+
+function montartabelaloja(data) {
+
+    $("#lojas > table > tbody").find("tr").remove();
+
+    $.each(data.list, function (index, element) {
+
+        $("#lojas > table > tbody").append("<tr>"
+        + "<td>" + element.nome + "</td>"
+        + "<td align=\"center\">"
+        + "<button id=\"adicionar-loja\" type=\"button\" class=\"btn btn-info btn-circle\" loja=\"" + element.id + "\" nome=\"" + element.nome + "\">"
+        + "<i class=\"fa fa-check\"></i></button></td></tr>");
+
+    });
+
+    $("#adicionar-loja").each(function (index) {
+        $(this).click(function () {
+
+            $.ajax({
+                url: "/ellasa/loja/" + $(this).attr("loja") + "/adicionar.json",
+                type: "POST",
+                cache: false
+            }).done(adicionartabelalojista);
+
+        });
+    });
+
+    $("#lojas").show();
+}
+
+function adicionartabelalojista(data) {
+
+    $("#lojista > table > tbody").append("<tr>"
+    + "<td>" + data.loja.nome + "</td>"
+    + "<td align=\"center\">"
+    + "<button id=\"remover-loja\" type=\"button\" class=\"btn btn-danger btn-circle\" loja=\"" + data.loja.id + "\"  onclick=\"javascript:removerLoja(this);\">"
+    + "<i class=\"fa fa-times\"></i></button></td></tr>");
+
+}
+
+
 function listarSubSecoes(secao) {
 
     var loja = document.getElementById("object.loja");
@@ -322,6 +367,18 @@ function removerUsuario(usuario) {
         cache: false
     }).done(function () {
         $(usuario).parent()
+            .parent()
+            .remove();
+    });
+}
+
+function removerLoja(loja) {
+    $.ajax({
+        url: "/ellasa/loja/" + $(loja).attr("loja") + "/remover.json",
+        type: "POST",
+        cache: false
+    }).done(function () {
+        $(loja).parent()
             .parent()
             .remove();
     });

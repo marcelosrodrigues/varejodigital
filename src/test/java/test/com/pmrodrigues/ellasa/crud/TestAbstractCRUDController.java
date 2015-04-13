@@ -8,6 +8,7 @@ import com.pmrodrigues.ellasa.models.Loja;
 import com.pmrodrigues.ellasa.repositories.ResultList;
 import com.pmrodrigues.ellasa.repositories.SecaoRepository;
 import com.pmrodrigues.ellasa.repositories.ShoppingRepository;
+import com.pmrodrigues.ellasa.sessionscope.Lojas;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -32,10 +33,11 @@ public class TestAbstractCRUDController {
     private MockValidator validation = new MockValidator();
     private ShoppingRepository repository = context.mock(ShoppingRepository.class);
     private SecaoRepository secaoRepository = context.mock(SecaoRepository.class);
+    private Lojas lojas = new Lojas();
 
     @Test
     public void doDelete() {
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         final Loja loja = new Loja();
         loja.setNome("TESTE");
 
@@ -51,7 +53,7 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doInsert() {
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         final Loja loja = new Loja();
         loja.setNome("TESTE");
 
@@ -67,7 +69,7 @@ public class TestAbstractCRUDController {
     @Test
     public void doUpdate() {
 
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         final Loja loja = new Loja();
         loja.setNome("TESTE");
         loja.setId(1L);
@@ -83,7 +85,7 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doSearch() {
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         final ResultList<Loja> resultlist = context.mock(ResultList.class);
 
         context.checking(new Expectations() {{
@@ -101,7 +103,7 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doSearchWithParameters() {
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         final ResultList<Loja> resultlist = context.mock(ResultList.class);
 
         context.checking(new Expectations() {{
@@ -125,7 +127,7 @@ public class TestAbstractCRUDController {
         }});
 
 
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         controller.formulario();
 
         assertNotNull(result.included(Constante.OBJECT));
@@ -133,7 +135,7 @@ public class TestAbstractCRUDController {
 
     @Test
     public void doOpen() {
-        final LojaController controller = new LojaController(repository, secaoRepository, result, validation);
+        final LojaController controller = new LojaController(repository, secaoRepository, lojas, result, validation);
         final Loja loja = new Loja();
 
         context.checking(new Expectations() {{

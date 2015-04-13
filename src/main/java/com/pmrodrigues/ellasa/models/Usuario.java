@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -76,8 +77,7 @@ public class Usuario implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "lojistas", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "loja_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "loja_id"})
-    )
+            uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "loja_id"}))
     private final Set<Loja> lojas = new HashSet<>();
 
     @Column
@@ -209,5 +209,13 @@ public class Usuario implements Serializable {
                     .append(this.cpf)
                     .toHashCode();
         }
+    }
+
+    public void adicionar(final Collection<Loja> lojas) {
+        this.lojas.addAll(lojas);
+    }
+
+    public void remover(final Collection<Loja> lojas) {
+        this.lojas.removeAll(lojas);
     }
 }
