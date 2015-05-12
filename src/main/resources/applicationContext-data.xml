@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
     <!-- PRODUÇÃO -->
 
-    <context:component-scan base-package="com.pmrodrigues.ellasa"/>
+    <context:component-scan base-package="com.pmrodrigues.varejodigital"/>
 
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName" value="java:comp/env/jdbc/ellaDS"/>
@@ -28,7 +28,7 @@
             </props>
         </property>
         <!-- spring based scanning for entity classes -->
-        <property name="packagesToScan" value="com.pmrodrigues.ellasa.models"/>
+        <property name="packagesToScan" value="com.pmrodrigues.varejodigital.models"/>
     </bean>
 
     <bean id="transactionManager"

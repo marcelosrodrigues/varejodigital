@@ -1,10 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.pmrodrigues</groupId>
-    <artifactId>ellasa</artifactId>
+    <artifactId>varejodigital</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Projeto ELLA S/A</name>
+    <name>Projeto Varejo Digital</name>
     <packaging>war</packaging>
 
     <properties>
@@ -15,8 +15,8 @@
         <spring.version>3.2.8.RELEASE</spring.version>
         <slf4j.version>1.7.5</slf4j.version>
         <surefire.version>2.18.1</surefire.version>
-        <flyway.database.url>jdbc:mysql://localhost:3306/ellasa</flyway.database.url>
-        <flyway.password>ellasa</flyway.password>
+        <flyway.database.url>jdbc:mysql://localhost:3306/varejo</flyway.database.url>
+        <flyway.password>varejo</flyway.password>
         <cobertura.version>2.6</cobertura.version>
     </properties>
 
@@ -36,7 +36,7 @@
         <profile>
             <id>producao</id>
             <properties>
-                <flyway.database.url>jdbc:mysql://allinshopp.com.br:3306/ellasa</flyway.database.url>
+                <flyway.database.url>jdbc:mysql://allinshopp.com.br:3306/varejo</flyway.database.url>
                 <flyway.password>2pk0#3ty?</flyway.password>
             </properties>
             <build>
@@ -46,7 +46,7 @@
                         <artifactId>wagon-maven-plugin</artifactId>
                         <version>1.0-beta-5</version>
                         <configuration>
-                            <fromFile>${project.build.directory}/ellasa.war</fromFile>
+                            <fromFile>${project.build.directory}/varejo.war</fromFile>
                             <url>scp://root@allinshopp.com.br/opt/jetty/webapps</url>
                         </configuration>
                         <executions>
@@ -113,7 +113,7 @@
                     <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
                     <minimumTokens>30</minimumTokens>
                     <excludes>
-                        <exclude>com/pmrodrigues/ellasa/exceptions/**/*.java</exclude>
+                        <exclude>com/pmrodrigues/varejodigital/exceptions/**/*.java</exclude>
                     </excludes>
                     <rulesets>
                         <ruleset>rulesets/java/basic.xml</ruleset>
@@ -152,27 +152,27 @@
                 <configuration>
                     <instrumentation>
                         <ignores>
-                            <ignore>com.pmrodrigues.ellasa.exceptions.*</ignore>
-                            <ignore>com.pmrodrigues.ellasa.pagamentos.v1.*</ignore>
-                            <ignore>com.pmrodrigues.ellasa.pagamentos.entity.*</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.EstadoConverter</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.ImagemConverter</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.LojaConverter</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.MeioPagamentoConverter</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.PerfilConverter</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.SecaoConverter</ignore>
-                            <ignore>com.pmrodrigues.ellasa.converters.UsuarioConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.exceptions.*</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.pagamentos.v1.*</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.pagamentos.entity.*</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.EstadoConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.ImagemConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.LojaConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.MeioPagamentoConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.PerfilConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.SecaoConverter</ignore>
+                            <ignore>com.pmrodrigues.varejodigital.converters.UsuarioConverter</ignore>
                         </ignores>
                         <excludes>
-                            <exclude>com/pmrodrigues/ellasa/exceptions/**/*.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/pagamentos/**/*.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/EstadoConverter.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/ImagemConverter.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/LojaConverter.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/MeioPagamentoConverter.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/PerfilConverter.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/SecaoConverter.class</exclude>
-                            <exclude>com/pmrodrigues/ellasa/converters/UsuarioConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/exceptions/**/*.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/pagamentos/**/*.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/EstadoConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/ImagemConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/LojaConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/MeioPagamentoConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/PerfilConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/SecaoConverter.class</exclude>
+                            <exclude>com/pmrodrigues/varejodigital/converters/UsuarioConverter.class</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>
@@ -229,7 +229,7 @@
                     <scanIntervalSeconds>0</scanIntervalSeconds>
                     <daemon>true</daemon>
                     <webApp>
-                        <contextPath>/ellasa</contextPath>
+                        <contextPath>/varejo</contextPath>
                     </webApp>
                     <stopKey>foo</stopKey>
                     <stopPort>9999</stopPort>
@@ -239,7 +239,6 @@
                     </httpConnector>
                     <jettyXml>src/test/resources/jetty-env.xml</jettyXml>
                     <scanTargets>
-                        <scanTarget>${basedir}/src/test/resources/akatus.properties</scanTarget>
                         <scanTarget>${basedir}/src/test/resources/upload.properties</scanTarget>
                     </scanTargets>
                 </configuration>
@@ -333,7 +332,7 @@
                 </executions>
                 <configuration>
                     <url>${flyway.database.url}</url>
-                    <user>ellasa</user>
+                    <user>varejo</user>
                     <password>${flyway.password}</password>
                     <validateOnMigrate>false</validateOnMigrate>
                 </configuration>

@@ -74,7 +74,7 @@ function setChecked(pai, checked) {
 $(function () {
 
     $('#fileupload').fileupload({
-        url: '/ellasa/imagem/upload.json',
+        url: '/varejo/imagem/upload.json',
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -99,7 +99,7 @@ $(function () {
 
                     $.ajax({
                         type: "POST",
-                        url: "/ellasa/imagem/" + image + "/delete.json",
+                        url: "/varejo/imagem/" + image + "/delete.json",
                         cache: false
                     });
 
@@ -114,7 +114,7 @@ $(function () {
 $(function () {
 
     $('#icone').fileupload({
-        url: '/ellasa/imagem/upload.json',
+        url: '/varejo/imagem/upload.json',
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -139,7 +139,7 @@ $(function () {
 
                     $.ajax({
                         type: "POST",
-                        url: "/ellasa/imagem/" + image + "/delete.json",
+                        url: "/varejo/imagem/" + image + "/delete.json",
                         cache: false
                     });
 
@@ -154,7 +154,7 @@ $(function () {
 function deletarImagem(image) {
     $.ajax({
         type: "POST",
-        url: "/ellasa/imagem/" + image + "/remove.json",
+        url: "/varejo/imagem/" + image + "/remove.json",
         cache: false
     });
 
@@ -166,7 +166,7 @@ function deletarImagem(image) {
 function deletarIcone(image) {
     $.ajax({
         type: "POST",
-        url: "/ellasa/secao/" + image + "/remover/icone.json",
+        url: "/varejo/secao/" + image + "/remover/icone.json",
         cache: false
     });
 
@@ -185,7 +185,7 @@ function montatabeladepartamentos(data) {
         $("#departamentos > table > tbody").append("<tr><td>"
         + element.id + "</td>"
         + "<td>" + element.nome + "</td>"
-        + "<td align=\"center\"><button id=\"subsecoes\" onclick=\"javacript:listarSubSecoes(this)\" type=\"button\" class=\"btn btn-info btn-circle\" secao=\"" + element.id + "\" nome=\"" + element.nome + "\">"
+        + "<td align=\"center\"><button id=\"subsecoes\" onclick=\"listarSubSecoes(this)\" type=\"button\" class=\"btn btn-info btn-circle\" secao=\"" + element.id + "\" nome=\"" + element.nome + "\">"
         + "<i class=\"fa fa-check\"></i></button></td></tr>");
         $("#departamentos").show();
 
@@ -196,18 +196,18 @@ $("#pesquisar").click(function () {
     var loja = document.getElementById("object.loja");
 
     $.getJSON(
-        "/ellasa/" + $(loja).val() + "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
+        "/varejo/" + $(loja).val() + "/secoes/" + $("#departamento").val() + "/list.json", montatabeladepartamentos);
 
 });
 
 $("#pesquisar-usuario").click(function () {
     $.getJSON(
-        "/ellasa/usuarios/" + $("#usuario").val() + "/list.json", montartabelausuario);
+        "/varejo/usuarios/" + $("#usuario").val() + "/list.json", montartabelausuario);
 });
 
 $("#pesquisar-loja").click(function () {
     $.getJSON(
-        "/ellasa/loja/" + $("#loja").val() + "/list.json", montartabelaloja);
+        "/varejo/loja/" + $("#loja").val() + "/list.json", montartabelaloja);
 });
 
 function montartabelaloja(data) {
@@ -228,7 +228,7 @@ function montartabelaloja(data) {
         $(this).click(function () {
 
             $.ajax({
-                url: "/ellasa/loja/" + $(this).attr("loja") + "/adicionar.json",
+                url: "/varejo/loja/" + $(this).attr("loja") + "/adicionar.json",
                 type: "POST",
                 cache: false
             }).done(adicionartabelalojista);
@@ -254,7 +254,7 @@ function listarSubSecoes(secao) {
 
     var loja = document.getElementById("object.loja");
 
-    $.getJSON("/ellasa/" + $(loja).val() + "/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
+    $.getJSON("/varejo/" + $(loja).val() + "/secoes/" + $(secao).attr("secao") + "/filhos/list.json", function (data) {
 
         if (data.list.length == 0) {
             $("input[id='object.secao']").val($(secao).attr("secao"));
@@ -271,7 +271,7 @@ function listarSubSecoes(secao) {
 $("#adicionar-tamanho").click(function () {
 
     $.ajax({
-        url: "/ellasa/produto/tamanho/" + $("#tamanho").val() + "/adicionar.json",
+        url: "/varejo/produto/tamanho/" + $("#tamanho").val() + "/adicionar.json",
         type: "POST",
         cache: false
     }).done(montartabelatamanho);
@@ -297,7 +297,7 @@ function montartabelausuario(data) {
         $(this).click(function () {
 
             $.ajax({
-                url: "/ellasa/grupo/" + $(this).attr("usuario") + "/adicionar.json",
+                url: "/varejo/grupo/" + $(this).attr("usuario") + "/adicionar.json",
                 type: "POST",
                 cache: false
             }).done(adicionartabelamembros);
@@ -337,7 +337,7 @@ function montartabelatamanho(data) {
         $(this).click(function () {
 
             $.ajax({
-                url: "/ellasa/produto/tamanho/" + $(this).attr("nome") + "/remover.json",
+                url: "/varejo/produto/tamanho/" + $(this).attr("nome") + "/remover.json",
                 type: "POST",
                 cache: false
             }).done(montartabelatamanho);
@@ -350,7 +350,7 @@ function montartabelatamanho(data) {
 
 function removerTamanho(tamanho) {
     $.ajax({
-        url: "/ellasa/produto/tamanho/" + $(tamanho).attr("nome") + "/" + $(tamanho).attr("tamanho") + "/remover.json",
+        url: "/varejo/produto/tamanho/" + $(tamanho).attr("nome") + "/" + $(tamanho).attr("tamanho") + "/remover.json",
         type: "POST",
         cache: false
     }).done(function () {
@@ -362,7 +362,7 @@ function removerTamanho(tamanho) {
 
 function removerUsuario(usuario) {
     $.ajax({
-        url: "/ellasa/grupo/" + $(usuario).attr("usuario") + "/remover.json",
+        url: "/varejo/grupo/" + $(usuario).attr("usuario") + "/remover.json",
         type: "POST",
         cache: false
     }).done(function () {
@@ -374,7 +374,7 @@ function removerUsuario(usuario) {
 
 function removerLoja(loja) {
     $.ajax({
-        url: "/ellasa/loja/" + $(loja).attr("loja") + "/remover.json",
+        url: "/varejo/loja/" + $(loja).attr("loja") + "/remover.json",
         type: "POST",
         cache: false
     }).done(function () {
@@ -387,7 +387,7 @@ function removerLoja(loja) {
 function removerProduto(value) {
     var remove = confirm("Confirma a exclus\00C3o do produto ?");
     if (remove) {
-        $("form").attr("action", "/ellasa/produto/excluir.do?object.id=" + value);
+        $("form").attr("action", "/varejo/produto/excluir.do?object.id=" + value);
         $("form").attr("method", "POST");
         $("form").submit();
     }

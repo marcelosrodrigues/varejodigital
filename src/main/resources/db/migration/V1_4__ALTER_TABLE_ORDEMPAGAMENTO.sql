@@ -1,1 +1,0 @@
-alter table ordempagamento MODIFY column contrato_id BIGINT null;

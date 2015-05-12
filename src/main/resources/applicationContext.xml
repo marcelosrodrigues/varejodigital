@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-	http://www.springframework.org/schema/task
-    http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
 	<import resource="applicationContext-data.xml" />
 	<import resource="applicationContext-email.xml" />
@@ -19,9 +16,5 @@
             <value>/WEB-INF/tiles.xml</value>
         </property>
     </bean>
-
-    <task:scheduled-tasks>
-        <task:scheduled ref="pedidoTask" method="update" cron="0 */5 * * * ?"/>
-    </task:scheduled-tasks>
 
 </beans>
