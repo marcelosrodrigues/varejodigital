@@ -16,6 +16,23 @@
         <param-value>com.pmrodrigues.varejodigital.contextInitiliazer.CustomClassPathXmlApplicationContext</param-value>
     </context-param>
 
+    <listener>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>produtos</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSSpringServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>produtos</servlet-name>
+        <url-pattern>/produtos.svc</url-pattern>
+    </servlet-mapping>
+
     <!-- servlet de inicialização do tiles -->
     <servlet>
         <servlet-name>TilesServlet</servlet-name>
@@ -90,8 +107,8 @@
     </listener>
 
     <resource-ref>
-        <description>Ella SA Datasource</description>
-        <res-ref-name>jdbc/ellaDS</res-ref-name>
+        <description>Varejo Digital Datasource</description>
+        <res-ref-name>jdbc/varejoDS</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>

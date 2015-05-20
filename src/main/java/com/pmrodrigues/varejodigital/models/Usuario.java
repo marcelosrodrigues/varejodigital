@@ -30,43 +30,56 @@ public class Usuario implements Serializable {
     @Transient
     private final String cleanPassword = RandomStringUtils
             .randomAlphanumeric(10);
+
     @Embedded
     private final Endereco endereco = new Endereco();
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "membros", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "perfil_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "perfil_id"}))
     private final Set<Perfil> perfis = new HashSet<>();
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "lojistas", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "loja_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "loja_id"}))
     private final Set<Loja> lojas = new HashSet<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "E-mail é obrigatório")
     @Column(unique = true, nullable = false)
     private String email;
+
     @Column
     private String password;
+
     @Column
     private boolean bloqueado = true;
+
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private Telefone celular;
+
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private Telefone residencial;
+
     @NotBlank(message = "Nome é obrigatório")
     @Column(nullable = false)
     private String nomeCompleto;
+
     @NotBlank(message = "CPF é obrigatório")
     @Column(unique = true, nullable = false)
     @CPF(formatted = true, message = "CPF inválido")
     private String cpf;
+
     @NotNull(message = "Data de nascimento é obrigatória")
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date dataNascimento;
+
     @Column
     private Long tentativas = 0L;
 

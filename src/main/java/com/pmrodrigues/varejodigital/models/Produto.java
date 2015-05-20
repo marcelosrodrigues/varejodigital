@@ -1,6 +1,7 @@
 package com.pmrodrigues.varejodigital.models;
 
 import com.pmrodrigues.varejodigital.repositories.utils.FilterName;
+import com.pmrodrigues.varejodigital.webservice.adapters.BigDecimalTypeAdapter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.hibernate.annotations.*;
 
@@ -11,6 +12,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -26,36 +29,86 @@ import java.util.Set;
 @Filters({
         @Filter(name = FilterName.FILTRO_POR_LOJA, condition = "exists ( select 1 from lojistas l where l.loja_id = loja_id and l.usuario_id = :loja)")
 })
+@XmlType(name = "ProdutoType" , namespace = "http://schema.varejodigital.projetandoo/1.0/")
+@XmlAccessorType(XmlAccessType.FIELD)
+@DynamicUpdate
+@DynamicInsert
 public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @XmlTransient
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "produto_id", nullable = false)
     @OrderBy("id asc")
     private final Set<Imagem> imagens = new HashSet<>();
+
+    @XmlTransient
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "produto_id", nullable = false)
     @OrderBy("id asc")
     private final Set<Atributo> atributos = new HashSet<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
     private Long id;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "loja_id")
+    @XmlElement(name = "loja" , required = true)
     private Loja loja;
+
+    @XmlElement(name = "departamanento")
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "secao_id", referencedColumnName = "id")
     private Secao secao;
+
+    @XmlElement(name = "nome" , required = true)
     @Column(name = "nome")
     private String nome;
+
+    @XmlTransient
     @Column(name = "descricao")
     private String descricao;
+
+    @XmlTransient
     @Column(name = "descricao_curta")
     private String descricaoBreve;
+
+    @XmlJavaTypeAdapter(value = BigDecimalTypeAdapter.class, type = BigDecimal.class)
+    @XmlElement(name = "preco" , required = true)
     @Column(name = "preco")
+    @XmlSchemaType(name = "decimal")
     private BigDecimal preco;
+
+    @XmlJavaTypeAdapter(value = BigDecimalTypeAdapter.class, type = BigDecimal.class)
+    @XmlElement(name = "custo" , required = true)
+    @Column(name = "preco_custo")
+    @XmlSchemaType(name = "decimal")
+    private BigDecimal custo;
+
+    @XmlJavaTypeAdapter(value = BigDecimalTypeAdapter.class, type = BigDecimal.class)
+    @XmlElement(name = "peso" , required = true)
     @Column(name = "peso")
+    @XmlSchemaType(name = "decimal")
     private BigDecimal peso;
+
+    @XmlElement(name = "estoque" , required = true)
+    @Embedded
+    private Estoque estoque;
+
+    @XmlElement(name = "codigoBarra" , required = true)
+    @Column(name="codigo_barra")
+    private String codigoBarra;
+
+    @XmlElement(name = "codigoInterno" , required = true)
+    @Column(name="codigo_interno")
+    private Long codigoInterno;
+
+    @XmlElement(name = "codigoExterno" , required = true)
+    @Column(name="codigo_externo")
+    private Long codigoExterno;
 
     public Loja getLoja() {
         return loja;
@@ -135,5 +188,41 @@ public class Produto implements Serializable {
 
     public void adicionar(final Atributo atributo) {
         this.atributos.add(atributo);
+    }
+
+    public Long getCodigoExterno() {
+        return codigoExterno;
+    }
+
+    public Estoque getEstoque() {
+        return estoque;
+    }
+
+    public BigDecimal getCusto() {
+        return custo;
+    }
+
+    public String getCodigoBarras() {
+        return codigoBarra;
+    }
+
+    public void setEstoque(final Estoque estoque) {
+        this.estoque = estoque;
+    }
+
+    public void setCusto(final BigDecimal custo) {
+        this.custo = custo;
+    }
+
+    public void setCodigoBarras(final String codigoBarras) {
+        this.codigoBarra = codigoBarras;
+    }
+
+    public void setCodigoExterno(final Long codigoExterno) {
+        this.codigoExterno = codigoExterno;
+    }
+
+    public void setCodigoInterno(final Long codigoInterno) {
+        this.codigoInterno = codigoInterno;
     }
 }

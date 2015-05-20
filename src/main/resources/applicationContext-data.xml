@@ -12,7 +12,7 @@
     <context:component-scan base-package="com.pmrodrigues.varejodigital"/>
 
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/ellaDS"/>
+        <property name="jndiName" value="java:comp/env/jdbc/varejoDS"/>
     </bean>
 
     <bean id="sessionFactory"

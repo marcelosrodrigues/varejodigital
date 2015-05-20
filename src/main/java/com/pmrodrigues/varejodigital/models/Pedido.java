@@ -36,15 +36,19 @@ public class Pedido implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pedido_id", nullable = false)
     private final Collection<ItemPedido> itens = new HashSet<>();
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Cliente.class)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "enderecoentrega_id")
     private EnderecoCliente enderecoEntrega;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "loja_id")
     private Loja loja;

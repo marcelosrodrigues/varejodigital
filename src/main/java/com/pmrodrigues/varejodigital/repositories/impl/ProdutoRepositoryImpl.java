@@ -60,4 +60,13 @@ public class ProdutoRepositoryImpl extends AbstractRepository<Produto>
         return new ResultList<>(criteria, page);
 
     }
+
+    @Override
+    public Produto findByCodigoProduto(final Long codigo) {
+        return (Produto) this.getSession().createCriteria(Produto.class)
+                .add(Restrictions.or(
+                        Restrictions.eq("codigoInterno",codigo),
+                        Restrictions.eq("codigoExterno",codigo)))
+                .uniqueResult();
+    }
 }

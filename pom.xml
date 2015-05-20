@@ -37,7 +37,7 @@
             <id>producao</id>
             <properties>
                 <flyway.database.url>jdbc:mysql://allinshopp.com.br:3306/varejo</flyway.database.url>
-                <flyway.password>2pk0#3ty?</flyway.password>
+                <flyway.password>QRZyZB8PYGFy7LWS</flyway.password>
             </properties>
             <build>
                 <plugins>
@@ -46,7 +46,7 @@
                         <artifactId>wagon-maven-plugin</artifactId>
                         <version>1.0-beta-5</version>
                         <configuration>
-                            <fromFile>${project.build.directory}/varejo.war</fromFile>
+                            <fromFile>${project.build.directory}/varejodigital.war</fromFile>
                             <url>scp://root@allinshopp.com.br/opt/jetty/webapps</url>
                         </configuration>
                         <executions>
@@ -748,6 +748,28 @@
             <artifactId>el-api</artifactId>
             <version>2.2</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jvnet.jax-ws-commons.spring</groupId>
+            <artifactId>jaxws-spring</artifactId>
+            <version>1.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.xml.stream.buffer</groupId>
+                    <artifactId>streambuffer</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jvnet.staxex</groupId>
+                    <artifactId>stax-ex</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.2.8</version>
         </dependency>
 
 

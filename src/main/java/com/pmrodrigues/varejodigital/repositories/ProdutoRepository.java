@@ -11,4 +11,6 @@ public interface ProdutoRepository extends Repository<Produto> {
     ResultList<Produto> search(Produto produto);
 
     ResultList<Produto> search(Produto produto, Integer page);
+
+    Produto findByCodigoProduto(Long codigo);
 }

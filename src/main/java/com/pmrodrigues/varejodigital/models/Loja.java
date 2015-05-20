@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,15 +28,22 @@ import java.util.List;
 @Filters({
         @Filter(name = FilterName.FILTRO_POR_LOJA, condition = "exists ( select 1 from lojistas l where l.loja_id = id and l.usuario_id = :loja)")
 })
+@XmlType(name = "LojaType" , namespace = "http://schema.varejodigital.projetandoo/1.0/")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Loja implements Serializable {
 
+    @XmlTransient
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "areas_vendas", joinColumns = @JoinColumn(name = "loja_id"),
             inverseJoinColumns = @JoinColumn(name = "secao_id"))
     private final List<Secao> secoes = new ArrayList<>();
+
+    @XmlElement(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @XmlTransient
     @NotEmpty(message = "Nome da empresa parceira não pode ser vazio")
     @Column(name = "nome")
     private String nome;
