@@ -59,6 +59,7 @@ public class ProdutoController extends AbstractCRUDController<Produto> {
 
         this.getRepository().add(produto);
         this.imagens.apagar();
+        this.atributos.apagar();
         logging.debug(format("Produto %s salvo com sucesso", produto));
     }
 

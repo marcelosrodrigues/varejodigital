@@ -13,4 +13,9 @@
         </wss:service>
     </wss:binding>
 
+    <wss:binding url="/vendas.svc">
+        <wss:service>
+            <ws:service bean="#Vendas"/>
+        </wss:service>
+    </wss:binding>
 </beans>

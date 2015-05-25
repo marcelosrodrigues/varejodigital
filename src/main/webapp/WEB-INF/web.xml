@@ -33,6 +33,18 @@
         <url-pattern>/produtos.svc</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>pedidos</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSSpringServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>pedidos</servlet-name>
+        <url-pattern>/vendas.svc</url-pattern>
+    </servlet-mapping>
+
     <!-- servlet de inicialização do tiles -->
     <servlet>
         <servlet-name>TilesServlet</servlet-name>

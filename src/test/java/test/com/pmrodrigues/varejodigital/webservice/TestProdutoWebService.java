@@ -4,12 +4,17 @@ package test.com.pmrodrigues.varejodigital.webservice;
 import com.pmrodrigues.varejodigital.models.Produto;
 import com.pmrodrigues.varejodigital.repositories.ProdutoRepository;
 import com.pmrodrigues.varejodigital.webservice.ProdutoWebService;
+import com.pmrodrigues.varejodigital.webservice.dto.ProdutoResponseType;
+import com.pmrodrigues.varejodigital.webservice.dto.Status;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Marceloo on 14/05/2015.
@@ -28,8 +33,11 @@ public class TestProdutoWebService{
     public void deveAdicionarProdutoNovo() throws Exception {
 
         final ProdutoWebService webservice = new ProdutoWebService();
-
+        final Produto produto = context.mock(Produto.class);
         context.checking(new Expectations(){{
+
+            oneOf(produto).getCodigoExterno();
+            will(returnValue(1L));
 
             oneOf(repository).findByCodigoProduto(with(aNonNull(Long.class)));
             will(returnValue(null));
@@ -40,7 +48,9 @@ public class TestProdutoWebService{
 
         setField(webservice, "repository", repository);
 
-        webservice.salvar(new Produto());
+        ProdutoResponseType response = webservice.salvar(produto);
+        assertNotNull(response);
+        assertEquals(Status.SUCESSO,response.getStatus());
 
     }
 
@@ -63,7 +73,9 @@ public class TestProdutoWebService{
 
         setField(webservice, "repository", repository);
 
-        webservice.salvar(produto);
+        ProdutoResponseType response = webservice.salvar(produto);
+        assertNotNull(response);
+        assertEquals(Status.SUCESSO,response.getStatus());
 
     }
 

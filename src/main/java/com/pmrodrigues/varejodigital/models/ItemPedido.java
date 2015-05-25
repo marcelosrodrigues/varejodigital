@@ -1,9 +1,12 @@
 package com.pmrodrigues.varejodigital.models;
 
+import com.pmrodrigues.varejodigital.webservice.adapters.BigDecimalTypeAdapter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -13,6 +16,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "item_pedido")
 @XStreamAlias("item")
+@XmlType(name = "ItemPedidoType" , namespace = "http://schema.varejodigital.projetandoo/1.0/")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ItemPedido implements Serializable {
 
     private static final BigDecimal CEM = new BigDecimal("100");
@@ -21,19 +26,26 @@ public class ItemPedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlTransient
     private Long id; //NOPMD
 
+    @XmlElement(name = "produto")
     @ManyToOne(optional = false)
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
+    @XmlTransient
     @ManyToOne
     @JoinColumn(name = "atributo_id")
     private Atributo atributo;
 
+    @XmlElement(name = "quantidade")
     @Column(name = "quantidade")
     private Long quantidade;
 
+    @XmlJavaTypeAdapter(value = BigDecimalTypeAdapter.class, type = BigDecimal.class)
+    @XmlElement(name = "preco" , required = true)
+    @XmlSchemaType(name = "decimal")
     @Column
     private BigDecimal preco;
 

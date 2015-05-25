@@ -3,6 +3,7 @@ package com.pmrodrigues.varejodigital.models;
 import com.pmrodrigues.varejodigital.Constante;
 import com.pmrodrigues.varejodigital.enumarations.StatusPagamento;
 import com.pmrodrigues.varejodigital.repositories.utils.FilterName;
+import com.pmrodrigues.varejodigital.webservice.adapters.DateTypeAdapter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import org.hibernate.annotations.*;
 import org.joda.time.DateTime;
@@ -11,6 +12,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -33,35 +38,41 @@ import java.util.HashSet;
 })
 public class Pedido implements Serializable {
 
+    @XmlElement(name = "item" , namespace = "http://schema.varejodigital.projetandoo/1.0/")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pedido_id", nullable = false)
     private final Collection<ItemPedido> itens = new HashSet<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlTransient
     private Long id;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, targetEntity = Cliente.class)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL, targetEntity = Cliente.class)
     @JoinColumn(name = "cliente_id")
+    @XmlTransient
     private Cliente cliente;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "enderecoentrega_id")
+    @XmlTransient
     private EnderecoCliente enderecoEntrega;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "loja_id")
+    @XmlElement(name = "loja" , required = true)
     private Loja loja;
 
     @Column
-    private String codigoTransacao;
-
-    @Column
     @Enumerated(EnumType.ORDINAL)
+    @XmlElement(name = "loja" , required = true)
     private StatusPagamento status = StatusPagamento.EM_ABERTO;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
+    @XmlElement(name = "dataCompra")
+    @XmlSchemaType(name = "dateTime")
+    @XmlJavaTypeAdapter(value = DateTypeAdapter.class, type = Date.class)
     private Date dataCompra = Constante.DATA_INICIAL;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -70,14 +81,17 @@ public class Pedido implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dataCriacaco")
+    @XmlTransient
     private Date dataCriacao; //NOPMD
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column
+    @XmlTransient
     private Date dataAlteracao; //NOPMD
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "vendedor_id")
+    @XmlTransient
     private Usuario vendedor; //NOPMD
 
     @PrePersist
@@ -139,14 +153,6 @@ public class Pedido implements Serializable {
 
     public void setLoja(final Loja loja) {
         this.loja = loja;
-    }
-
-    public String getCodigoTransacao() {
-        return codigoTransacao;
-    }
-
-    public void setCodigoTransacao(final String codigoTransacao) {
-        this.codigoTransacao = codigoTransacao;
     }
 
     public StatusPagamento getStatus() {

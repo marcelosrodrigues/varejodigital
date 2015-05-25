@@ -23,7 +23,9 @@
                    disable-url-rewriting="true" authentication-manager-ref="authenticationManager">
         <security:anonymous enabled="false"/>
         <security:session-management session-fixation-protection="none"/>
-        <security:intercept-url pattern="/**/*.svc?wsdl"
+        <security:intercept-url pattern="/**/*.svc\\?wsdl"
+                                access="none"/>
+        <security:intercept-url pattern="/**/*.svc\\?xsd*"
                                 access="none"/>
         <security:intercept-url pattern="/**/*.svc"
                                 access="isFullyAuthenticated()"/>

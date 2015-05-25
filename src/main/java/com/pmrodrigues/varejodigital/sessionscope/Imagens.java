@@ -43,7 +43,7 @@ public class Imagens {
             logging.debug(format("termino do upload da imagem %s", imagem.getFileName()));
 
         } catch (IOException e) {
-            logging.fatal("erro ao salvar o arquivo " + e.getMessage(), e);
+            logging.fatal("erro ao salvarVendas o arquivo " + e.getMessage(), e);
         }
     }
 

@@ -7,4 +7,9 @@
             implementation="com.pmrodrigues.varejodigital.webservice.ProdutoWebService"
             url-pattern="/produtos.svc"/>
 
+    <endpoint
+            name="pedidos"
+            implementation="com.pmrodrigues.varejodigital.webservice.PedidoWebService"
+            url-pattern="/vendas.svc"/>
+
 </endpoints>
